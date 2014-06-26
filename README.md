@@ -1,4 +1,4 @@
-ShopBot-API
+FabMo Linker
 ===========
 
 ## Introduction
