@@ -15,3 +15,8 @@ It provide the user a simply and efficient way to  :
 **We know that there is a lot of works to do on it**
 
 The current version just include the detection tool that allow apps to comunicate with the tool, without any configuration (using the FabMo.js library). Actually, we are focused on provide web developers all what they need to start developing their apps.
+
+So here is a concept of our final goal :  
+![Home page concept](/docs/img/home_screen_concept.png)
+![App manager concept](/docs/img/AppManager_screen_concept.png)
+![Example App concept](/docs/img/exampleApp_screen_concept.png)
