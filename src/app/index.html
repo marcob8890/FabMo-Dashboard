@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Shopbot Example App</title>
+	<!-- From bootstrap -->
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/normalize.css">
+	<link rel="stylesheet" href="./css/style.css">
+	<script src="./detection service/server.js"></script>
+	<script src="./js/FabMo-1.0.6.js"></script>
+	<script src="./js/libs/jquery-1.10.2.js"></script>
+	<script >
+	var tool = undefined;
+	FabMoAutoConnect(function(err,my_tool){
+		if(err)
+		{
+			window.location.replace('./no_tool.html');
+			console.log(err);
+			return;
+		}
+		global.tool=my_tool;
+
+		window.location.replace('./file_executer.html');
+	});
+	
+	</script>
+</head>
+<body>
+	<h1>
+		Scanning in progress
+	</h1>
+	<div  align="center">
+		<img src="./images/loading.gif" height="100px">
+	</div>
+</html>
