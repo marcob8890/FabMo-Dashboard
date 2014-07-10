@@ -1,22 +1,22 @@
-FabMo Linker
+FabMo Linker Node webkit version
 ===========
 
 ## Introduction
-This github repository contains sources,binaries and documentation about the FabMo Linker.
+This branch contains sources and binaries for running the FabMo Linker based on node webkit.
+it provide an embedded webview based on Chromium, that allow use to run apps on Mac, Linux and Windows.
+[STILL IN DEVELOPMENT]
 
-## What is the FabMo Linker ?
-The FabMo Linker is an app that can run on every devices from Desktop under Windows, Linux or MAC to phones and tablet.
-This application make the link between job-oriented web apps and the tool.
-It provide the user a simply and efficient way to  :
- * find and connect to a tool
- * configure, manage and supervise his tool(s)
- * download, install and run Apps.
+## Instruction
+[Download The last version of node-webkit](http://dl.node-webkit.org) 
 
-**We know that there is a lot of works to do on it**
+ * For Windows :
+	drag the FabMoGW-[version].nw file on the nw.exe executable.
+ * For MAC OSX :
+	just run the FabMoGW-[version].nw file.
+ * For Linux :
+	Use the nw executable in the extracted folder to run the FabMoGW-[version].nw  
+	In case of troubleshooting with libudev.so.0, [click here](https://github.com/rogerwang/node-webkit/wiki/The-solution-of-lacking-libudev.so.0)
 
-The current version just include the detection tool that allow apps to comunicate with the tool, without any configuration (using the FabMo.js library). Actually, we are focused on provide web developers all what they need to start developing their apps.
 
-So here is a concept of our final goal :  
-![Home page concept](/docs/img/home_screen_concept.png)
-![App manager concept](/docs/img/AppManager_screen_concept.png)
-![Example App concept](/docs/img/exampleApp_screen_concept.png)
+## Reference
+[Node webkit](https://github.com/rogerwang/node-webkit)
