@@ -1,5 +1,7 @@
 {
 	"name":"FabMo Linker",
-	"main":"./app/index.html"
-
+	"main":"./app/index.html",
+	"window": {
+        
+    	}
 }

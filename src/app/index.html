@@ -2,15 +2,23 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Shopbot Example App</title>
+	<title>FabMo Linker</title>
 	<!-- From bootstrap -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<link rel="stylesheet" href="./css/normalize.css">
 	<link rel="stylesheet" href="./css/style.css">
+
 	<script src="./detection service/server.js"></script>
+	<script src="./app manager/app_icon_generator.js"></script>
+
 	<script src="./js/FabMo-1.0.6.js"></script>
 	<script src="./js/libs/jquery-1.10.2.js"></script>
+	<script src="./js/libs/jquery-ui-1.10.4.js"></script>
 	<script >
+var win = require('nw.gui').Window.get();
+var path = require('path');
+var fs = require('fs');
+
 	var tool = undefined;
 	FabMoAutoConnect(function(err,my_tool){
 		if(err)
@@ -21,10 +29,44 @@
 		}
 		global.tool=my_tool;
 
-		window.location.replace('./file_executer.html');
+		window.location.replace('./app manager/app_launcher.html');
 	});
-	
+
+
+	var rmdir = function(dir) {
+	var list = fs.readdirSync(dir);
+	for(var i = 0; i < list.length; i++) {
+		var filename = path.join(dir, list[i]);
+		var stat = fs.statSync(filename);
+		
+		if(filename == "." || filename == "..") {
+			// pass these files
+		} else if(stat.isDirectory()) {
+			// rmdir recursively
+			rmdir(filename);
+		} else {
+			// rm fiilename
+			fs.unlinkSync(filename);
+		}
+	}
+	fs.rmdirSync(dir);
+};
+
+	win.on('close', function(code) {
+	this.hide();
+	try{
+		rmdir('./tmp/');
+	}catch(ex)
+	{
+		console.log(ex);
+	}
+	this.close(true);	
+});
+
+
 	</script>
+
+
 </head>
 <body>
 	<h1>
