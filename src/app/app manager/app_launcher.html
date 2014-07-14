@@ -9,62 +9,52 @@
 		<link rel="stylesheet" href="../css/style.css">
 		<script src="../js/libs/jquery-1.10.2.js"></script>
 		<style type="text/css">html, body {height :100%;}</style>
+		<script src="./app_manager.js"></script>
 	</head>
 	<body>
-		<header>
+		<header style="position: fixed;top: 0;background: grey;width: 100%;height:65px;color: white;">
 			<h1>App Manager</h1>
 		</header>
-		<div>
+		<div style="padding : 65px 0 65px 0">
 			<table width="100%" height="100%">
-				<tr>
-					<td>
-						<a href="../file_executer.html">
-							<span align="center">
-								<div>
-									<img src="../File_Icon.png" width="90px" height="90px" >
-								</div>
-								<div>File executer (static)</div>
-							</span>
-						</a>
-					</td>
-					<td>
-						<a href="../../tmp/apps/file_executer/index.html">
-							<span align="center">
-								<div>
-									<img src="../../tmp/app_icons/file_executer/icon.png" width="90px" height="90px" >
-								</div>
-								<div>File executer (dynamic load)</div>
-							</span>
-						</a>
-					</td>
-				</tr>
+				<tbody id="apps_list">
+				</tbody>
 			</table>
 		</div>
-		<footer align="center">
-			<h1>Footer</h1>
+		<footer align="center" style="position: fixed;bottom: 0;width: 100%;height:65px;background: grey;">
+			<h1><a href="../index.html">Rescan</a></h1>
 		</footer>
 	</body>
 </html>
 <script>
 $(document).ready(function(){
 	load_apps_list();
+
+	$('.app').click(function(e){
+		console.log('click on app !');
+		var my_app = $( this ).attr('value');
+		load_app(my_app,function(index_page){
+			window.location.replace(index_page);
+		});
+	});
+
+	$( ".app" ).hover(function() {
+		$( this ).css('background','rgb(240,240,240)');
+	}, function() {
+		$( this ).css('background','none');
+	});
 });
 
 
 function load_apps_list(){
-	console.log(global.apps_array);
+/* Load the list of all the apps detected by the program 
+	( global.apps_array is the array saved in the context of all these apps.)*/
+	global.apps_array.forEach(function(obj,index,array){
+		if(!(index%3) && index !== array.length ){$('#apps_list').append('<tr id="apps_row'+index/3+'">');}
+		$('#apps_row'+parseInt(index/3)).append('<td class="app" value="'+ obj.app_path +'"><span align="center"><div><img src="../.'+obj.icon_path+'" width="90px" height="90px" ></div><div>'+obj.name+'</div></span></td>');
+		
+	});
 }
-/*
-$('#app').onclick(function(e){
-	var my_app = this.attr('value');
-	load_app(my_app);
-});
 
-function load_app(path){
-	decompress_app(path,tmp_app_path);
-	window.location.replace(tmp_app_path);
-
-}
-*/
 
 </script>

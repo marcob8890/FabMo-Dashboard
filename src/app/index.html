@@ -18,14 +18,20 @@
 var win = require('nw.gui').Window.get();
 var path = require('path');
 var fs = require('fs');
-
+var debug = false;
 	var tool = undefined;
 	FabMoAutoConnect(function(err,my_tool){
 		if(err)
 		{
-			window.location.replace('./no_tool.html');
-			console.log(err);
-			return;
+			if(debug){
+				my_tool=new FabMo('localhost','8080');
+				window.location.replace('./app manager/app_launcher.html');
+			}
+			else{
+				window.location.replace('./no_tool.html');
+				console.log(err);
+				return;
+			}
 		}
 		global.tool=my_tool;
 
