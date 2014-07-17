@@ -7,16 +7,119 @@
 		<script src="../js/libs/jquery-1.10.2.js"></script>
 		<style type="text/css">
 			html, body {height :100%;margin-top:-10px;}
-			#content_app_frame {position: fixed;top: 0;height: 90%;width: 100%;border: 0;padding-bottom:65px;}
+			#content_app_frame {position: fixed;top: 0;height: 90%;width: 100%;border: 0;}
 		</style>
 	</head>
 	<body>
-		<iframe id='content_app_frame'></iframe>
+		<iframe id='content_app_frame' nwdisable nwfaketop ></iframe>
 		<footer align="center" style="position:fixed;bottom: 0;width: 100%;height:65px;background: grey;">
 			<h1><a href="./app_launcher.html">Home</a></h1>
 		</footer>
 	</body>
 	<script>
 		$('#content_app_frame').attr('src',global.app_loaded);
+		var gui = require('nw.gui');
+		var fs = require('fs');
+		var path = require('path')
+		var win = gui.Window.get();
+		win.on('document-start',function(frame){
+			try{
+				// create a global variable in the app context. (so developers can grap information directly from this variable, in a secure way.)
+				frame.contentWindow.global = {};
+				frame.contentWindow.global.tool = global.tool;
+
+				// overide FabMo.js functions that cannot run in node-webkit.
+				frame.contentWindow.global.tool.constructor.prototype.upload_file = function(formdata,callback){
+					if (!callback)
+						throw "this function need a callback to work !";
+					var that=this;
+
+					/******************* THIS IS THE FABMO.JS OVERRIDE PART *********************************/
+
+					if(fs.existsSync(formdata)){ //if formdata is a path to a file on the system.
+						var file = fs.readFileSync(formdata,{encoding:'utf8'});
+						var blob = new Blob([file]);
+						var formData = new FormData();
+						formData.append('file', blob, path.basename(formdata));
+						console.log(formData);
+					}
+					/******************** END OF THE FABMO.JS OVERRIDE PART *********************************/
+
+
+					else if (formdata instanceof jQuery){ //if it's a form
+						var file = (formdata.find('input:file'))[0].files[0];
+						// Create a new FormData object.
+						var formData = new FormData();
+						formData.append('file', file, file.name);
+					}
+					else // else it's a formData
+					{
+						var formData = formdata;
+					}		
+					if (formData) {
+						$.ajax({
+							url: this.url.file,
+							type: "POST",
+							data: formData,
+							processData: false,
+							contentType: false,
+							DataType:'json',
+							/*statusCode: {
+								302: function(res) {
+									if (res.responseJSON && res.responseJSON[0])
+										callback(undefined,res.responseJSON[0]);
+									else if(res.responseJSON)
+										callback(undefined, res.responseJSON);
+									else
+										callback(undefined, JSON.parse(res.responseText));
+								},
+								400: function(res,err) {
+								 	callback(that.default_error.file.upload.bad_request);
+								},
+								415: function(res,err) {
+								 	callback(that.default_error.file.upload.not_allowed);
+								}
+							},*/
+							success: function( data ) {
+								if (data.responseJSON && data.responseJSON[0])
+										callback(undefined,data.responseJSON[0]);
+									else if(data.responseJSON)
+										callback(undefined, data.responseJSON);
+									else
+										callback(undefined, JSON.parse(data.responseText));
+							},
+							error : function(data, err) {
+					    			if (data.status === 400){callback(that.default_error.file.upload.bad_request);}
+								else if (data.status === 415){callback(that.default_error.file.upload.not_allowed);}
+								else if (data.status === 302){
+									if (data.responseJSON && data.responseJSON[0])
+										callback(undefined,data.responseJSON[0]);
+									else if(data.responseJSON)
+										callback(undefined, data.responseJSON);
+									else
+										callback(undefined, JSON.parse(data.responseText));
+								}
+								else{
+									var error = that.default_error.no_device;
+									error.sys_err = err;
+								 	callback(error);				
+								}
+							}
+						});
+					}
+					else{
+						var error = that.default_error.file.upload;
+						error.sys_err = "failed to construct the formData to send. verify that the argument you give to this function is correct.";
+					 	callback(error);	
+					}
+				}
+
+
+
+			}
+			catch(ex){
+				console.log(ex);
+			}
+		});
 	</script>
 </html>
