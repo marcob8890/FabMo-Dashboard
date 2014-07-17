@@ -1,6 +1,6 @@
 {
 	"name":"FabMo Linker",
-	"main":"app://fabmmolinker/app/index.html",
+	"main":"app://fabmolinker/app/index.html",
 	"window": {
         "toolbar": true
     	},

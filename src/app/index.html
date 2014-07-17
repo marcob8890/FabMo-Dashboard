@@ -18,7 +18,8 @@
 var win = require('nw.gui').Window.get();
 var path = require('path');
 var fs = require('fs');
-var debug = false;
+var os = require('os');
+var debug = true;
 	var tool = undefined;
 	FabMoAutoConnect(function(err,my_tool){
 		if(err)
@@ -61,7 +62,12 @@ var debug = false;
 	win.on('close', function(code) {
 	this.hide();
 	try{
-		rmdir('./tmp/');
+		if (os.platform === 'darwin'){ //if MAC OSX	
+			rmdir('/tmp/fabmo_linker');
+		}
+		else{
+			rmdir('./tmp/');
+		}
 	}catch(ex)
 	{
 		console.log(ex);
