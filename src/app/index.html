@@ -18,14 +18,21 @@
 var win = require('nw.gui').Window.get();
 var path = require('path');
 var fs = require('fs');
-
+var os = require('os');
+var debug = true;
 	var tool = undefined;
 	FabMoAutoConnect(function(err,my_tool){
 		if(err)
 		{
-			window.location.replace('./no_tool.html');
-			console.log(err);
-			return;
+			if(debug){
+				my_tool=new FabMo('localhost','8080');
+				window.location.replace('./app manager/app_launcher.html');
+			}
+			else{
+				window.location.replace('./no_tool.html');
+				console.log(err);
+				return;
+			}
 		}
 		global.tool=my_tool;
 
@@ -55,7 +62,12 @@ var fs = require('fs');
 	win.on('close', function(code) {
 	this.hide();
 	try{
-		rmdir('./tmp/');
+		if (os.platform === 'darwin'){ //if MAC OSX	
+			rmdir('/tmp/fabmo_linker');
+		}
+		else{
+			rmdir('./tmp/');
+		}
 	}catch(ex)
 	{
 		console.log(ex);
