@@ -12,7 +12,7 @@ var socket;
 var broadcastAddress = '255.255.255.255';
 var broadcastPort = 24862; // = 7777 without conversion
 
-//ennoying funcction but no other way to deal with it in windows
+//ennoying function but no other way to deal with it in windows
 function send_broadcast_to_every_interfaces(){
 	Object.keys(os.networkInterfaces()).forEach(function(key,index,arr){ //val = ip adresses , key = name of interface
 		var networks_list = this;
