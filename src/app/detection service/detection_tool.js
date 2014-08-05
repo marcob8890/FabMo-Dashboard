@@ -82,6 +82,8 @@ var detection = function(t) {
 			socket.send(new Buffer(REQ), 0, REQ.length, broadcastPort, broadcastAddress, function (err) {
 						if (err) console.log(err);
 					});
+			// enforce the message on the usb connection
+			socket.send(new Buffer(REQ), 0, REQ.length, broadcastPort, "192.168.10.1", function (err) {});
 		}
 
 
