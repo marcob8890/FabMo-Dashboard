@@ -11,11 +11,13 @@ server.use( function crossOrigin(req,res,next){
 	res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	return next();
 });
-if (os.platform === 'darwin'){ //if MAC OSX
-	var routes = require('./routes')(server);
+if (os.platform() === 'darwin'){ //if MAC OSX
+	var routes = require('./detection service/routes')(server);
+	
 }
 else{
 	var routes = require('./app/detection service/routes')(server);
+	
 }
 server.on('error',function (err) {
     if (err.code == 'EADDRINUSE')

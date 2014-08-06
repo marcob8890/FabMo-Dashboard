@@ -3,8 +3,8 @@ var zip = require('adm-zip');
 var path = require('path');
 var os = require('os');
 var apps_directory = './apps';
-if (os.platform === 'darwin'){ //if MAC OSX	
-var tmp_icon_directory ='/tmp/fabmo_linker/app_icons';
+if (os.platform() === 'darwin'){ //if MAC OSX	
+var tmp_icon_directory ='./tmp/app_icons';
 }else{
 var tmp_icon_directory ='./tmp/app_icons';
 }

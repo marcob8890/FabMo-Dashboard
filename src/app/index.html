@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
+
 	<title>FabMo Linker</title>
-	<!-- From bootstrap -->
+
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<link rel="stylesheet" href="./css/normalize.css">
 	<link rel="stylesheet" href="./css/style.css">
 
+
 	<script src="./detection service/server.js"></script>
 	<script src="./app manager/app_icon_generator.js"></script>
 
-	<script src="./js/FabMo-1.0.6.js"></script>
 	<script src="./js/libs/jquery-1.10.2.js"></script>
-	<script src="./js/libs/jquery-ui-1.10.4.js"></script>
+	<script src="./js/FabMo-1.0.7.js"></script>
 	<script >
 var win = require('nw.gui').Window.get();
 var path = require('path');
 var fs = require('fs');
 var os = require('os');
-var debug = true;
+var debug = false;
 	var tool = undefined;
 	FabMoAutoConnect(function(err,my_tool){
 		if(err)
@@ -62,7 +62,7 @@ var debug = true;
 	win.on('close', function(code) {
 	this.hide();
 	try{
-		if (os.platform === 'darwin'){ //if MAC OSX	
+		if (os.platform() === 'darwin'){ //if MAC OSX	
 			rmdir('/tmp/fabmo_linker');
 		}
 		else{
@@ -81,10 +81,14 @@ var debug = true;
 
 </head>
 <body>
-	<h1>
-		Scanning in progress
-	</h1>
-	<div  align="center">
-		<img src="./images/loading.gif" height="100px">
-	</div>
+	
+	<header  style="position: fixed;top: 0;;background: rgb(43, 72, 148);width: 100%;height:65px;color: white;padding-left: 10px;" >
+		<h1 class="text-center">
+			Scanning in progress     <img src="./images/loading.gif" height="15px"></img>
+		</h1>
+	</header>
+	
+	<div id="device_picker" style="padding : 70px 0 0 0">
+
+</body>
 </html>

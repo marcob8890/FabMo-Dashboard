@@ -2,7 +2,6 @@
 	"name":"FabMo Linker",
 	"main":"app://fabmolinker/app/index.html",
 	"window": {
-        "toolbar": true
-    	},
-	"chromium-args" : "--allow-file-access-from-files"
+        "toolbar": false
+    	}
 }

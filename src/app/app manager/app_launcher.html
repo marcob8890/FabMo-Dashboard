@@ -1,35 +1,43 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>FabMo Linker App Manager</title>
 		<!-- From bootstrap -->
 		<link rel="stylesheet" href="../css/bootstrap.min.css">
 		<link rel="stylesheet" href="../css/normalize.css">
 		<link rel="stylesheet" href="../css/style.css">
+		<style>
+			#rescan_button{text-decoration:none;}
+			#rescan_button:link {color: #fff;}
+			#rescan_button:visited {color: #fff;}
+			#rescan_button:hover {color: #eee;}
+			#rescan_button:active {color: #fff;}
+		</style>
 		<script src="../js/libs/jquery-1.10.2.js"></script>
-		<style type="text/css">html, body {height :100%;}</style>
+		
 		<script src="./app_manager.js"></script>
 	</head>
 	<body>
-		<header style="position: fixed;top: 0;background: grey;width: 100%;height:65px;color: white;">
+		<header style="position: fixed;top: 0;;background: rgb(43, 72, 148);width: 100%;height:65px;color: white;padding-left: 10px;">
 			<h1>App Manager</h1>
 		</header>
-		<div style="padding : 65px 0 65px 0">
+		<div style="padding : 70px 0 65px 0">
 			<table width="100%" height="100%">
 				<tbody id="apps_list">
 				</tbody>
 			</table>
 		</div>
-		<footer align="center" style="position: fixed;bottom: 0;width: 100%;height:65px;background: grey;">
-			<h1><a href="../index.html">Rescan</a></h1>
+		<footer align="center" style="position: fixed;bottom: 0;width: 100%;height:65px;color:white;background: rgb(43, 72, 148);">
+			<h3><a id="rescan_button" href="../index.html">Rescan</a></h3>
 		</footer>
 	</body>
 </html>
 <script>
 $(document).ready(function(){
 	load_apps_list();
-
+	
 	$('.app').click(function(e){
 		console.log('click on app !');
 		var my_app = $( this ).attr('value');
@@ -37,12 +45,12 @@ $(document).ready(function(){
 			window.location.replace(index_page);
 		});
 	});
-
 	$( ".app" ).hover(function() {
 		$( this ).css('background','rgb(240,240,240)');
 	}, function() {
 		$( this ).css('background','none');
 	});
+	
 });
 
 
