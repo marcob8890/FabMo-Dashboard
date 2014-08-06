@@ -35,12 +35,12 @@ fs.readdir(apps_directory, function(err,files){
 
 				try {
 					var package_info = JSON.parse(app_zip.readFile("package.json").toString());
-					console.log(package_info.name);
-					console.log(package_info.icon);
+					//console.log(package_info.name);
+					//console.log(package_info.icon);
 					var tmp_icon_dir =  tmp_icon_directory+'/'+package_info.name;
 					app_zip.extractEntryTo(package_info.icon || default_icon ,tmp_icon_dir, false, true);
 					var app_info = {'id':undefined,'name':package_info.name,'icon_path':tmp_icon_dir+'/'+package_info.icon,'app_path':file_path};
-					console.log(app_info);
+					//console.log(app_info);
 					apps_array.push(app_info);
 
 				}

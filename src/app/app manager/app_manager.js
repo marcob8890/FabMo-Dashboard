@@ -28,7 +28,7 @@ function decompress_app(app_path,callback){
 		var tmp_app_path=tmp_app_directory+path.basename(app_path)+"/";
 	}
 	var app = new zip(app_path);
-	console.log(app);
+	//console.log(app);
 	app.extractAllTo(/*target path*/tmp_app_path, /*overwrite*/true);
 	try{
 		var package_info = require(tmp_app_path+'package.json');
