@@ -19,26 +19,24 @@ var win = require('nw.gui').Window.get();
 var path = require('path');
 var fs = require('fs');
 var os = require('os');
-var debug = false;
-	var tool = undefined;
+var tool = undefined;
+if( require('./package.json').debug == false){
 	FabMoAutoConnect(function(err,my_tool){
 		if(err)
 		{
-			if(debug){
-				my_tool=new FabMo('localhost','8080');
-				window.location.replace('./app manager/app_launcher.html');
-			}
-			else{
-				window.location.replace('./no_tool.html');
-				console.log(err);
-				return;
-			}
+			console.log(err);
+			window.location.replace('./no_tool.html');
+			return;
 		}
 		global.tool=my_tool;
 
 		window.location.replace('./app manager/app_launcher.html');
-	});
-
+	},require('./package.json').detection_service_port);
+}
+else{
+	global.tool = new FabMo('localhost',require('./package.json').local_engine_port || '8080');
+	window.setTimeout(function(){window.location.replace('./app manager/app_launcher.html');},1000);
+}
 
 	var rmdir = function(dir) {
 	var list = fs.readdirSync(dir);
@@ -52,7 +50,7 @@ var debug = false;
 			// rmdir recursively
 			rmdir(filename);
 		} else {
-			// rm fiilename
+			// rm filename
 			fs.unlinkSync(filename);
 		}
 	}

@@ -3,7 +3,7 @@
  */
 var os = require('os');
 var restify = require('restify');
-
+var package_json = require ('./package.json');
 var server = restify.createServer({name:"local_api"});
 // allow JSON over Cross-origin resource sharing 
 server.use( function crossOrigin(req,res,next){
@@ -25,7 +25,7 @@ server.on('error',function (err) {
     return;
 });
 
-server.listen(8080, function() {
+server.listen(package_json.detection_service_port || 8080, function() {
 	console.log('%s listening at %s', server.name, server.url);
 });
 

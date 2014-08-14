@@ -3,5 +3,8 @@
 	"main":"app://fabmolinker/app/index.html",
 	"window": {
         "toolbar": false
-    	}
+    	},
+	"detection_service_port" : 8080,
+	"debug" : false,
+	"local_engine_port" : 9876
 }

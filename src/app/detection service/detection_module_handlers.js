@@ -31,7 +31,8 @@ exports.where_is_my_tool = function(req, res, next) {
 			// make a list of unique devices ( currently based on the hostname and need to be replace with a serial number )
 			for(var dev in devices_list)
 			{
-				count_array.push(devices_list[dev].device.hostname);
+				if(devices_list[dev])
+					count_array.push(devices_list[dev].device.hostname);
 			}
 			count_array = uniq(count_array);
 
@@ -43,11 +44,11 @@ exports.where_is_my_tool = function(req, res, next) {
 			{
 				var dev_interfaces = []; // reset the interfaces array for every new device
 				var dev_hostname = count_array[single_dev]; // get the hostname
-
+				var server_port;
 				// get the interface array
 				for(var device in devices_list) // array with all the ips and net interfaces separately
 				{
-					if( devices_list[device].device.hostname === count_array[single_dev] ) //select the ones corresponding to the current device
+					if( devices_list[device] && devices_list[device].device.hostname === count_array[single_dev] ) //select the ones corresponding to the current device
 					{
 						for(var network in devices_list[device].device.networks) // list the interfaces
 						{
@@ -56,10 +57,11 @@ exports.where_is_my_tool = function(req, res, next) {
 								dev_interfaces.push({'interface' :  devices_list[device].device.networks[network].interface, 'ip_address' :  devices_list[device].device.networks[network].ip_address}); // add theses to the network section
 							}
 						}
+						server_port = devices_list[device].device.server_port ;
 					}
 				}
 				// add the device to the new_device_array
-				new_device_array.push({ "hostname" : dev_hostname, "network" : dev_interfaces});
+				new_device_array.push({ "hostname" : dev_hostname, "network" : dev_interfaces, "server_port" : server_port});
 			}
 		}
 			/*********************************************************************/

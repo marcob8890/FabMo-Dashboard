@@ -460,7 +460,7 @@ FabMo.prototype.run_local_file =  function(file,ext,callback)
 
 
 
-function FabMoAutoConnect(callback){
+function FabMoAutoConnect(callback,linker_port){
 	if (!callback)
 		throw "this function need a callback to work !";
 	var that=this;
@@ -468,11 +468,11 @@ function FabMoAutoConnect(callback){
 		if (err){ callback(err);return;} 
 		SelectATool(list_tools,function(err,tool){
 			if (err){ callback(err);return;}
-			ChooseBestWayToConnect(tool,function(ip_address){
-				callback(undefined,new FabMo(ip_address));	
+			ChooseBestWayToConnect(tool,function(ip_address,port){
+				callback(undefined,new FabMo(ip_address,port ? port.toString() : '8080'));	
 			});
 		});
-	});
+	},linker_port);
 }
 
 
@@ -485,7 +485,7 @@ function ChooseBestWayToConnect(tool,callback){ //return an ip_adress
 	tool.network.forEach(function(val,key){
 		if(val.interface === "usb0")
 		{
-			callback(val.ip_address);
+			callback(val.ip_address,tool.server_port);
 			return;
 		}
 	});
@@ -493,30 +493,30 @@ function ChooseBestWayToConnect(tool,callback){ //return an ip_adress
 		
 		if(val.interface === "eth0")
 		{
-			callback(val.ip_address);
+			callback(val.ip_address,tool.server_port);
 			return;
 		}
 	});
 	tool.network.forEach(function(val,key){
 		if(val.interface === "wlan0")
 		{
-			callback(val.ip_address);
+			callback(val.ip_address,tool.server_port);
 			return;
 		}
 	});
 	tool.network.forEach(function(val,key){
 		if(val.interface === "wlan1")
 		{
-			callback(val.ip_address);
+			callback(val.ip_address,tool.server_port);
 			return;
 		}
 	});
 }
 
-function DetectToolsOnTheNetworks(callback){
+function DetectToolsOnTheNetworks(callback, linker_port){
 	if (!callback)
 		throw "this function need a callback to work !";
-	var port = 8080; //port of the link API
+	var port = linker_port || 8080; //port of the link API
 	$.ajax({
 		url: 'http://localhost:' + port + '/where_is_my_tool',
 		type: "GET",
@@ -534,7 +534,7 @@ function SelectATool(list_tools,callback){
 		throw "this function need a callback to work !";
 	if (list_tools.length === 0)
 	{
-		var err = "No tools detected"
+		var err = "No tools detected";
 		callback(err);
 	}
 	else if (list_tools.length === 1) // perfect case !, a single tool on the network !
