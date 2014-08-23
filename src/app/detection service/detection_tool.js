@@ -64,8 +64,14 @@ var detection = function(t) {
 			else if(current_dialog.indexOf(rinfo.address)!==-1) // if the device is a sbt, continue the dialog.
 			{
 				current_dialog.splice(current_dialog.indexOf(rinfo.address), 1); //end of dialog (remove ip from array )
+				//console.log(data.toString().replace('\0', '').replace(/é/gi,'e').replace(/ /gi,'_')+ ',"active_ip" : "' +rinfo.address+'"}');
 				//substract \0 character of the string before parsing.
-				device = JSON.parse('{"device" : ' + data.toString().replace('\0', '') + ',"active_ip" : "'+ rinfo.address+'"}');
+				try{
+					device = JSON.parse('{"device" : ' + data.toString().replace('\0', '') + ',"active_ip" : "'+ rinfo.address+'"}');
+				}catch(ex)
+				{
+					console.log(ex);
+				}
 				devices.push(device);
 				//console.log(device + " added !");
 				that.emit('new_device',device);
