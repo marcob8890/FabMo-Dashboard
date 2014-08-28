@@ -21,7 +21,12 @@
 	</head>
 	<body>
 		<header style="position: fixed;top: 0;;background: rgb(43, 72, 148);width: 100%;height:65px;color: white;padding-left: 10px;">
-			<h1>App Manager</h1>
+			<h1 style="display: inline-block;">App Manager</h1>
+			<span class ='pull-right list-inline' style = "margin: 1.5em 1em;">
+				<span class="tool_status label label-default" style="margin-right : 10px;">  </span>
+				<span class="tool_name"></span>
+				<span class="tool_ip_address"></span>
+			</span>
 		</header>
 		<div style="padding : 70px 0 65px 0">
 			<table width="100%" height="100%">
@@ -35,6 +40,8 @@
 	</body>
 </html>
 <script>
+var my_tool =  global.tool;
+var state; // used to avoid status refresh when not necessary
 $(document).ready(function(){
 	load_apps_list();
 	
@@ -51,7 +58,49 @@ $(document).ready(function(){
 		$( this ).css('background','none');
 	});
 	
+	my_tool.get_info(function(err,info){
+		if(err){
+			console.log(err);
+			$('.tool_name').html('problem !');
+			$('.tool_status').removeClass("label-default label-danger label-success");
+			$('.tool_status').addClass("label-danger");
+			return;
+		};
+		$('.tool_name').html(info.surname);
+		//$('.tool_status').html('<img src=../images/grey_button.png>');
+		$('.tool_ip_address').html('['+my_tool.ip+']');
+		setInterval(statusUpdate,500 );
+	});
 });
+
+function statusUpdate(){
+	my_tool.get_status(function(err,status){
+		if(err){
+			console.log(err);
+			$('.tool_name').html('problem !');
+			//$('.tool_status').html('<img src=../images/red_button.png>');
+			$('.tool_status').removeClass("label-default label-danger label-success");
+			$('.tool_status').addClass("label-danger");
+			return;
+		}
+		if(status.state === "running" || status.state === "manual"){
+			if(status.state !== state){
+				//$('.tool_status').html('<img src=../images/green_button.png>');
+			$('.tool_status').removeClass("label-default label-danger label-success");
+			$('.tool_status').addClass("label-success");
+				state = status.state;
+			}
+		}
+		else{
+			if(status.state !== state){
+				//$('.tool_status').html('<img src=../images/grey_button.png>');
+			$('.tool_status').removeClass("label-default label-danger label-success");
+			$('.tool_status').addClass("label-default");
+				state = status.state;
+			}
+		}
+	});
+}
 
 
 function load_apps_list(){
