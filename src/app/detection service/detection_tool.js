@@ -45,7 +45,7 @@ var detection = function(t) {
 	var device;
 	var devices =[];
 	
-	var timeout = t || 1000;
+	var timeout = t || 1100;
 	var that =this;
 	socket.bind(function(){
 		socket.setBroadcast(true);
@@ -73,7 +73,6 @@ var detection = function(t) {
 					console.log(ex);
 				}
 				devices.push(device);
-				//console.log(device + " added !");
 				that.emit('new_device',device);
 			}
 			else
@@ -97,7 +96,7 @@ var detection = function(t) {
 	});
 	
 	setTimeout(function(){
-		socket.close();
+		if(os.platform()!=='darwin'){socket.close();}
 		that.emit("devices",devices);
 		return 0; //close the function
 	}, timeout);

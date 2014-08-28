@@ -10,7 +10,7 @@ var spawn = require('child_process').exec;
 
 exports.where_is_my_tool = function(req, res, next) {
 	// execute the cmd command
-	    var detect = new detection(1000);// timeout en millisecondes;
+	    var detect = new detection(1100);// timeout en millisecondes;
 	    detect.on('devices', function (data) {
 		/*****************************************************************/
 		if( data === [])
