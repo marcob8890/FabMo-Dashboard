@@ -557,10 +557,8 @@ function SelectATool(list_tools,callback){
 			$('#device_picker_button').click(function(){
 				if($("input[name='devices']:checked").length)
 					callback(undefined,JSON.parse($("input[name='devices']:checked").val()));
-});
-			
-
-
+			});
+			$('#device_picker').trigger('activated',[this]);		
 		}
 		else{
 			var $dialog = $('<div/>').addClass('dialog');
