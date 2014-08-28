@@ -3,7 +3,13 @@
  */
 var os = require('os');
 var restify = require('restify');
-var package_json = require ('./package.json');
+if (os.platform() === 'darwin'){ //if MAC OSX	
+	var package_json = require('../package.json');
+}
+else{
+	var package_json = require('./package.json');
+}
+
 var server = restify.createServer({name:"local_api"});
 // allow JSON over Cross-origin resource sharing 
 server.use( function crossOrigin(req,res,next){

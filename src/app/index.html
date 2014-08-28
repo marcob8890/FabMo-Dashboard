@@ -20,7 +20,15 @@ var path = require('path');
 var fs = require('fs');
 var os = require('os');
 var tool = undefined;
-if(require('./package.json').debug === false || require('./package.json').debug === undefined || require('./package.json').debug === null){
+if (os.platform() === 'darwin'){ //if MAC OSX	
+	var package_file = require('../package.json');
+}
+else{
+	var package_file = require('./package.json');
+}
+
+
+if(package_file.debug === false || package_file.debug === undefined || package_file.debug === null){
 	FabMoAutoConnect(function(err,my_tool){
 		if(err){
 			console.log(err);
@@ -29,20 +37,20 @@ if(require('./package.json').debug === false || require('./package.json').debug 
 		}
 		global.tool=my_tool;
 		window.location.replace('./app manager/app_launcher.html');
-	},require('./package.json').detection_service_port||8080);
+	},package_file.detection_service_port||8080);
 }
 else{
 		FabMoAutoConnect(function(err,my_tool){
 		if(err){
 			console.log(err);
-			global.tool = new FabMo('localhost',require('./package.json').local_engine_port || '8080');
+			global.tool = new FabMo('localhost',package_file.local_engine_port || '8080');
 			window.location.replace('./app manager/app_launcher.html');
 			return;
 		}
 		global.tool=my_tool;
 		window.location.replace('./app manager/app_launcher.html');
 
-	},require('./package.json').detection_service_port||8080);
+	},package_file.detection_service_port||8080);
 }
 
 
