@@ -2,9 +2,9 @@
 	"name":"FabMo Linker",
 	"main":"app://fabmolinker/app/index.html",
 	"window": {
-        "toolbar": false
+        "toolbar": true 
     	},
 	"detection_service_port" : 8080,
-	"debug" : false,
+	"debug" : true,
 	"local_engine_port" : 9876
 }

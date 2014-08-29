@@ -2,6 +2,7 @@ var fs = require('fs');
 var zip = require('adm-zip');
 var path = require('path');
 var os = require('os');
+var ncp = require('ncp').ncp;
 var apps_directory = './apps';
 if (os.platform() === 'darwin'){ //if MAC OSX	
 var tmp_icon_directory ='./tmp/app_icons';
@@ -51,7 +52,27 @@ fs.readdir(apps_directory, function(err,files){
 				}
 					
 			}
-
+			else if(stats.isDirectory()) {
+				try {
+					fs.readFile(path.join(file_path, "package.json"), function(err, data) {
+						package_info = JSON.parse(data);
+						var tmp_icon_dir =  tmp_icon_directory+'/'+package_info.name;
+						try { fs.mkdirSync(tmp_icon_dir); } 
+						catch(e) {}
+						
+						ncp(path.join(file_path, package_info.icon || default_icon) ,path.join(tmp_icon_dir, package_info.icon), function(err) {
+							console.log(err);
+						});
+						var app_info = {'id':undefined,'name':package_info.name,'icon_path':tmp_icon_dir+'/'+package_info.icon,'app_path':file_path};
+						apps_array.push(app_info);
+					});
+				}
+				catch(ex)
+				{
+					console.log('non-valid package.json file : '+ex);
+					
+				}
+			}
 		});
 	});
 });
