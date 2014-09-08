@@ -1,139 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FabMo Linker</title>
+    <link rel="stylesheet" href="css/foundation.css" />
 
-	<title>FabMo Linker</title>
+    <!-- UI Element Templates -->
+    <script type="text/template" id="navbar_template">
+      <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">FabMo Linker</a></h1>
+        </li>
+      </ul>
+      </nav>
+    </script>
 
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
-	<link rel="stylesheet" href="./css/normalize.css">
-	<link rel="stylesheet" href="./css/style.css">
+    <script type="text/template" id="tool_picker_template">
+      <div id="myModal" class="reveal-modal" data-reveal>
+        <h2>Awesome. I have it.</h2>
+        <p class="lead">Your couch.  It is mine.</p>
+        <p>Im a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+        <a class="close-reveal-modal">&#215;</a>
+      </div>
+    </script>
 
+    <script type="text/template" id="app_selector_template">
+      <ul id="apps-list">
+      </ul>
+    </script>
 
-	<script src="./detection service/server.js"></script>
-	<script src="./app manager/app_icon_generator.js"></script>
+  </head>
 
-	<script src="./js/libs/jquery-1.10.2.js"></script>
-	<script src="./js/FabMo-0.6.3.js"></script>
-	<script >
-var win = require('nw.gui').Window.get();
-var path = require('path');
-var fs = require('fs');
-var os = require('os');
-var tool = undefined;
-if (os.platform() === 'darwin'){ //if MAC OSX	
-	var package_file = require('../package.json');
-}
-else{
-	var package_file = require('./package.json');
-}
-
-
-if(package_file.debug === false || package_file.debug === undefined || package_file.debug === null){
-	FabMoAutoConnect(function(err,my_tool){
-		if(err){
-			console.log(err);
-			window.location.replace('./no_tool.html');
-			return;
-		}
-		global.tool=my_tool;
-		window.location.replace('./app manager/app_launcher.html');
-	},package_file.detection_service_port||8080);
-}
-else{
-		FabMoAutoConnect(function(err,my_tool){
-		if(err){
-			console.log(err);
-			global.tool = new FabMo('localhost',package_file.local_engine_port || '8080');
-			window.location.replace('./app manager/app_launcher.html');
-			return;
-		}
-		global.tool=my_tool;
-		window.location.replace('./app manager/app_launcher.html');
-
-	},package_file.detection_service_port||8080);
-}
-
-
-
-	var rmdir = function(dir) {
-	var list = fs.readdirSync(dir);
-	for(var i = 0; i < list.length; i++) {
-		var filename = path.join(dir, list[i]);
-		var stat = fs.statSync(filename);
-		
-		if(filename == "." || filename == "..") {
-			// pass these files
-		} else if(stat.isDirectory()) {
-			// rmdir recursively
-			rmdir(filename);
-		} else {
-			// rm fiilename
-			fs.unlinkSync(filename);
-		}
-	}
-	fs.rmdirSync(dir);
-};
-
-	win.on('close', function(code) {
-	this.hide();
-	try{
-		if (os.platform() === 'darwin'){ //if MAC OSX	
-			rmdir('tmp/');
-		}
-		else{
-			rmdir('./tmp/');
-		}
-	}catch(ex)
-	{
-		console.log(ex);
-	}
-	this.close(true);	
-});
-
-	$(document).ready(function(){
-		$('.panel').hide();
-		$('#device_picker').on('activated',function(e){
-			$(this).children('input').each(function () {
-				var ip_tab = []; 
-				var tool_selector = $(this);
-    			var tool = JSON.parse($(this).val());
-    			tool.network.forEach(function(net,index,arr){
-    				ip_tab.push(net.ip_address);
-    				if(index===arr.length-1)
-    				{
-    					tool_selector.next().append('  '+ JSON.stringify(ip_tab).replace(/\"/g,'')); //use next() for getting the label
-    					ip_tab = [];
-    				}
-    			})
-			});
-
-			$('h1').html("Pick a tool");
-			$('body').append('<div class="text-center" style="padding : 80px 0 0 0;clear:both;"><a href="index.html"><button class="btn btn-primary btn-lg">Rescan</button></a></div>');
-			$(this).children('button').each(function(){
-				$(this).addClass("btn btn-default btn-lg");
-			});
-			$(this).children('input').first().prop("checked", true);
-			$('.panel').show(400);
-		});
-	});
-
-
-	</script>
-
-
-</head>
-<body>
-	
-	<header  style="position: fixed;top: 0;;background: rgb(43, 72, 148);width: 100%;height:65px;color: white;padding-left: 10px;" >
-		<h1 class="text-center">
-			Scanning in progress     <img id='loading_img' src="./images/loading.gif" height="15px"></img>
-		</h1>
-	</header>
-	<div class=" col-sm-6 col-sm-offset-3" style="padding : 70px 0 0 0">
-		<div class="panel panel-default ">
-			<div class="panel-body" id="device_picker" >
-			</div>
-		</div>
-	</div>
-</body>
+  <body>
+    <div id="navbar_container"></div>
+    <div id="content_container"></div>
+    <div id="modal_container"></div>
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/foundation.min.js"></script>
+    <script src="js/libs/underscore.js"></script>
+    <script src="js/libs/backbone.js"></script>
+    <script src="js/libs/FabMo-0.6.3.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+    <script src="js/main.js"></script>
+  </body>
 </html>
