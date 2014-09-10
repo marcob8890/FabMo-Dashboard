@@ -26,15 +26,15 @@ var NavbarView = Backbone.View.extend({
 		this.render();
 	},
 	render : function() {
-		var template = _.template($("#navbar_template").html(), {});
+		var template = _.template($("#navbar-template").html(), {});
 		this.$el.html(template);
 	}
 });
 
 var AppIconView = Backbone.View.extend({
 	tagName : 'div',
-	className : 'app',
-	template : _.template($("#app_template").html()),
+	className : 'app-icon',
+	template : _.template($("#app-icon-template").html()),
 	initialize : function() {
 		_.bindAll(this, 'render');
 		this.model.bind('change', this.render);
@@ -50,15 +50,14 @@ var AppMenuView = Backbone.View.extend({
 	className : 'app-menu',
 	collection : null,
 	initialize : function(options) {
-		this.collection = options.collection
 		_.bindAll(this, 'render');
+		this.collection = options.collection
 		this.collection.bind('reset', this.render);
 		this.collection.bind('add', this.render);
 		this.collection.bind('remove', this.render);
 		this.render();
 	},
 	render : function() {
-		console.log('Rendering the AppsView');
 		var element = jQuery(this.el);
 		element.empty();
 		this.collection.forEach(function(item) {
