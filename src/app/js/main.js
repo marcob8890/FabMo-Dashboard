@@ -1,23 +1,26 @@
 var package_file = require('../package.json');
 var app_manager = require('./js/app_manager.js');
-
+var _ = require('./js/libs/underscore.js')._
+// MODELS
 var App = Backbone.Model.extend({
 	defaults:{
 		name : null,
-		source_path : null,
-		tmp_path : null,
-		icon_path : null
+		icon_path : null,
+		app_path : null,
+		app_url : null
 	},
 	initialize : function() {
-		console.log("App model created");
+		console.log("Loaded app '" + this.get('name') + "'");
 	},
-	sync : function(method, model, option) {}
+	sync : function(method, model, option) {} // Override sync because this is a local model
 });
 
 var Apps = Backbone.Collection.extend({
 	model : App
-})
+});
 
+
+// VIEWS
 var NavbarView = Backbone.View.extend({
 	initialize : function() {
 		this.render();
@@ -28,30 +31,62 @@ var NavbarView = Backbone.View.extend({
 	}
 });
 
-var AppsView = Backbone.View.extend({
+var AppIconView = Backbone.View.extend({
+	tagName : 'div',
+	className : 'app',
+	template : _.template($("#app_template").html()),
 	initialize : function() {
-		this.render();
+		_.bindAll(this, 'render');
+		this.model.bind('change', this.render);
 	},
 	render : function() {
-		var template = _.template($("#app_selector_template").html(), {});
-		this.$el.html(template);
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
 	}
 });
 
-navbarView = new NavbarView({el : "#navbar_container"});
-//appsView = new AppView({el : "#content_container"});
+var AppMenuView = Backbone.View.extend({
+	tagName : 'div',
+	className : 'app-selector',
+	collection : null,
+	initialize : function(options) {
+		this.collection = options.collection
+		_.bindAll(this, 'render');
+		this.collection.bind('reset', this.render);
+		this.collection.bind('add', this.render);
+		this.collection.bind('remove', this.render);
+		this.render();
+	},
+	render : function() {
+		console.log('Rendering the AppsView');
+		var element = jQuery(this.el);
+		element.empty();
+		this.collection.forEach(function(item) {
+			var appIconView = new AppIconView({ model: item });
+			element.append(appIconView.render().el);
+		});
+		return this;
+	},
+	show : function() {
+		$(this.el).show();
+	},
+	hide : function() {
+		$(this.el).hide();
+	}
 
-console.log("RUNNING MAIN")
+});
+
+navbarView = new NavbarView({el : "#navbar_container"});
+
 switch(package_file.debug) {
 	case false:
 	case undefined:
 	case null:
-
+		// NORMAL MODE
 		break;
 
 	default:
 		// DEBUG MODE
-				// NORMAL MODE
 		FabMoAutoConnect(function(err,tool){
 			if(err){
 				console.log(err);
@@ -62,8 +97,10 @@ switch(package_file.debug) {
 			// Display the apps launcher here
 		},package_file.detection_service_port||8080);
 
-		app_manager.load_apps(package_file.apps_dir || './apps', function(err, apps) {
-			console.log(apps);
-		});
 		break;
 }
+
+app_manager.load_apps(package_file.apps_dir || './apps', function(err, apps) {
+	apps_collection = new Apps(apps);
+	appMenuView = new AppMenuView({collection : apps_collection, el : '#app_menu_container'});
+});

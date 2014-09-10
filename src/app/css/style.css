@@ -1,0 +1,17 @@
+.app-selector {
+
+}
+
+.app {
+	float: left;
+	width: 128px;
+	height: 96px;
+	text-align: center;
+	margin: 16px;
+}
+
+.app-icon {
+/*	margin-top: 32px; */
+	width: 64px;
+	height: 64px;
+}

@@ -7,6 +7,7 @@ var async = require('async');
 
 var APP_TMP_DIR = './tmp/app/';
 
+// Maximum depth of a deep copy operation
 ncp.limit = 16;
 
 /**
@@ -20,6 +21,7 @@ function load_app(app_path,callback){
 	// Check to see if the path exists
 	fs.stat(app_path,function(err,stat){
 		if(err) {
+			console.log('load_app error')
 			return callback(err);
 		}
 		if(stat.isDirectory()) {
@@ -38,25 +40,29 @@ function load_app(app_path,callback){
  * @param callback Callback (err, dir) - called when app has been successfully (or unsuccessfully) copied
  */
 function copy_app(app_dir, callback) {
-	var tmp_app_path = APP_TMP_DIR+path.basename(app_dir)+"/";
-	var pkg_info_path = tmp_app_path + 'package.json';
-
-	ncp(app_dir, tmp_app_path, function (err) {
-		if (err) {
-			callback(err);
-		} else {
-			try {
-				var package_info = JSON.parse(fs.readFileSync(pkg_info_path));
-				var app_info = {'name':package_info.name,
-								'icon_path':tmp_app_path+package_info.icon,
-								'app_path':tmp_app_path,
-								'app_url':'app://fabmolinker/'+path.join(tmp_app_path,package_info.main)};
-				callback(null, app_info);
-			} catch(e) {
-				callback(e);
+	try {
+		var tmp_app_path = APP_TMP_DIR+path.basename(app_dir)+"/";
+		var pkg_info_path = tmp_app_path + 'package.json';
+		ncp(app_dir, tmp_app_path, function (err) {
+			if (err) {
+				callback(err);
+			} else {
+				try {
+					var package_info = JSON.parse(fs.readFileSync(pkg_info_path));
+					var app_info = {'name':package_info.name,
+									'icon_path':tmp_app_path+package_info.icon,
+									'app_path':tmp_app_path,
+									'app_url':'app://fabmolinker/'+path.join('tmp', tmp_app_path,package_info.main),
+									'icon_url':'app://fabmolinker'+path.join('tmp', tmp_app_path,package_info.icon)};
+					callback(null, app_info);
+				} catch(e) {
+					callback(e);
+				}
 			}
-		}
-	});
+		});
+	} catch(e) {
+		callback(e);
+	}
 }
 
 /**
@@ -65,17 +71,17 @@ function copy_app(app_dir, callback) {
  * @param callback Callback (err, path) to call when app has been successfully (or unsuccessfully) decompressed
  */
 function decompress_app(app_path,callback){
-	var tmp_app_path=APP_TMP_DIR+path.basename(app_path)+"/";
-	var pkg_info_path = tmp_app_path + 'package.json';
-
 	try{
+		var tmp_app_path=APP_TMP_DIR+path.basename(app_path)+"/";
+		var pkg_info_path = tmp_app_path + 'package.json';
 		var app = new zip(app_path);
 		app.extractAllTo(tmp_app_path, true);
 		var package_info = JSON.parse(fs.readFileSync(pkg_info_path));
 		var app_info = {'name':package_info.name,
 						'icon_path':tmp_app_path+package_info.icon,
 						'app_path':tmp_app_path,
-						'app_url':'app://fabmolinker/'+path.join(tmp_app_path,package_info.main)};
+						'app_url':'app://fabmolinker/'+path.join('tmp', tmp_app_path,package_info.main),
+						'icon_url':'app://fabmolinker'+path.join('tmp', tmp_app_path,package_info.icon)};
 		callback(false, app_info);
 	}
 	catch(e){
@@ -90,19 +96,25 @@ function decompress_app(app_path,callback){
  * @param callback Callback (err, apps) to issue when all app info has been collected
  */
 function load_apps(apps_directory, callback) {
+	console.log('CALLING LOAD_APPS')
 	fs.readdir(apps_directory, function(err,files){
 		files = files.map(function(file) { return apps_directory + '/' + file;});
 		async.map(files, 
-			function(file, cb) {
+			function(file, callback) {
 				load_app(file, function(err, result) {
+					// Rather than allowing errors to halt the async.map operation that is loading the apps
+					// we swallow them and simply stick a 'null' in the output array (that we cull out at the end)
 					if(err) {
-						cb(null, null);
+						console.log('NOPE')
+						return callback(null, null);
 					} else {
-						cb(null, result)
+						console.log('YEP')
+						return callback(null, result)
 					}
 				});
 			}, 
 			function(err, results) {
+				console.log('RESULTS')
 				results = results.filter(function(result) { return result != null;})
 				callback(err, results);
 			});  

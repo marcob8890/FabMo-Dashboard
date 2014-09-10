@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FabMo Linker</title>
     <link rel="stylesheet" href="css/foundation.css" />
-
+    <link rel="stylesheet" href="css/style.css" />
     <!-- UI Element Templates -->
     <script type="text/template" id="navbar_template">
       <nav class="top-bar" data-topbar role="navigation">
@@ -16,7 +16,6 @@
       </ul>
       </nav>
     </script>
-
     <script type="text/template" id="tool_picker_template">
       <div id="myModal" class="reveal-modal" data-reveal>
         <h2>Awesome. I have it.</h2>
@@ -26,17 +25,19 @@
       </div>
     </script>
 
-    <script type="text/template" id="app_selector_template">
-      <ul id="apps-list">
-      </ul>
+    <script type="text/template" id="app_template">
+      <img class="app-icon" src="<%= icon_url %>" alt="<%= name %>">
+      <div class="app-title">
+        <a href="#"><%= name %></a>
+      </div>
     </script>
-
   </head>
 
   <body>
     <div id="navbar_container"></div>
-    <div id="content_container"></div>
+    <div id="app_menu_container"></div>
     <div id="modal_container"></div>
+    <div id="app_container"></div>
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/foundation.min.js"></script>
     <script src="js/libs/underscore.js"></script>
