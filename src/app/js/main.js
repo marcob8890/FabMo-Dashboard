@@ -47,7 +47,7 @@ var AppIconView = Backbone.View.extend({
 
 var AppMenuView = Backbone.View.extend({
 	tagName : 'div',
-	className : 'app-selector',
+	className : 'app-menu',
 	collection : null,
 	initialize : function(options) {
 		this.collection = options.collection

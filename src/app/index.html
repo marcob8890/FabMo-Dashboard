@@ -6,7 +6,8 @@
     <title>FabMo Linker</title>
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/style.css" />
-    <!-- UI Element Templates -->
+
+    <!-- NAVBAR -->
     <script type="text/template" id="navbar_template">
       <nav class="top-bar" data-topbar role="navigation">
       <ul class="title-area">
@@ -16,15 +17,8 @@
       </ul>
       </nav>
     </script>
-    <script type="text/template" id="tool_picker_template">
-      <div id="myModal" class="reveal-modal" data-reveal>
-        <h2>Awesome. I have it.</h2>
-        <p class="lead">Your couch.  It is mine.</p>
-        <p>Im a cool paragraph that lives inside of an even cooler modal. Wins!</p>
-        <a class="close-reveal-modal">&#215;</a>
-      </div>
-    </script>
 
+    <!-- APP ICONS -->
     <script type="text/template" id="app_template">
       <img class="app-icon" src="<%= icon_url %>" alt="<%= name %>">
       <div class="app-title">
@@ -38,14 +32,13 @@
     <div id="app_menu_container"></div>
     <div id="modal_container"></div>
     <div id="app_container"></div>
+
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/foundation.min.js"></script>
     <script src="js/libs/underscore.js"></script>
     <script src="js/libs/backbone.js"></script>
     <script src="js/libs/FabMo-0.6.3.js"></script>
-    <script>
-      $(document).foundation();
-    </script>
+    <script>$(document).foundation();</script>
     <script src="js/main.js"></script>
   </body>
 </html>

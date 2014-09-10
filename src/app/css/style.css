@@ -1,8 +1,8 @@
-.app-selector {
+.app-menu {
 
 }
 
-.app {
+.app-icon {
 	float: left;
 	width: 128px;
 	height: 96px;
@@ -10,7 +10,7 @@
 	margin: 16px;
 }
 
-.app-icon {
+.app-icon img {
 /*	margin-top: 32px; */
 	width: 64px;
 	height: 64px;
