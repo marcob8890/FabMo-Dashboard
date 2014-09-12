@@ -1,10 +1,6 @@
-var package_file = require('../package.json');
-var app_manager = require('./js/app_manager.js');
-var _ = require('./js/libs/underscore.js')._
+navbarView = new context.views.NavbarView({el : "#navbar_container"});
 
-navbarView = new dashboard.views.NavbarView({el : "#navbar_container"});
-
-switch(package_file.debug) {
+switch(nwkg_package_file.debug) {
 	case false:
 	case undefined:
 	case null:
@@ -21,20 +17,18 @@ switch(package_file.debug) {
 				global.tool=tool;
 			}
 			// Display the apps launcher here
-		},package_file.detection_service_port||8080);
+		},nwkg_package_file.detection_service_port||8080);
 
 		break;
 }
 
-console.log(dashboard.models)
-console.log(dashboard.views)
-appClientView = new dashboard.views.AppClientView({el : "#app-client-container"});
+appClientView = new context.views.AppClientView({el : "#app-client-container"});
 
-app_manager.load_apps(package_file.apps_dir || './apps', function(err, apps) {
-	dashboard.apps = new dashboard.models.Apps(apps);
-	appMenuView = new dashboard.views.AppMenuView({collection : dashboard.apps, el : '#app_menu_container'});
+nwkg_app_manager.load_apps(nwkg_package_file.apps_dir || './apps', function(err, apps) {
+	context.apps = new context.models.Apps(apps);
+	appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
 });
 
 // Start the application
-router = new dashboard.Router();
+router = new context.Router();
 Backbone.history.start();

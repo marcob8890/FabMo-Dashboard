@@ -1,5 +1,5 @@
 // VIEWS
-dashboard.views.NavbarView = Backbone.View.extend({
+context.views.NavbarView = Backbone.View.extend({
 	initialize : function() {
 		this.render();
 	},
@@ -9,7 +9,7 @@ dashboard.views.NavbarView = Backbone.View.extend({
 	}
 });
 
-dashboard.views.AppIconView = Backbone.View.extend({
+context.views.AppIconView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'app-icon',
 	template : _.template($("#app-icon-template").html()),
@@ -23,7 +23,7 @@ dashboard.views.AppIconView = Backbone.View.extend({
 	}
 });
 
-dashboard.views.AppMenuView = Backbone.View.extend({
+context.views.AppMenuView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'app-menu',
 	collection : null,
@@ -39,24 +39,24 @@ dashboard.views.AppMenuView = Backbone.View.extend({
 		var element = jQuery(this.el);
 		element.empty();
 		this.collection.forEach(function(item) {
-			var appIconView = new dashboard.views.AppIconView({ model: item });
+			var appIconView = new context.views.AppIconView({ model: item });
 			element.append(appIconView.render().el);
 		});
 		return this;
 	},
-	show : function(arg) {
-		$(this.el).show(arg);
+	show : function() {
+		$(this.el).show();
 	},
-	hide : function(arg) {
-		$(this.el).hide(arg);
+	hide : function() {
+		$(this.el).hide();
 	}
 });
 
-dashboard.views.AppClientView = Backbone.View.extend({
+context.views.AppClientView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'app',
 	template : _.template($("#app-client-template").html()),
-	model : new dashboard.models.App(),
+	model : new context.models.App(),
 	initialize : function(options) {
 		_.bindAll(this, 'render');
 	},
@@ -67,11 +67,11 @@ dashboard.views.AppClientView = Backbone.View.extend({
 		url = this.model.get('app_url');
 		iframe.attr('src',url);
 	},
-	show : function(arg) {
-		$(this.el).show(arg);
+	show : function() {
+		$(this.el).show();
 	},
 	hide : function(arg) {
-		$(this.el).hide(arg);
+		$(this.el).hide();
 	},
 	setModel : function(model) {
 		this.model.set(model.toJSON());

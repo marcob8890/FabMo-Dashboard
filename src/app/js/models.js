@@ -1,4 +1,4 @@
-dashboard.models.App = Backbone.Model.extend({
+context.models.App = Backbone.Model.extend({
 	defaults:{
 		name : null,
 		icon_path : null,
@@ -9,6 +9,10 @@ dashboard.models.App = Backbone.Model.extend({
 	sync : function(method, model, option) {} // Override sync because this is a local model
 });
 
-dashboard.models.Apps = Backbone.Collection.extend({
-	model : dashboard.models.App
+context.models.Apps = Backbone.Collection.extend({
+	model : context.models.App
 });
+
+context.models.Machine = Backbone.Model.extend({
+	
+})
