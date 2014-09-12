@@ -1,3 +1,7 @@
+/*
+ * main.js kicks off the application once all the model and view prototypes have been created.
+ */
+ 
 navbarView = new context.views.NavbarView({el : "#navbar_container"});
 
 switch(nwkg_package_file.debug) {
