@@ -585,4 +585,5 @@ function SelectATool(list_tools,callback){
  
 }
 
+global.tool = global.tool || parent.global.tool;
 

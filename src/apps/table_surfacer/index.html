@@ -23,20 +23,21 @@
 		</form>
 
 		<button id="run-button">RESURFACE TABLE</button>
+		<button id="tool-button">SHOW TOOL DIALOG</button>
 	</body>
 
 	<script src="./js/jquery-1.10.2.js"></script>
 	<script src="./js/string-format.js"></script>
 	<script type="text/javascript">
-		//var tool = new FabMo(location.hostname||'localhost', '9876');
-		var tool = global.tool;
 		setInterval(function() {
-			tool.get_status(function(error, status) {
-				$('.fabmo-posx').text(status.posx);
-				$('.fabmo-posy').text(status.posy);
-				$('.fabmo-posz').text(status.posz);
-				$('.fabmo-state').text(status.state);
-			});
+			if(parent.global.tool) {
+				parent.global.tool.get_status(function(error, status) {
+					$('.fabmo-posx').text(status.posx);
+					$('.fabmo-posy').text(status.posy);
+					$('.fabmo-posz').text(status.posz);
+					$('.fabmo-state').text(status.state);
+				});
+			}
 		}, 100);
 
 		var STEPOVER = 0.9;
@@ -86,7 +87,13 @@ JZ,&ZCLEAR\n\
 				plunge : $('#input-plunge').val()
 			});
 			console.log(program)
-			tool.sbp(program);
+			if(parent.global.tool) {
+				parent.global.tool.sbp(program);
+			}
+		});
+
+		$('#tool-button').click(function(evt) {
+			parent.$('#tool-modal').foundation('reveal', 'open')
 		});
 	</script>
 </html>
