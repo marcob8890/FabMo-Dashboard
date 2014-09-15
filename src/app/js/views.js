@@ -29,7 +29,7 @@ context.views.AppMenuView = Backbone.View.extend({
 	collection : null,
 	initialize : function(options) {
 		_.bindAll(this, 'render');
-		this.collection = options.collection
+		this.collection = options.collection;
 		this.collection.bind('reset', this.render);
 		this.collection.bind('add', this.render);
 		this.collection.bind('remove', this.render);
@@ -62,7 +62,7 @@ context.views.AppClientView = Backbone.View.extend({
 	},
 	render : function() {
 		element = jQuery(this.el);
-		element.html(this.template)
+		element.html(this.template);
 		iframe = element.find('.app-iframe');
 		url = this.model.get('app_url');
 		iframe.attr('src',url);
