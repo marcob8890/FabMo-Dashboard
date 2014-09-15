@@ -7,7 +7,7 @@ if (os.platform() === 'darwin'){ //if MAC OSX
 	var package_json = require('../package.json');
 }
 else{
-	var package_json = require('./package.json');
+	var package_json = require('../package.json');
 }
 
 var server = restify.createServer({name:"local_api"});
@@ -18,11 +18,11 @@ server.use( function crossOrigin(req,res,next){
 	return next();
 });
 if (os.platform() === 'darwin'){ //if MAC OSX
-	var routes = require('./detection service/routes')(server);
+	var routes = require('./routes')(server);
 	
 }
 else{
-	var routes = require('./app/detection service/routes')(server);
+	var routes = require('./js/node-webkit/detection_service/routes')(server);
 	
 }
 server.on('error',function (err) {
