@@ -3,12 +3,8 @@
  */
 var os = require('os');
 var restify = require('restify');
-if (os.platform() === 'darwin'){ //if MAC OSX	
-	var package_json = require('../package.json');
-}
-else{
-	var package_json = require('../package.json');
-}
+
+var package_json = require('../package.json');
 
 var server = restify.createServer({name:"local_api"});
 // allow JSON over Cross-origin resource sharing 
@@ -17,14 +13,10 @@ server.use( function crossOrigin(req,res,next){
 	res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	return next();
 });
-if (os.platform() === 'darwin'){ //if MAC OSX
-	var routes = require('./routes')(server);
-	
-}
-else{
+
 	var routes = require('./js/node-webkit/detection_service/routes')(server);
 	
-}
+
 server.on('error',function (err) {
     if (err.code == 'EADDRINUSE')
     	console.log('Problem during server initialisation : '+ err);
