@@ -19,12 +19,16 @@ switch(nwkg_package_file.debug) {
 				return;
 			} else {
 				global.tool=tool;
+				var ui = new FabMoUI(tool);
+				bindKeypad(ui);
 			}
 			// Display the apps launcher here
 		},nwkg_package_file.detection_service_port||8080);
 
 		break;
 }
+
+
 
 appClientView = new context.views.AppClientView({el : "#app-client-container"});
 
@@ -36,3 +40,12 @@ nwkg_app_manager.load_apps(nwkg_package_file.apps_dir || './apps', function(err,
 // Start the application
 router = new context.Router();
 Backbone.history.start();
+
+function bindKeypad(ui){
+	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
+		ui.allowKeypad();
+	});
+	$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
+		ui.forbidKeypad();
+	});
+}

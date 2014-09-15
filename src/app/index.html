@@ -44,13 +44,13 @@
       <h4>Manual Control</h4>
       <form>
         <div class="row">
-          <div class="small-3 columns">
+          <div class="small-3 columns fabmo-status">
             <div class="row">
               <div class="small-3 columns">
                 <label for="right-label" class="right inline">X</label>
               </div>
               <div class="small-9 columns">
-                <input type="text" id="right-label" placeholder="0.0">
+                <input type="text" id="right-label" class="posx" placeholder="0.0">
               </div>
             </div>
             <div class="row">
@@ -58,7 +58,7 @@
                 <label for="right-label" class="right inline">Y</label>
               </div>
               <div class="small-9 columns">
-                <input type="text" id="right-label" placeholder="0.0">
+                <input type="text" id="right-label" class="posy" placeholder="0.0">
               </div>
             </div>
             <div class="row">
@@ -66,28 +66,28 @@
                 <label for="right-label" class="right inline">Z</label>
               </div>
               <div class="small-9 columns">
-                <input type="text" id="right-label" placeholder="0.0">
+                <input type="text" id="right-label" class="posz" placeholder="0.0">
               </div>
             </div>
           </div>
-          <div class="small-9 columns">
+          <div class="small-9 columns fabmo-keypad">
               <div class="row">
                 <div class="small-4 columns small-offset-4">
-                  <a href="#" class="button">+Y</a>
+                  <a href="#" class="button button-plus-Y">+Y</a>
                 </div>
                 <div class="small-4 columns">
-                  <a href="#" class="button">+Z</a>
+                  <a href="#" class="button button-plus-Z">+Z</a>
                 </div>
               </div>
 
               <div class="row">
                 <div class="small-4 columns">
-                  <a href="#" class="button">-X</a>
+                  <a href="#" class="button button-minus-X">-X</a>
                 </div>
                 <div class="small-4 columns">
                 </div>
                 <div class="small-4 columns">
-                  <a href="#" class="button">+X</a>
+                  <a href="#" class="button button-plus-X">+X</a>
                 </div>
               </div>
 
@@ -95,10 +95,10 @@
                 <div class="small-4 columns">
                 </div>
                 <div class="small-4 small-offset-4 columns">
-                  <a href="#" class="button">-Y</a>
+                  <a href="#" class="button button-minus-Y">-Y</a>
                 </div>
                 <div class="small-4 columns">
-                  <a href="#" class="button">-Z</a>
+                  <a href="#" class="button button-minus-Z">-Z</a>
                 </div>
               </div>
 
@@ -116,7 +116,8 @@
     <script src="js/libs/foundation.min.js"></script>
     <script src="js/libs/underscore.js"></script>
     <script src="js/libs/backbone.js"></script>
-    <script src="js/libs/FabMo-0.6.3.js"></script>
+    <script src="js/libs/FabMo-latest.js"></script>
+    <script src="js/libs/FabMoUI-latest.js"></script>
     <script>$(document).foundation();</script>
 
     <!-- Order matters: Context singleton first, followed by its models and views -->
@@ -130,3 +131,5 @@
     <script src="js/main.js"></script>
   </body>
 </html>
+
+
