@@ -23,6 +23,8 @@ Use the nw executable in the extracted folder to run the FabMoGW-[version].nw
 In case of troubleshooting with libudev.so.0, [click here](https://github.com/rogerwang/node-webkit/wiki/The-solution-of-lacking-libudev.so.0)
 
 ### Dependencies
+* restify
+* async
 * adm-zip
 * uniq
 * ncp
