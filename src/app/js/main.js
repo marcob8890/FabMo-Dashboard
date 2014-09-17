@@ -2,27 +2,57 @@
  * main.js kicks off the application once all the model and view prototypes have been created.
  */
  
-navbarView = new context.views.NavbarView({el : "#navbar_container"});
+// The navbarView is temporarily superseded by the 
+//navbarView = new context.views.NavbarView({el : "#navbar_container"});
+
+
+// remoteMachines is the backbone collection of all the tools available on the network
+var remoteMachines = new context.models.RemoteMachines();
+remoteMachineMenuView = new context.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : remoteMachines});
+
+function refreshRemoteMachines(callback) {
+	// NORMAL MODE
+	DetectToolsOnTheNetworks(function(err, machines) {
+		var machine_models = [];
+		machines.forEach(function(machine) {
+			machine_model = new context.models.RemoteMachine({
+				hostname : machine.hostname,
+				ip : machine.network.ip_address,
+				port : machine.server_port || 8080,
+				interface : machine.network.interface
+			});
+			machine_models.push(machine_model);
+		});
+		remoteMachines.reset(machine_models);
+		typeof callback === 'function' && callback(null, remoteMachines);
+	}, 8080)
+}
 
 switch(nwkg_package_file.debug) {
 	case false:
 	case undefined:
 	case null:
-		// NORMAL MODE
+		refreshRemoteMachines();
 		break;
 
 	default:
 		// DEBUG MODE
-		FabMoAutoConnect(function(err,tool){
+		FabMoAutoConnect(function(err,fabmo){
 			if(err){
 				console.log(err);
 				return;
 			} else {
-				global.tool=tool;
-				var ui = new FabMoUI(tool);
+				remoteMachines.reset([
+					new context.models.RemoteMachine({
+						hostname : fabmo.ip,
+						ip : fabmo.ip,
+						port : fabmo.port
+					})
+				]);
+				dashboard.machine = fabmo;
+				var ui = new FabMoUI(fabmo);
 				bindKeypad(ui);
 			}
-			// Display the apps launcher here
 		},nwkg_package_file.detection_service_port||8080);
 
 		break;

@@ -13,6 +13,16 @@ context.models.Apps = Backbone.Collection.extend({
 	model : context.models.App
 });
 
-context.models.Machine = Backbone.Model.extend({
-	
-})
+context.models.RemoteMachine = Backbone.Model.extend({
+	defaults:{
+		hostname:'<unknown>',
+		ip:'',
+		interface:'',
+		port:''
+	},
+	sync : function(method, model, option) {} // Override sync because this is a local model	
+});
+
+context.models.RemoteMachines = Backbone.Collection.extend({
+	model : context.models.RemoteMachine,
+});

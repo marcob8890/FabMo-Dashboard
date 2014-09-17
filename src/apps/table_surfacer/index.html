@@ -29,9 +29,10 @@
 	<script src="./js/jquery-1.10.2.js"></script>
 	<script src="./js/string-format.js"></script>
 	<script type="text/javascript">
+		console.log(dashboard);
 		setInterval(function() {
-			if(parent.global.tool) {
-				parent.global.tool.get_status(function(error, status) {
+			if(dashboard.machine) {
+				dashboard.machine.get_status(function(error, status) {
 					$('.fabmo-posx').text(status.posx);
 					$('.fabmo-posy').text(status.posy);
 					$('.fabmo-posz').text(status.posz);
@@ -86,14 +87,14 @@ JZ,&ZCLEAR\n\
 				speed : $('#input-speed').val(),
 				plunge : $('#input-plunge').val()
 			});
-			console.log(program)
-			if(parent.global.tool) {
-				parent.global.tool.sbp(program);
+			if(dashboard.machine) {
+				dashboard.machine.sbp(program, function() {});
 			}
 		});
 
 		$('#tool-button').click(function(evt) {
-			parent.$('#tool-modal').foundation('reveal', 'open')
+			dashboard.keypad()
+			//parent.$('#tool-modal').foundation('reveal', 'open')
 		});
 	</script>
 </html>

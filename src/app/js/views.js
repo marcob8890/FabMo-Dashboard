@@ -78,3 +78,31 @@ context.views.AppClientView = Backbone.View.extend({
 		this.render();
 	}
 });
+
+context.views.RemoteMachineMenuView = Backbone.View.extend({
+	tagName : 'ul',
+	className : 'off-canvas-list',
+	collection : null,
+	initialize : function(options) {
+		this.collection = options.collection;
+		this.collection.bind('reset', this.render, this);
+		this.collection.bind('add', this.render, this);
+		this.collection.bind('remove', this.render, this);
+		_.bindAll(this, 'render');
+	},
+	render : function() {
+		var element = jQuery(this.el);
+		element.empty();
+		element.append('<li><label>Machines on Network</label></li>');
+		var template = _.template('<li ><a href="#"><%= hostname %></a></li>');
+
+		this.collection.forEach(function(item) {
+			console.log(item.attributes);
+			console.log(template(item.attributes));
+			element.append(template(item.attributes));
+		}.bind(this));
+		//element.append('<li><a href="#/refresh_machines">Refresh...</a></li>');
+
+		return this;
+	}
+});

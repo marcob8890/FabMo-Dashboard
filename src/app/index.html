@@ -40,7 +40,40 @@
 
   <body>
 
-    <div id="tool-modal" class="reveal-modal" data-reveal>
+      <div style="height:100%" class="off-canvas-wrap" data-offcanvas>
+        <div class="inner-wrap">
+          <nav class="tab-bar">
+            <section class="left-small">
+              <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+            </section>
+            <section class="middle tab-bar-section">
+              <h1 class="title"><a href="#/menu">FabMo Dashboard</a></h1>
+            </section>
+          </nav>
+
+          <aside class="left-off-canvas-menu">
+            <ul class="off-canvas-list" id="remote-machine-menu">
+            <li><label>Machines on Network</label></li>              
+            </ul>
+
+            <ul class="off-canvas-list" id="util-menu">
+            <li><label>Utilities</label></li>
+            <li><a href="#" data-reveal-id="tool-modal">Keypad</a></li>
+            </ul>
+          </aside>
+
+          <section class="main-section">
+            <div id="navbar_container"></div>
+            <div id="app_menu_container"></div>
+            <div id="modal_container"></div>
+            <div id="app-client-container"></div>
+          </section>
+
+        <a class="exit-off-canvas"></a>
+        </div>
+      </div>    
+
+      <div id="tool-modal" class="reveal-modal" data-reveal>
       <h4>Manual Control</h4>
       <form>
         <div class="row">
@@ -107,10 +140,6 @@
       </form>
       <a class="close-reveal-modal">&#215;</a>
     </div>
-    <div id="navbar_container"></div>
-    <div id="app_menu_container"></div>
-    <div id="modal_container"></div>
-    <div id="app-client-container"></div>
 
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/foundation.min.js"></script>
@@ -129,6 +158,11 @@
     <script src="js/dashboard.js"></script>
     <script src="js/node-webkit/webkit.js"></script>
     <script src="js/main.js"></script>
+
+
+
+
+
   </body>
 </html>
 
