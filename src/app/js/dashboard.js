@@ -10,4 +10,8 @@ Dashboard = function() {
 	this.message = "Test dashboard object";
 };
 
-dashboard = new Dashboard();
+Dashboard.prototype.keypad = function(){
+	$('#tool-modal').foundation('reveal', 'open');
+};
+
+var dashboard = new Dashboard();

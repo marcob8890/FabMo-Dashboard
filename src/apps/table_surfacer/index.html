@@ -42,6 +42,7 @@
 		}, 100);
 
 		var STEPOVER = 0.9;
+		/*jshint multistr: true */
 		var template = "\
 &XSTART = {xorigin}\n\
 &YSTART = {yorigin}\n\
@@ -73,8 +74,7 @@ IF &YP >= &YEND THEN GOTO done\n\
 GOTO surface\n\
 \
 done:\n\
-JZ,&ZCLEAR\n\
-";
+JZ,&ZCLEAR\n" ;
 
 		$('#run-button').click(function(evt) {
 			program = template.format({
@@ -92,8 +92,8 @@ JZ,&ZCLEAR\n\
 			}
 		});
 
-		$('#tool-button').click(function(evt) {
-			dashboard.keypad()
+		$('#tool-button').click(function(evt){
+			dashboard.keypad();
 			//parent.$('#tool-modal').foundation('reveal', 'open')
 		});
 	</script>

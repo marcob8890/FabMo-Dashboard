@@ -24,8 +24,8 @@ function refreshRemoteMachines(callback) {
 			machine_models.push(machine_model);
 		});
 		remoteMachines.reset(machine_models);
-		typeof callback === 'function' && callback(null, remoteMachines);
-	}, 8080)
+		if(typeof callback === 'function') callback(null, remoteMachines);
+	},8080);
 }
 
 switch(nwkg_package_file.debug) {
@@ -42,16 +42,21 @@ switch(nwkg_package_file.debug) {
 				console.log(err);
 				return;
 			} else {
-				remoteMachines.reset([
-					new context.models.RemoteMachine({
-						hostname : fabmo.ip,
-						ip : fabmo.ip,
-						port : fabmo.port
-					})
-				]);
-				dashboard.machine = fabmo;
-				var ui = new FabMoUI(fabmo);
-				bindKeypad(ui);
+				fabmo.get_info(function(err,info){
+					if(err)
+						console.log(err);
+					fabmo.hostname = info?info.surname:undefined;
+					remoteMachines.reset([
+						new context.models.RemoteMachine({
+							hostname : fabmo.hostname,
+							ip : fabmo.ip,
+							port : fabmo.port
+						})
+					]);
+					dashboard.machine = fabmo;
+					var ui = new FabMoUI(fabmo);
+					bindKeypad(ui);
+				});
 			}
 		},nwkg_package_file.detection_service_port||8080);
 
