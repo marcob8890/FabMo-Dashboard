@@ -44,6 +44,9 @@
             <section class="middle tab-bar-section">
               <h1 class="title"><a href="#/menu">FabMo Dashboard</a></h1>
             </section>
+            <section class="right-small">
+              <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+            </section>
           </nav>
 
           <aside class="left-off-canvas-menu">
@@ -57,6 +60,21 @@
             </ul>
           </aside>
 
+          <aside class="right-off-canvas-menu">
+            <ul class="off-canvas-list fabmo-status" id="dro-content">
+              <li><label>DRO</label></li>
+               <li class="alert-box default state"></li>
+               <li><a><strong>X: </strong><span class="posx"></span></a></li>
+               <li><a><strong>Y: </strong><span class="posy"></span></a></li>
+               <li><a><strong>Z: </strong><span class="posz"></span></a></li>
+               <div  class="hide file-info">
+                  <li><a><strong>File: </strong><span class="filename"></span> </a></li>
+                  <li><div class="progress"></div></li>
+              </div>         
+            </ul>
+          </aside>
+
+
           <section class="main-section">
             <div id="navbar_container"></div>
             <div id="app_menu_container"></div>
@@ -66,7 +84,7 @@
             </div>
           </section>
 
-        <a class="exit-off-canvas"></a>
+       
         </div>
       </div>    
 
@@ -155,6 +173,22 @@
     <script src="js/dashboard.js"></script>
     <script src="js/node-webkit/webkit.js"></script>
     <script src="js/main.js"></script>
+    <script>
+      $('.fabmo-status').on('statechange',function(e,state){
+        var percent = $('.progress').text();
+        if( percent!==''){
+          $('.progress').html('<span class="meter" style="width:'+percent.toString()+';">');
+        }
+        if (state === 'running' || state === 'manual' || state === 'homing' || state==='probing')
+          $('.state').removeClass('success info default warning danger').addClass('success');
+        else if (state === 'paused' || state === 'passthrough' || state === 'limit')
+          $('.state').removeClass('success info default warning danger').addClass('warning');
+        else if (state === 'Error' || state === 'Disconnected')
+          $('.state').removeClass('success info default warning danger').addClass('error');
+        else
+          $('.state').removeClass('success info default warning danger').addClass('default');
+      });
+    </script>
 
 
 
