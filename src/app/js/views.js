@@ -55,14 +55,12 @@ context.views.AppMenuView = Backbone.View.extend({
 context.views.AppClientView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'app',
-	template : _.template($("#app-client-template").html()),
 	model : new context.models.App(),
 	initialize : function(options) {
 		_.bindAll(this, 'render');
 	},
 	render : function() {
 		element = jQuery(this.el);
-		element.html(this.template);
 		iframe = element.find('.app-iframe');
 		url = this.model.get('app_url');
 		iframe.attr('src',url);

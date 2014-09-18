@@ -33,10 +33,6 @@
     </script>
   </head>
 
-    <!-- APP CLIENT AREA -->
-    <script type="text/template" id="app-client-template">
-      <iframe class="app-iframe" sandbox="allow-scripts"></iframe>
-    </script>
 
   <body>
 
@@ -66,7 +62,9 @@
             <div id="navbar_container"></div>
             <div id="app_menu_container"></div>
             <div id="modal_container"></div>
-            <div id="app-client-container"></div>
+            <div id="app-client-container">
+              <iframe class="app-iframe" nwdisable nwfaketop></iframe>
+            </div>
           </section>
 
         <a class="exit-off-canvas"></a>
