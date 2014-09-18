@@ -92,12 +92,12 @@ context.views.RemoteMachineMenuView = Backbone.View.extend({
 		var element = jQuery(this.el);
 		element.empty();
 		element.append('<li><label>Machines on Network</label></li>');
-		var template = _.template('<li ><a href="#"><%= hostname %>  [<%= ip %>]</a></li>');
+		var template = _.template('<li ><a href="#/set_machine/<%= id %>"><%= hostname %></a></li>');
 
 		this.collection.forEach(function(item) {
-			console.log(item.attributes);
-			console.log(template(item.attributes));
-			element.append(template(item.attributes));
+			attr = _.clone(item.attributes);
+			attr.id = item.cid;
+			element.append(template(attr));
 		}.bind(this));
 		//element.append('<li><a href="#/refresh_machines">Refresh...</a></li>');
 

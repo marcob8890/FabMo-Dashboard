@@ -13,13 +13,14 @@ remoteMachineMenuView = new context.views.RemoteMachineMenuView({el : '#remote-m
 function refreshRemoteMachines(callback) {
 	// NORMAL MODE
 	DetectToolsOnTheNetworks(function(err, machines) {
+		if(err) {
+			return console.log(err)
+		}
 		var machine_models = [];
 		machines.forEach(function(machine) {
 			machine_model = new context.models.RemoteMachine({
 				hostname : machine.hostname,
-				ip : machine.network.ip_address,
-				port : machine.server_port || 8080,
-				interface : machine.network.interface
+				network : machine.network
 			});
 			machine_models.push(machine_model);
 		});

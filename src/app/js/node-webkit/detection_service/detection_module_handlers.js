@@ -9,9 +9,9 @@ var spawn = require('child_process').exec;
 
 
 exports.where_is_my_tool = function(req, res, next) {
-	// execute the cmd command
-	    var detect = new detection(1100);// timeout en millisecondes;
-	    detect.on('devices', function (data) {
+		// execute the cmd command
+		var detect = new detection(1100);// timeout en millisecondes;
+		detect.on('devices', function (data) {
 		/*****************************************************************/
 		if( data === [])
 		{
@@ -88,7 +88,6 @@ exports.are_you_a_sbt = function(req, res, next) {
 };
 
 exports.local_detection = function(req, res, next) {
-
 	var serv = res;
 	http.get({port:8080,path: '/where_is_my_tool'},function(res){  //get the result from where_is_my_tool function
 		res.on('data', function (data) {

@@ -3,7 +3,7 @@ context.Router = Backbone.Router.extend({
 		"app/:id"     		: "launch_app",
 		"menu"        		: "show_menu",
 		"refresh_machines" 	: "refresh_machines",
-		"machine/:id" 		: "set_machine"
+		"set_machine/:id" 	: "set_machine"
 	},
 	launch_app: function(id) {
 		appClientView.setModel(context.apps.get(id));
@@ -15,7 +15,12 @@ context.Router = Backbone.Router.extend({
 		appMenuView.show();
 	},
 	set_machine: function(id) {
-		console.log("Setting machine " + id);
+		machine = remoteMachines.get(id);
+		console.log("SETTING MACHINE");
+		console.log(machine.attributes);
+		ChooseBestWayToConnect(machine.attributes, function(ip, port) {
+			dashboard.machine = new FabMo(ip, port);
+		});
 	},
 	refresh_machines: function() {
 		refreshRemoteMachines();
