@@ -26,6 +26,40 @@
 		<button id="tool-button">SHOW TOOL DIALOG</button>
 	</body>
 
+	<script type="text/sbp-template" id="sbp-template">
+		&XSTART = {xorigin}
+		&YSTART = {yorigin}
+		&XEND = &XSTART + {xsize}
+		&YEND = &YSTART + {ysize}
+		&ZDEPTH = {plunge}
+		&ZCLEAR = {safez}
+		&STEPOVER = {stepover}
+		&SPEED = {speed}
+
+		C6
+		PAUSE 3
+
+		&YP = &YSTART
+		JZ,&ZCLEAR
+		J2,&XSTART,&YSTART
+		MS,&SPEED,&SPEED
+		MZ,&ZDEPTH
+
+		surface:
+		MY,&YP
+		MX,&XEND
+		&YP=&YP+&STEPOVER
+		MY,&YP
+		IF &YP >= &YEND THEN GOTO done
+		MX,&XSTART
+		&YP=&YP+&STEPOVER
+		IF &YP >= &YEND THEN GOTO done
+		GOTO surface
+
+		done:
+		JZ,&ZCLEAR
+	</script>
+
 	<script src="./js/jquery-1.10.2.js"></script>
 	<script src="./js/string-format.js"></script>
 	<script type="text/javascript">
@@ -42,41 +76,8 @@
 		}, 100);
 
 		var STEPOVER = 0.9;
-		/*jshint multistr: true */
-		var template = "\
-&XSTART = {xorigin}\n\
-&YSTART = {yorigin}\n\
-&XEND = &XSTART + {xsize}\n\
-&YEND = &YSTART + {ysize}\n\
-&ZDEPTH = {plunge}\n\
-&ZCLEAR = {safez}\n\
-&STEPOVER = {stepover}\n\
-&SPEED = {speed}\n\
-\
-C6\n\
-PAUSE 3\n\
-\
-&YP = &YSTART\n\
-JZ,&ZCLEAR\n\
-J2,&XSTART,&YSTART\n\
-MS,&SPEED,&SPEED\n\
-MZ,&ZDEPTH\n\
-\
-surface:\n\
-MY,&YP\n\
-MX,&XEND\n\
-&YP=&YP+&STEPOVER\n\
-MY,&YP\n\
-IF &YP >= &YEND THEN GOTO done\n\
-MX,&XSTART\n\
-&YP=&YP+&STEPOVER\n\
-IF &YP >= &YEND THEN GOTO done\n\
-GOTO surface\n\
-\
-done:\n\
-JZ,&ZCLEAR\n" ;
-
 		$('#run-button').click(function(evt) {
+			template = $('#sbp-template').html()
 			program = template.format({
 				xsize : $('#input-xsize').val(),
 				ysize : $('#input-ysize').val(),
@@ -87,6 +88,7 @@ JZ,&ZCLEAR\n" ;
 				speed : $('#input-speed').val(),
 				plunge : $('#input-plunge').val()
 			});
+			console.log(program);
 			if(dashboard.machine) {
 				dashboard.machine.sbp(program, function() {});
 			}
