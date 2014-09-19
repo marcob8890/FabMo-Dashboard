@@ -119,36 +119,21 @@
             </div>
           </div>
           <div class="small-9 columns fabmo-keypad">
-              <div class="row">
-                <div class="small-4 columns small-offset-4">
-                  <a href="#" class="button button-plus-Y">+Y</a>
-                </div>
-                <div class="small-4 columns">
-                  <a href="#" class="button button-plus-Z">+Z</a>
-                </div>
-              </div>
 
-              <div class="row">
-                <div class="small-4 columns">
-                  <a href="#" class="button button-minus-X">-X</a>
-                </div>
-                <div class="small-4 columns">
-                </div>
-                <div class="small-4 columns">
-                  <a href="#" class="button button-plus-X">+X</a>
-                </div>
-              </div>
+            <div class="row" >
 
-              <div class="row">
-                <div class="small-4 columns">
-                </div>
-                <div class="small-4 small-offset-4 columns">
-                  <a href="#" class="button button-minus-Y">-Y</a>
-                </div>
-                <div class="small-4 columns">
-                  <a href="#" class="button button-minus-Z">-Z</a>
-                </div>
-              </div>
+                <div class="small-3 small-offset-3 columns"><button class="button button-plus-Z">↥</button></div>
+                  <div class="small-3 columns"><button class="button button-plus-Y">↑</button></div>
+                  <div class="small-3 columns"><button class="button button-minus-Z">↧</button></div>
+
+            </div>              
+            <div class="row" >
+
+                  <div class="small-3 small-offset-3 columns"><button class="button button-minus-X">←</button></div>
+                  <div class="small-3 columns"><button class="button button-minus-Y">↓</button></div>
+                  <div class="small-3 columns"><button class="button button-plus-X">→</button></div>
+
+            </div> 
 
           </div>
         </div>
@@ -162,7 +147,13 @@
     <script src="js/libs/backbone.js"></script>
     <script src="js/libs/FabMo-latest.js"></script>
     <script src="js/libs/FabMoUI-latest.js"></script>
-    <script>$(document).foundation();</script>
+    <script>
+      $(document).foundation({
+       offcanvas : {
+          open_method: 'overlap_single', 
+        }
+      });
+  </script>
 
     <!-- Order matters: Context singleton first, followed by its models and views -->
     <script src="js/node-webkit/detection_service/server.js"></script>
