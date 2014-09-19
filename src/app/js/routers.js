@@ -20,6 +20,8 @@ context.Router = Backbone.Router.extend({
 		console.log(machine.attributes);
 		ChooseBestWayToConnect(machine.attributes, function(ip, port) {
 			dashboard.machine = new FabMo(ip, port);
+			dashboard.ui= new FabMoUI(dashboard.machine);
+			bindKeypad(dashboard.ui);
 		});
 	},
 	refresh_machines: function() {

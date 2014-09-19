@@ -37,3 +37,6 @@ body,html{
 	height: calc(100% - 50px);
 	display: none;
 }
+aside{
+margin-top:2.8125rem;
+}

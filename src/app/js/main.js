@@ -14,7 +14,7 @@ function refreshRemoteMachines(callback) {
 	// NORMAL MODE
 	DetectToolsOnTheNetworks(function(err, machines) {
 		if(err) {
-			return console.log(err)
+			return console.log(err);
 		}
 		var machine_models = [];
 		machines.forEach(function(machine) {
@@ -55,8 +55,8 @@ switch(nwkg_package_file.debug) {
 						})
 					]);
 					dashboard.machine = fabmo;
-					var ui = new FabMoUI(fabmo);
-					bindKeypad(ui);
+					dashboard.ui = new FabMoUI(fabmo);
+					bindKeypad(dashboard.ui);
 				});
 			}
 		},nwkg_package_file.detection_service_port||8080);
@@ -79,9 +79,15 @@ Backbone.history.start();
 
 function bindKeypad(ui){
 	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-		ui.allowKeypad();
+		dashboard.ui.allowKeypad();
 	});
 	$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
-		ui.forbidKeypad();
+		dashboard.ui.forbidKeypad();
+	});
+	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
+		dashboard.ui.allowKeypad();
+	});
+	$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
+		dashboard.ui.forbidKeypad();
 	});
 }
