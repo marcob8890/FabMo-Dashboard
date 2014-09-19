@@ -84,10 +84,22 @@ function bindKeypad(ui){
 	$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
 		dashboard.ui.forbidKeypad();
 	});
-	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-		dashboard.ui.allowKeypad();
-	});
-	$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
-		dashboard.ui.forbidKeypad();
-	});
 }
+
+	$('.button-homexy').click(function(e) {gcode('G28.2 X0 Y0'); });
+	$('.button-homez').click(function(e) {gcode('G28.2 Z0'); });
+	$('.button-probez').click(function(e) {gcode('G38.2 Z-4 F10\nG10 L2 P1 Z-0.125'); });   
+
+	$('.button-zerox').click(function(e) {gcode('G28.3 X0'); });  
+	$('.button-zeroy').click(function(e) {gcode('G28.3 Y0'); });  
+	$('.button-zeroz').click(function(e) {gcode('G28.3 Z0'); });
+
+function gcode(string) {
+		dashboard.machine.gcode(string,function(err,data){
+			if(!err) {
+				console.log('Success: ' + string);
+			} else {
+				console.log('Failure: ' + string);
+			}
+		});
+	}
