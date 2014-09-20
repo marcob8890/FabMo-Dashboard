@@ -17,13 +17,13 @@ function refreshRemoteMachines(callback) {
 			return console.log(err);
 		}
 		var machine_models = [];
-		machines.forEach(function(machine) {
+		for(var index in machines){
 			machine_model = new context.models.RemoteMachine({
-				hostname : machine.hostname,
-				network : machine.network
+				hostname : machines[index].hostname,
+				network : machines[index].network
 			});
 			machine_models.push(machine_model);
-		});
+		}
 		remoteMachines.reset(machine_models);
 		if(typeof callback === 'function') callback(null, remoteMachines);
 	},8080);
@@ -33,7 +33,16 @@ switch(nwkg_package_file.debug) {
 	case false:
 	case undefined:
 	case null:
-		refreshRemoteMachines();
+		refreshRemoteMachines(function(err,remoteMachines){
+			if(remoteMachines.models.length === 1)
+			{
+				ChooseBestWayToConnect(remoteMachines.models[0].attributes,function(ip,port){
+					dashboard.machine = new FabMo(ip, port);
+					dashboard.ui= new FabMoUI(dashboard.machine);
+					bindKeypad(dashboard.ui);
+				});
+			}
+		});
 		break;
 
 	default:
