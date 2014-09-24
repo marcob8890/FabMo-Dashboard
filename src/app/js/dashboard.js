@@ -14,4 +14,19 @@ Dashboard.prototype.keypad = function(){
 	$('#tool-modal').foundation('reveal', 'open');
 };
 
+Dashboard.prototype.DRO = function(){
+	openDROPanel();
+};
+
+Dashboard.prototype.homing = function(){
+	$('#home-zero-modal').foundation('reveal', 'open');
+};
+
+Dashboard.prototype.JobManager = function(){
+	var list_job = this.machine.list_job();
+	var list_job_view = new context.views.listJobView({el : '#job_list_container', collection : list_job});
+	$('#job-manager-modal').foundation('reveal', 'open');
+};
+
+
 var dashboard = new Dashboard();

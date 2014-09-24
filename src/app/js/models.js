@@ -21,6 +21,33 @@ context.models.RemoteMachine = Backbone.Model.extend({
 	sync : function(method, model, option) {} // Override sync because this is a local model	
 });
 
+context.models.File = Backbone.Model.extend({
+	defaults:{
+		id: null,
+		status : 'pending',
+		url:''
+	},
+	sync : function(method, model, option) {} // Override sync because this is a local model	
+	
+});
+
+context.models.Files = Backbone.Collection.extend({
+	model : context.models.Files,
+});
+
+
+
+context.models.Job = Backbone.Model.extend({
+	defaults:{
+		id: null,
+		files : new context.models.Files(),
+		status:'pending'
+	},
+	sync : function(method, model, option) {} // Override sync because this is a local model	
+});
+
+
+
 context.models.RemoteMachines = Backbone.Collection.extend({
 	model : context.models.RemoteMachine,
 });

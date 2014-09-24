@@ -108,12 +108,12 @@ function load_apps(apps_directory, cb) {
 					if(err) {
 						return callback(null, null);
 					} else {
-						return callback(null, result)
+						return callback(null, result);
 					}
 				});
 			}, 
 			function(err, results) {
-				results = results.filter(function(result) { return result != null;})
+				results = results.filter(function(result) { return result !== null;});
 				cb(err, results);
 			});  
 	});

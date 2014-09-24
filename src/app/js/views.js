@@ -104,3 +104,47 @@ context.views.RemoteMachineMenuView = Backbone.View.extend({
 		return this;
 	}
 });
+
+
+context.views.JobView = Backbone.View.extend({
+	tagName : 'div',
+	className : 'job',
+	template : _.template($("#job-template").html()),
+	initialize : function() {
+		_.bindAll(this, 'render');
+		this.model.bind('change', this.render);
+	},
+	render : function() {
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
+	}
+});
+
+context.views.JobListView = Backbone.View.extend({
+	tagName : 'div',
+	className : 'jobs_list',
+	collection : null,
+	initialize : function(options) {
+		_.bindAll(this, 'render');
+		this.collection = options.collection;
+		this.collection.bind('reset', this.render);
+		this.collection.bind('add', this.render);
+		this.collection.bind('remove', this.render);
+		this.render();
+	},
+	render : function() {
+		var element = jQuery(this.el);
+		element.empty();
+		this.collection.forEach(function(item) {
+			var appIconView = new context.views.JobView({ model: item });
+			element.append(JobView.render().el);
+		});
+		return this;
+	},
+	show : function() {
+		$(this.el).show();
+	},
+	hide : function() {
+		$(this.el).hide();
+	}
+});

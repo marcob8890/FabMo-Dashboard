@@ -26,12 +26,26 @@
 
     <!-- APP ICONS -->
     <script type="text/template" id="app-icon-template">
-      <img src="<%= icon_url %>" alt="<%= name %>">
+      <a href="#/app/<%= id %>"><img src="<%= icon_url %>" alt="<%= name %>"></a>
       <div class="app-title">
         <a href="#/app/<%= id %>"><%= name %></a>
       </div>
     </script>
   </head>
+
+
+    <!-- JOB-->
+    <script type="text/template" id="job-template">
+      <div class="job">
+        <ul>
+        <li><label>Job #<%= id %></label></li>
+        <% _.each( files, function( file ){ %>
+          <li><span>file.id</span><span>file.status</span></li> 
+        <% }); %>
+        </ul
+      </div>
+    </script>
+
 
   <body>
 
@@ -130,6 +144,14 @@
       <a class="close-reveal-modal">&#215;</a>
     </div>
 
+
+    <div id="job-manager-modal" class="reveal-modal" data-reveal>
+      <h4>Job Manager</h4>
+      <div id="job_list_container">
+
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
 
 
     <script src="js/libs/jquery.js"></script>

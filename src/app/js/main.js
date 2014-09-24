@@ -34,13 +34,20 @@ switch(nwkg_package_file.debug) {
 	case undefined:
 	case null:
 		refreshRemoteMachines(function(err,remoteMachines){
-			if(remoteMachines.models.length === 1)
+			if(remoteMachines.models.length === 0)
+			{
+				console.log('no machine detected');
+			}
+			else if(remoteMachines.models.length === 1)
 			{
 				ChooseBestWayToConnect(remoteMachines.models[0].attributes,function(ip,port){
 					dashboard.machine = new FabMo(ip, port);
 					dashboard.ui= new FabMoUI(dashboard.machine);
 					bindKeypad(dashboard.ui);
 				});
+			}
+			else{
+				openSettingsPanel();
 			}
 		});
 		break;
@@ -103,6 +110,23 @@ function bindKeypad(ui){
 	$('.button-zeroy').click(function(e) {gcode('G28.3 Y0'); });  
 	$('.button-zeroz').click(function(e) {gcode('G28.3 Z0'); });
 
+function openSettingsPanel(){
+	$('.off-canvas-wrap').foundation('offcanvas', 'show', 'offcanvas-overlap-right');
+}
+
+function openDROPanel(){
+	$('.off-canvas-wrap').foundation('offcanvas', 'show', 'offcanvas-overlap-left');
+}
+
+function closeSettingsPanel(){
+	$('.off-canvas-wrap').foundation('offcanvas', 'hide', 'offcanvas-overlap-right');
+}
+
+function closeDROPanel(){
+	$('.off-canvas-wrap').foundation('offcanvas', 'hide', 'offcanvas-overlap-left');
+}
+
+
 function gcode(string) {
 		dashboard.machine.gcode(string,function(err,data){
 			if(!err) {
@@ -112,3 +136,10 @@ function gcode(string) {
 			}
 		});
 	}
+
+function addJob(job,callback){
+	dashboard.machine.send_job(job,function(err){
+		if(err){console.log(err);callback(err);return;}
+		if(callback && typeof(callback) === "function")callback(undefined);
+	});
+}

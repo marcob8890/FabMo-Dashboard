@@ -20,6 +20,8 @@ function FabMo(ip,port) //ip and port of the tool
 	this.url.jog=this.url.direct+'/jog';
 	this.url.goto=this.url.direct+'/goto';
 	this.url.sbp=this.url.direct+'/sbp';
+	this.url.job=this.url.base+'/job';
+	this.url.jobs=this.url.base+'/jobs';
 
 	// default error message definitions
 	// that method allow to give more details on error
@@ -89,7 +91,7 @@ FabMo.prototype.list_files = function(callback)
 			 	callback(error);
 			 }
 	});
-}
+};
 FabMo.prototype.get_status = function(callback)
 {
 	if (!callback)
@@ -112,7 +114,7 @@ FabMo.prototype.get_status = function(callback)
 			 	callback(error);
 			}
 	});
-}
+};
 
 FabMo.prototype.get_config = function(callback)
 {
@@ -132,7 +134,7 @@ FabMo.prototype.get_config = function(callback)
 			 	callback(error);
 			}
 	});
-}
+};
 
 FabMo.prototype.get_info = function(callback)
 {
@@ -152,18 +154,18 @@ FabMo.prototype.get_info = function(callback)
 			 	callback(error);
 			}
 	});
-}
+};
 
 
 FabMo.prototype.download_by_id = function(id)
 {
 	window.location = this.url.file+ "/" + id;
-}
+};
 
 FabMo.prototype.download = function(file)
 {
 	this.download_by_id(file._id);
-}
+};
 
 FabMo.prototype.delete_by_id = function(id,callback)
 {
@@ -186,11 +188,11 @@ FabMo.prototype.delete_by_id = function(id,callback)
 			}			
 		}
 	});
-}
+};
 FabMo.prototype.delete = function(file,callback)
 {
 	this.delete_by_id(file._id,callback);
-}
+};
 
 
 FabMo.prototype.run_by_id = function(id,callback)
@@ -215,13 +217,13 @@ FabMo.prototype.run_by_id = function(id,callback)
 			}
 		}
 	});
-}
+};
 FabMo.prototype.run = function(file,callback)
 {
 	if (!callback)
 		throw "this function need a callback to work !";
 	this.run(file._id,callback);
-}
+};
 
 FabMo.prototype.quit = function(callback){
 	if (!callback)
@@ -240,7 +242,7 @@ FabMo.prototype.quit = function(callback){
 		 	callback(error);
 		}
 	});
-}
+};
 
 FabMo.prototype.pause = function(callback){
 	if (!callback)
@@ -259,7 +261,7 @@ FabMo.prototype.pause = function(callback){
 		 	callback(error);
 		}
 	});
-}
+};
  
 FabMo.prototype.resume = function(callback){
 	if (!callback)
@@ -278,7 +280,7 @@ FabMo.prototype.resume = function(callback){
 		 	callback(error);
 		}
 	});
-}
+};
 
 FabMo.prototype.goto =  function(x,y,z,callback)
 {
@@ -299,7 +301,7 @@ FabMo.prototype.goto =  function(x,y,z,callback)
 		 	callback(error);
 		}
 	});
-}
+};
 
 FabMo.prototype.gcode = function(gcode_line,callback)
 {
@@ -320,7 +322,7 @@ FabMo.prototype.gcode = function(gcode_line,callback)
 			callback(error);
 		}
 	});
-}
+};
 
 FabMo.prototype.sbp = function(sbp_line,callback)
 {
@@ -341,7 +343,7 @@ FabMo.prototype.sbp = function(sbp_line,callback)
 			callback(error);
 		}
 	});
-}
+};
 
 
 FabMo.prototype.start_move =  function(dir,callback)
@@ -366,7 +368,7 @@ FabMo.prototype.start_move =  function(dir,callback)
 		 	callback(error);
 		}
 	});
-}
+};
 
 FabMo.prototype.stop_move =  function(callback)
 {
@@ -389,7 +391,123 @@ FabMo.prototype.stop_move =  function(callback)
 		 	callback(error);
 		}
 	});
-}
+};
+
+
+
+FabMo.prototype.list_jobs_by_id = function(callback)
+{
+	if (!callback)
+		throw "this function need a callback to work !";
+	var that=this;
+	$.ajax({
+		url: this.url.jobs,
+		type: "GET",
+		dataType : 'json', 
+		success: function( data ) {
+			callback(undefined,data);
+			},
+		error: function(data,err) {
+				var error =that.default_error.no_device;
+				error.sys_err = err;
+			 	callback(error);
+			}
+	});
+};
+
+
+FabMo.prototype.list_jobs_in_queue = function(callback)
+{
+	if (!callback)
+		throw "this function need a callback to work !";
+	var that=this;
+	$.ajax({
+		url: this.url.jobs+'/queue',
+		type: "GET",
+		dataType : 'json', 
+		success: function( data ) {
+			callback(undefined,data);
+			},
+		error: function(data,err) {
+				var error =that.default_error.no_device;
+				error.sys_err = err;
+			 	callback(error);
+			}
+	});
+};
+
+FabMo.prototype.get_job_by_id = function(id,callback)
+{
+	if (!callback)
+		throw "this function need a callback to work !";
+	var that=this;
+	$.ajax({
+		url: this.url.job + id,
+		type: "GET",
+		dataType : 'json', 
+		success: function( data ) {
+			callback(undefined);
+			},
+		error: function(data,err) {
+			if (data.status === 404){callback(that.default_error.file.no_file);}
+			else if (data.status === 302){callback(undefined);}//success
+			else{
+				var error = that.default_error.no_device;
+				error.sys_err = err;
+			 	callback(error);
+			}
+		}
+	});
+};
+
+FabMo.prototype.get_job_in_queue = function(id,callback)
+{
+	if (!callback)
+		throw "this function need a callback to work !";
+	var that=this;
+	$.ajax({
+		url: this.url.job + '/queue/' + id,
+		type: "GET",
+		dataType : 'json', 
+		success: function( data ) {
+			callback(undefined);
+			},
+		error: function(data,err) {
+			if (data.status === 404){callback(that.default_error.file.no_file);}
+			else if (data.status === 302){callback(undefined);}//success
+			else{
+				var error = that.default_error.no_device;
+				error.sys_err = err;
+			 	callback(error);
+			}
+		}
+	});
+};
+
+
+FabMo.prototype.add_job = function(job,callback)
+{
+	if (!callback)
+		throw "this function need a callback to work !";
+	var that=this;
+	$.ajax({
+		url: this.url.job,
+		type: "POST",
+		dataType : 'json', 
+		data : {"job" : job},
+		success: function( data ) {
+			callback(undefined);
+		},
+		error: function(data, err) {
+	    		var error = that.default_error.no_device;
+			error.sys_err = err;
+		 	callback(error);
+		}
+	});
+};
+
+
+
 
 // take a form data, look for a file field, and upload the file load in it
 FabMo.prototype.upload_file =  function(formdata,callback)
@@ -397,15 +515,16 @@ FabMo.prototype.upload_file =  function(formdata,callback)
 	if (!callback)
 		throw "this function need a callback to work !";
 	var that=this;
+	var formData;
 	if (formdata instanceof jQuery){ //if it's a form
 		var file = (formdata.find('input:file'))[0].files[0];
 		// Create a new FormData object.
-		var formData = new FormData();
+		formData = new FormData();
 		formData.append('file', file, file.name);
 	}
 	else // else it's a formData
 	{
-		var formData = formdata;
+		formData = formdata;
 	}		
 	if (formData) {
 		$.ajax({
@@ -458,7 +577,7 @@ FabMo.prototype.upload_file =  function(formdata,callback)
 			}
 		});
 	}
-}
+};
 
 // non persistent mode : upload, run & delete.
 FabMo.prototype.run_local_file =  function(file,ext,callback)
@@ -478,7 +597,7 @@ FabMo.prototype.run_local_file =  function(file,ext,callback)
 			});
 		});
 	});
-}
+};
 
 
 
@@ -491,9 +610,9 @@ function FabMoAutoConnect(callback,linker_port){
 		SelectATool(list_tools,function(err,tool){
 			if (err){ callback(err);return;}
 			ChooseBestWayToConnect(tool,function(ip_address,port){
-				console.log("Best way selected")
-				console.log(ip_address)
-				console.log(port)
+				console.log("Best way selected");
+				console.log(ip_address);
+				console.log(port);
 				callback(undefined,new FabMo(ip_address,port ? port.toString() : '8080'));	
 			});
 		});
@@ -507,8 +626,8 @@ function ChooseBestWayToConnect(tool,callback){ //return an ip_adress
 // base on this priority : usb > ethernet > wifi > wifi-direct
 	if (!callback)
 		throw "this function need a callback to work !";
-	console.log("Choosing best way to connect")
-	console.log(tool)
+	console.log("Choosing best way to connect");
+	console.log(tool);
 	tool.network.forEach(function(val,key){
 		if(val.interface === "usb0")
 		{
@@ -528,7 +647,7 @@ function ChooseBestWayToConnect(tool,callback){ //return an ip_adress
 	tool.network.forEach(function(val,key){
 		if(val.interface === "en0")
 		{
-			console.log("Choosing en0")
+			console.log("Choosing en0");
 			callback(val.ip_address,tool.server_port);
 			return;
 		}
@@ -583,7 +702,7 @@ function SelectATool(list_tools,callback){
 
 		if($('#device_picker').length){
 			list_tools.forEach(function(val,key){
-				if(key=0){
+				if(key===0){
 					$('#device_picker').append('<input type="radio" name="devices" id="'+key+'" value=\''+JSON.stringify(val)+'\' checked="checked" /><label for="'+key+'"> '+ val.hostname+'</label><br>');
 				}
 				else{
