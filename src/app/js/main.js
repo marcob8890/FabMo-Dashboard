@@ -11,7 +11,6 @@ var remoteMachines = new context.models.RemoteMachines();
 remoteMachineMenuView = new context.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : remoteMachines});
 
 function refreshRemoteMachines(callback) {
-	// NORMAL MODE
 	DetectToolsOnTheNetworks(function(err, machines) {
 		if(err) {
 			return console.log(err);
@@ -30,6 +29,7 @@ function refreshRemoteMachines(callback) {
 }
 
 switch(nwkg_package_file.debug) {
+	// NORMAL MODE
 	case false:
 	case undefined:
 	case null:
@@ -44,6 +44,7 @@ switch(nwkg_package_file.debug) {
 					dashboard.machine = new FabMo(ip, port);
 					dashboard.ui= new FabMoUI(dashboard.machine);
 					bindKeypad(dashboard.ui);
+					loadSettingsForms(dashboard.machine);
 				});
 			}
 			else{
@@ -73,6 +74,7 @@ switch(nwkg_package_file.debug) {
 					dashboard.machine = fabmo;
 					dashboard.ui = new FabMoUI(fabmo);
 					bindKeypad(dashboard.ui);
+					loadSettingsForms(dashboard.machine);
 				});
 			}
 		},nwkg_package_file.detection_service_port||8080);
@@ -95,10 +97,12 @@ Backbone.history.start();
 
 function bindKeypad(ui){
 	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-		dashboard.ui.allowKeypad();
+		if($(this).is('#tool-modal'))
+			ui.allowKeypad();
 	});
 	$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
-		dashboard.ui.forbidKeypad();
+		if($(this).is('#tool-modal'))
+			ui.forbidKeypad();
 	});
 }
 
@@ -141,5 +145,42 @@ function addJob(job,callback){
 	dashboard.machine.send_job(job,function(err){
 		if(err){console.log(err);callback(err);return;}
 		if(callback && typeof(callback) === "function")callback(undefined);
+	});
+}
+
+function loadSettingsForms(machine){
+	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
+		if($(this).is('#settings-modal')){
+			loadDriverSettings(machine);
+		}
+	});
+	/*$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
+		if($(this).is('#settings-modal')){
+			loadDriverSettings();
+		}
+	});*/
+}
+
+function loadDriverSettings(machine){
+	machine.get_config(function(err,config){
+		if(err){console.log(err);return;}
+		var settings_fields = [];
+		var count=0;
+		// TODO change it with the next implementation of the settings files
+		config.forEach(function(val,idx,arr){
+			var setting_field = {};
+			var key = Object.keys(val)[0];
+			setting_field.setting_label = key;
+			setting_field.setting_value = val[key];
+			setting_field.code = key;
+			setting_field.type="text";
+			settings_fields.push(setting_field);
+			count++;
+			if(count === config.length){
+				console.log(settings_fields);
+				new context.views.SettingsFormView({collection : new context.models.SettingsForm(settings_fields), el : '#core_settings_form'});
+			}
+		});
+
 	});
 }

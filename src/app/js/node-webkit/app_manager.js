@@ -100,6 +100,25 @@ function decompress_app(app_path,callback){
 function load_apps(apps_directory, cb) {
 	fs.readdir(apps_directory, function(err,files){
 		files = files.map(function(file) { return apps_directory + '/' + file;});
+
+/*
+		var results =[];
+		var idx=0;
+		for(var index in files){
+			load_app(files[index],function(err,result){
+				idx++;
+				if(err) {
+					//return callback(null, null);
+				} else {
+					results.push(result);
+				}
+				if(idx===files.length)
+				{
+					cb(null,results);
+				}
+			});
+*/
+
 		async.mapSeries(files, 
 			function(file, callback) {
 				load_app(file, function(err, result) {

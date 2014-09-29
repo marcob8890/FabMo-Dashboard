@@ -31,8 +31,20 @@
         <a href="#/app/<%= id %>"><%= name %></a>
       </div>
     </script>
-  </head>
 
+
+
+    <!-- Settings form line-->
+    <script type="text/template" id="settings-form-line-template">
+     <div class="row">
+        <div class="small-3 columns">
+          <label for="<%= setting_label %>-label" class="right"><%= setting_label %></label>
+        </div>
+        <div class="small-9 columns">
+          <input type="text" id="<%= setting_label %>-label" value="<%= setting_value %>">
+        </div>
+      </div>
+    </script>
 
     <!-- JOB-->
     <script type="text/template" id="job-template">
@@ -46,7 +58,7 @@
       </div>
     </script>
 
-
+  </head>
   <body>
 
       <div style="height:100%" class="off-canvas-wrap" data-offcanvas>
@@ -72,6 +84,8 @@
             <li><label>Utilities</label></li>
             <li><a href="#" data-reveal-id="tool-modal">Keypad</a></li>
             <li><a href="#" data-reveal-id="home-zero-modal">Homing & Zeroing</a></li>
+            <li><a href="#" data-reveal-id="job-manager-modal">Job Manager</a></li>
+            <li><a href="#" data-reveal-id="settings-modal">Settings</a></li>
             </ul>
           </aside>
 
@@ -152,6 +166,35 @@
       </div>
       <a class="close-reveal-modal">&#215;</a>
     </div>
+
+
+    <div id="settings-modal" class="reveal-modal" data-reveal>
+        <h4>Settings</h4>
+        <dl class="tabs" data-tab>
+          <dd class="active"><a href="#panel1">Dashboard</a></dd>
+          <dd><a href="#panel2">Engine</a></dd>
+          <dd><a href="#panel3">Driver</a></dd>
+        </dl>
+        <div class="tabs-content">
+          <div class="content active" id="panel1">
+            <div id="dashboard_settings_form">
+              
+            </div>
+          </div>
+          <div class="content" id="panel2">
+            <div id="engine_settings_form">
+              
+            </div>
+          </div>
+          <div class="content" id="panel3">
+            <div id="core_settings_form">
+              
+            </div>
+          </div>
+        </div>
+    <a class="close-reveal-modal">&#215;</a>
+    </div>
+
 
 
     <script src="js/libs/jquery.js"></script>

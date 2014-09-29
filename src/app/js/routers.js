@@ -22,6 +22,7 @@ context.Router = Backbone.Router.extend({
 			dashboard.machine = new FabMo(ip, port);
 			dashboard.ui= new FabMoUI(dashboard.machine);
 			bindKeypad(dashboard.ui);
+			loadSettingsForms(dashboard.machine);
 		});
 	},
 	refresh_machines: function() {

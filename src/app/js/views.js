@@ -106,6 +106,7 @@ context.views.RemoteMachineMenuView = Backbone.View.extend({
 });
 
 
+
 context.views.JobView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'job',
@@ -138,6 +139,50 @@ context.views.JobListView = Backbone.View.extend({
 		this.collection.forEach(function(item) {
 			var appIconView = new context.views.JobView({ model: item });
 			element.append(JobView.render().el);
+		});
+		return this;
+	},
+	show : function() {
+		$(this.el).show();
+	},
+	hide : function() {
+		$(this.el).hide();
+	}
+});
+
+
+context.views.SettingsFormLineView = Backbone.View.extend({
+	tagName : 'div',
+	className : 'settings-form-line',
+	template : _.template($("#settings-form-line-template").html()),
+	initialize : function() {
+		_.bindAll(this, 'render');
+		this.model.bind('change', this.render);
+	},
+	render : function() {
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
+	}
+});
+
+context.views.SettingsFormView = Backbone.View.extend({
+	tagName : 'div',
+	className : 'settings-form',
+	collection : null,
+	initialize : function(options) {
+		_.bindAll(this, 'render');
+		this.collection = options.collection;
+		this.collection.bind('reset', this.render);
+		this.collection.bind('add', this.render);
+		this.collection.bind('remove', this.render);
+		this.render();
+	},
+	render : function() {
+		var element = jQuery(this.el);
+		element.empty();
+		this.collection.forEach(function(item) {
+			var settingsFormLineView = new context.views.SettingsFormLineView({ model: item });
+			element.append(settingsFormLineView.render().el);
 		});
 		return this;
 	},

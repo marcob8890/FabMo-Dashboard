@@ -51,3 +51,20 @@ context.models.Job = Backbone.Model.extend({
 context.models.RemoteMachines = Backbone.Collection.extend({
 	model : context.models.RemoteMachine,
 });
+
+context.models.SettingFormLine = Backbone.Model.extend({
+	defaults:{
+		setting_label:null,
+		setting_value:null,
+		type:"text",
+		code:null,
+		id : null
+	},
+	sync : function(method, model, option) {} // Override sync because this is a local model
+});
+
+
+
+context.models.SettingsForm = Backbone.Collection.extend({
+	model : context.models.SettingFormLine
+});
