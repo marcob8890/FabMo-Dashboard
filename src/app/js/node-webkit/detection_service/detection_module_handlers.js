@@ -2,14 +2,49 @@
  * @author jimmy
  */
 var uniq = require('uniq');
-var http = require('http');
 var detection = require('./detection_tool');
-var util = require('util');
-var spawn = require('child_process').exec;
 
+
+
+/* 
+the where_is_my_tool function use the detection tool to get the list of devices detected,.
+It will then compute it to transform it in an array of detectable machines.
+It will filter the non-used interfaces and only display the networks that are reacheable.
+
+	How to use :  Currently the function is only implemented as a web request. so you need to do a GET request at /where_is_my_tool to get the list.
+
+	Example : 
+	[
+		{
+			"hostname" : "My_machine",
+			"server_port" : "8080",
+			"network":[
+				{
+					"ip_address":"127.0.0.1",
+					"interface" : "lo0"
+				},
+				{
+					"ip_address":"192.168.10.2",
+					"interface" : "usb0"
+				},
+			]
+		},
+		{
+
+			"hostname" : "My_machine",
+			"server_port" : "1234",
+			"network":[
+				{
+					"ip_address":"192.168.1.3",
+					"interface" : "wlan0"
+				}
+			]
+		}
+	]
+
+*/
 
 exports.where_is_my_tool = function(req, res, next) {
-		// execute the cmd command
 		var detect = new detection(1100);// timeout en millisecondes;
 		detect.on('devices', function (data) {
 		/*****************************************************************/
@@ -67,41 +102,6 @@ exports.where_is_my_tool = function(req, res, next) {
 			/*********************************************************************/
 		res.json(new_device_array);
 	});
-    next();
-};
-exports.are_you_a_sbt = function(req, res, next) {
-	var cmd = './services/are_you_a_sbt '+req.params[0] + ' && echo "}"',result='';
-	spawn(cmd).stdout.on('data', function (data) {
-		result += data;
-	})
-	.on('close',function(code){
-		if (result === '' )
-		{
-			res.send(204);
-		}
-		else
-		{
-			res.json(JSON.parse(result));
-		}
-	});
-    next();
-};
-
-exports.local_detection = function(req, res, next) {
-	var serv = res;
-	http.get({port:8080,path: '/where_is_my_tool'},function(res){  //get the result from where_is_my_tool function
-		res.on('data', function (data) {
-			var device_list = JSON.parse(''+data);
-			serv.write("<ul id=\"list_devices\">");
-			for(var device in device_list)
-			{
-				serv.write("<li value='" + JSON.stringify(device_list[device]) + "'>" + device_list[device].hostname + "</li>");
-			}
-			serv.write("</ul>");
-			serv.end();
-		});
-	});
-
     next();
 };
 

@@ -20,7 +20,7 @@ var routes = require('./js/node-webkit/detection_service/routes')(server);
 
 server.on('error',function (err) {
     if (err.code == 'EADDRINUSE')
-    	console.log('Problem during server initialization : '+ err);
+    	console.log('Detection server is already running');
     return;
 });
 
