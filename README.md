@@ -1,8 +1,8 @@
-FabMo Linker Node webkit version
+FabMo Dashboard Node webkit version
 ===========
 
 ## Introduction
-This branch contains sources and binaries for running the FabMo Linker based on node webkit.  
+This branch contains sources and binaries for running the FabMo Dashboard based on node webkit.  
 it provide an embedded webview based on Chromium, that allow use to run apps on Mac, Linux and Windows.  
 [STILL IN DEVELOPMENT]
 
