@@ -26,6 +26,24 @@ context.Router = Backbone.Router.extend({
 		});
 	},
 	refresh_machines: function() {
-		refreshRemoteMachines();
+		console.log("refresh asked");
+		refreshRemoteMachines(function(err,remoteMachines){
+			if(remoteMachines.models.length === 0)
+			{
+				console.log('no machine detected');
+			}
+			else if(remoteMachines.models.length === 1)
+			{
+				ChooseBestWayToConnect(remoteMachines.models[0].attributes,function(ip,port){
+					dashboard.machine = new FabMo(ip, port);
+					dashboard.ui= new FabMoUI(dashboard.machine);
+					bindKeypad(dashboard.ui);
+					loadSettingsForms(dashboard.machine);
+				});
+			}
+			else{
+				openSettingsPanel();
+			}
+		});
 	}
 });

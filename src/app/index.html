@@ -52,7 +52,7 @@
         <ul>
         <li><label>Job #<%= id %></label></li>
         <% _.each( files, function( file ){ %>
-          <li><span>file.id</span><span>file.status</span></li> 
+          <li><span><%= file.id %></span><span><%= file.status %></span></li> 
         <% }); %>
         </ul
       </div>
@@ -60,7 +60,6 @@
 
   </head>
   <body>
-
       <div style="height:100%" class="off-canvas-wrap" data-offcanvas>
         <div class="inner-wrap">
           <nav class="tab-bar">
@@ -77,7 +76,7 @@
 
           <aside class="left-off-canvas-menu">
             <ul class="off-canvas-list" id="remote-machine-menu">
-            <li><label>Machines on Network</label></li>              
+            <li><label>Machines on Network</label><button id="refresh_machines_on_network">refresh</button></li>              
             </ul>
 
             <ul class="off-canvas-list" id="util-menu">

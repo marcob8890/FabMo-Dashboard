@@ -2,6 +2,7 @@
  * @author jimmy
  */
 var uniq = require('uniq');
+var http = require('http');
 var detection = require('./detection_tool');
 
 
@@ -48,8 +49,9 @@ exports.where_is_my_tool = function(req, res, next) {
 		var detect = new detection(1100);// timeout en millisecondes;
 		detect.on('devices', function (data) {
 		/*****************************************************************/
-		if( data === [])
+		if( data === []) // false in every case
 		{
+			// NOT TRIGGERED FOR NOW ! Should be replace by (data.length === 0)
 			res.send('no device found');
 		}
 		else

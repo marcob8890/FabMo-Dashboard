@@ -91,7 +91,7 @@ context.views.RemoteMachineMenuView = Backbone.View.extend({
 	render : function() {
 		var element = jQuery(this.el);
 		element.empty();
-		element.append('<li><label>Machines on Network</label></li>');
+		element.append('<li><label>Machines on Network <a href="#/refresh_machines" style="display:inline;">refresh</a></label></li>');
 		var template = _.template('<li ><a href="#/set_machine/<%= id %>"><%= hostname %></a></li>');
 
 		this.collection.forEach(function(item) {
@@ -102,7 +102,15 @@ context.views.RemoteMachineMenuView = Backbone.View.extend({
 		//element.append('<li><a href="#/refresh_machines">Refresh...</a></li>');
 
 		return this;
-	}
+	},
+	// hack for the "non-reload on same url" problem with backbone.js
+	// more explanation on http://movableapp.com/2012/06/how-to-refresh-router-action-backbonejs-tutorial/
+    events: {
+        'click a' : 'onClick'
+    },
+    onClick: function( e ) {
+        router.navigate('/');
+    }
 });
 
 

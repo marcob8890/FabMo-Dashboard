@@ -15,6 +15,7 @@ function refreshRemoteMachines(callback) {
 		if(err) {
 			return console.log(err);
 		}
+		console.log(machines);
 		var machine_models = [];
 		for(var index in machines){
 			machine_model = new context.models.RemoteMachine({
