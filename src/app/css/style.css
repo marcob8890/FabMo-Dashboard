@@ -1,8 +1,8 @@
 @import "font.css";
 
-.app-menu {
+.top-bar h1  {size:1rem;}
 
-}
+#app_menu_container {list-style: none;}
 
 .app-icon {
 	float: left;
@@ -10,6 +10,7 @@
 	height: 96px;
 	text-align: center;
 	margin: 16px;
+	/*background-color:#eeeeee;*/
 }
 
 .app-icon img {
@@ -43,7 +44,91 @@ body,html{
 	height: calc(100% - 50px);
 	display: none;
 }
+
 aside{
 margin-top:2.8125rem;
 }
 
+.icon-bar {
+	background: white;
+}
+
+.left-menu.icon-bar > * {
+	padding: 0.375rem 0.75rem;
+}
+
+ul.off-canvas-list li a:hover, #util-menu-large a:hover {
+	background-color: #313366;
+}
+
+ul.off-canvas-list li a {
+	border-bottom: 2px solid #fbfbfb;
+}
+
+#util-menu-small a {
+	padding-left: 2.75rem;
+	background-repeat: no-repeat;
+	background-size: 1.25rem;
+	background-position: center left 0.75rem;
+}
+
+#util-menu-large a {
+	background-color :#eeeeee;
+	background-repeat: no-repeat;
+	margin-top: 0.25rem;
+}
+
+#util-menu-large a:not(.current_tool) {
+	background-size: 1.750rem;
+	background-position: center top 0.5rem;
+	padding-top: 2.375rem;
+}
+
+#util-menu-large .current_tool {
+	background-repeat: no-repeat;
+	background-size: 0.75rem;
+	background-position: center left 0.875rem;
+	text-align: left;
+	padding-left: 2.125rem;
+	padding-top: 0.375rem;
+}
+
+#util-menu-large #icon_status {
+	background-size: 2.875rem;
+}
+
+
+#util-menu-small a:hover, #util-menu-large a:hover label{
+	color: #eeeeee;
+}
+
+@media only screen and (min-width: 64.063em) {
+	.icon-bar.large-vertical { margin-right: 0.3125rem; }
+}
+
+
+#icon_home {background-image: url('../img/icon_home.png');}
+#icon_home:hover {background-image: url('../img/icon_home_w.png');}
+#icon_global {background-image: url('../img/icon_global.png');}
+#icon_global:hover {background-image: url('../img/icon_global_w.png');}
+#icon_apps {background-image: url('../img/icon_apps.png');}
+#icon_apps:hover {background-image: url('../img/icon_apps_w.png');}
+#icon_social {background-image: url('../img/icon_social.png');}
+#icon_social:hover {background-image: url('../img/icon_social_w.png');}
+#icon_search {background-image: url('../img/icon_search.png');}
+#icon_search:hover {background-image: url('../img/icon_search_w.png');}
+#icon_folder {background-image: url('../img/icon_folder.png');}
+#icon_folder:hover {background-image: url('../img/icon_folder_w.png');}
+#icon_settings {background-image: url('../img/icon_settings.png');}
+#icon_settings:hover {background-image: url('../img/icon_settings_w.png');}
+#icon_status {background-image: url('../img/icon_status.png');}
+#icon_status:hover {background-image: url('../img/icon_status_w.png');}
+.current_tool {background-image: url('../img/icon_status_green.png')}
+
+.sortable-ghost {
+	border: 4px dashed #CCC;
+	background : url(../img/icon_plus_cross.png) no-repeat center;
+	background-size: 48px;
+}
+.sortable-ghost img {display : none;}
+.sortable-ghost a {display : none;}
