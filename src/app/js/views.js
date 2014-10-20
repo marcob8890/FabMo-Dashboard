@@ -10,7 +10,7 @@ context.views.NavbarView = Backbone.View.extend({
 });
 
 context.views.AppIconView = Backbone.View.extend({
-	tagName : 'div',
+	tagName : 'li',
 	className : 'app-icon',
 	template : _.template($("#app-icon-template").html()),
 	initialize : function() {
