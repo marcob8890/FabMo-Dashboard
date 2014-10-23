@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/style.css" />
 
+
     <!-- NAVBAR -->
     <script type="text/template" id="navbar-template">
       <nav class="top-bar" data-topbar role="navigation">
@@ -23,7 +24,7 @@
       </section>
       </nav>
     </script>
-
+    
     <!-- APP ICONS -->
     <script type="text/template" id="app-icon-template">
       <a href="#/app/<%= id %>"><img src="<%= icon_url %>" alt="<%= name %>"></a>
@@ -31,7 +32,6 @@
         <a href="#/app/<%= id %>"><%= name %></a>
       </div>
     </script>
-
 
 
     <!-- Settings form line-->
@@ -46,6 +46,7 @@
       </div>
     </script>
 
+
     <!-- JOB-->
     <script type="text/template" id="job-template">
       <div class="job">
@@ -57,11 +58,19 @@
         </ul
       </div>
     </script>
-
   </head>
+
+
+  <!-- Body of the page -->
+
   <body>
       <div style="height:100%" class="off-canvas-wrap" data-offcanvas>
         <div class="inner-wrap">
+
+          <!-- New nav work -->
+
+
+          <!-- Nav-Bar & Buttons for sliding menus -->
           <nav class="tab-bar">
             <section class="left-small">
               <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
@@ -74,50 +83,76 @@
             </section>
           </nav>
 
-          <aside class="left-off-canvas-menu">
-            <ul class="off-canvas-list" id="remote-machine-menu">
-            <li><label>Machines on Network</label><button id="refresh_machines_on_network">refresh</button></li>              
-            </ul>
 
-            <ul class="off-canvas-list" id="util-menu">
-            <li><label>Utilities</label></li>
-            <li><a href="#" data-reveal-id="tool-modal">Keypad</a></li>
-            <li><a href="#" data-reveal-id="home-zero-modal">Homing & Zeroing</a></li>
-            <li><a href="#" data-reveal-id="job-manager-modal">Job Manager</a></li>
-            <li><a href="#" data-reveal-id="settings-modal">Settings</a></li>
-            </ul>
+          <!-- 
+              Sliding Wiget Menu (fix for large screen)
+          -->
+          <aside class="left-off-canvas-menu" id="left-menu">
+
+            <!-- ***** Machines on network Widget ***** -->
+            <div id="widget-tools-network" class="widget">
+              <ul class="off-canvas-list"><li><label>Network</label></li></ul>
+              <ul class="off-canvas-list" id="remote-machine-menu">
+                <li class="item no-link tool current">Handibot_01<span></span></li>
+                <li class="item no-link hidden tool err">Handibot_03<span></span></li>   
+                <li class="item no-link hidden tool disc">Handibot_02<span></span></li>
+                <li class="item no-link hidden refresh" id="refresh_machines_on_network"></li>
+              </ul>
+            </div>
+
+            <!-- ********** Links Widget ********** -->
+            <div id="widget-links-general" class="widget">
+              <ul class="off-canvas-list" id="util-menu-small">
+                <li><label>Utilities</label></li>
+                <li><a href="#/menu" id="icon_home">Home</a></li>
+                <li><a href="#" id="icon_global">MyHQ</a></li>
+                <li><a href="#/menu" id="icon_apps">Apps</a></li>
+                <li><a href="#" id="icon_social">Community</a></li>
+                <li><a href="#" id="icon_search">Search</a></li>
+                <li><a href="#" data-reveal-id="job-manager-modal" id="icon_folder">Ready to cut</a></li>
+                <li><a href="#" data-reveal-id="settings-modal" id="icon_settings">Settings</a></li>
+                <li><a href="#" data-reveal-id="tool-modal">Keypad</a></li>
+                <li><a href="#" data-reveal-id="home-zero-modal">Homing & Zeroing</a></li>
+              </ul>
+            </div>
           </aside>
 
           <aside class="right-off-canvas-menu">
-            <ul class="off-canvas-list fabmo-status fabmo-file-control" id="dro-content">
-              <li><label>DRO</label></li>
-              <li class="alert-box default state"></li>
-              <li><a><strong>X: </strong><span class="posx"></span></a></li>
-              <li><a><strong>Y: </strong><span class="posy"></span></a></li>
-              <li><a><strong>Z: </strong><span class="posz"></span></a></li>
-              <div  class="hide file-info">
-                <li><a><strong>File: </strong><span class="filename"></span> </a></li>
-                <li><div class="progress"></div></li>
-              </div>    
-              <li>
-                <span class="fabmo-pause-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button warning ">Pause</a></span>
-                <span class="fabmo-resume-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button success ">Resume</a></span>
-                <span class="fabmo-stop-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button alert ">Stop</a></span>
-              </li>
-            </ul>
+            <div id="widget-tools-position" class="widget">
+              <ul class="off-canvas-list fabmo-status fabmo-file-control" id="dro-content">
+                <li><label>Position & Control</label></li>
+                <li><a><strong>X: </strong><span class="posx"></span></a></li>
+                <li><a><strong>Y: </strong><span class="posy"></span></a></li>
+                <li><a><strong>Z: </strong><span class="posz"></span></a></li>
+                <li class="alert-box default state"></li>
+                <div  class="hide file-info">
+                  <li><a><strong>File: </strong><span class="filename"></span> </a></li>
+                  <li><div class="progress"></div></li>
+                </div>    
+                <li>
+                  <span class="fabmo-pause-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button warning ">Pause</a></span>
+                  <span class="fabmo-resume-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button success ">Resume</a></span>
+                  <span class="fabmo-stop-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button alert ">Stop</a></span>
+                </li>
+              </ul>
+            </div>
           </aside>
 
+    
+          <!-- Main Content -->
 
           <section class="main-section">
             <div id="navbar_container"></div>
-            <div id="app_menu_container"></div>
+            <div>
+              <ul id="app_menu_container"></ul>
+            </div>
             <div id="modal_container"></div>
             <div id="app-client-container">
               <iframe class="app-iframe" nwdisable nwfaketop></iframe>
             </div>
+            <div class="clear"></div>
           </section>
-
-       
+          <a class="exit-off-canvas"></a>
         </div>
       </div>    
 
@@ -195,20 +230,61 @@
     </div>
 
 
-
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/foundation.min.js"></script>
     <script src="js/libs/underscore.js"></script>
+    <script src="js/events.js"></script>
     <script src="js/libs/backbone.js"></script>
     <script src="js/libs/FabMo-latest.js"></script>
-    <script src="js/libs/FabMoUI-latest.js"></script>
+    <script src="js/libs/FabMoUI-latest.js"></script>    
+
+    <script src="js/libs/sortable.js"></script>
+
     <script>
       $(document).foundation({
        offcanvas : {
           open_method: 'overlap_single', 
         }
       });
-  </script>
+
+      var bar = document.getElementById('app_menu_container');
+      new Sortable(bar, {
+        group: "apps",
+        ghostClass: "sortable-ghost",
+        animation: 150,
+        store: {
+          /** Get the order of elements. Called once during initialization. **/
+          get: function (sortable) {
+              var order = localStorage.getItem(sortable.options.group);
+              return order ? order.split('|') : [];
+          },
+          /** Save the order of elements. Called every time at the drag end **/
+          set: function (sortable) {
+              var order = sortable.toArray();
+              localStorage.setItem(sortable.options.group, order.join('|'));
+          }
+        }
+      });
+
+      var bar = document.getElementById('left-menu');
+      new Sortable(bar, {
+        group: "widgets",
+        ghostClass: "sortable-ghost",
+        animation: 150,
+        store: {
+          /** Get the order of elements. Called once during initialization. **/
+          get: function (sortable) {
+              var order = localStorage.getItem(sortable.options.group);
+              return order ? order.split('|') : [];
+          },
+          /** Save the order of elements. Called every time at the drag end **/
+          set: function (sortable) {
+              var order = sortable.toArray();
+              localStorage.setItem(sortable.options.group, order.join('|'));
+          }
+        }
+      });
+    </script>
 
     <!-- Order matters: Context singleton first, followed by its models and views -->
     <script src="js/node-webkit/detection_service/server.js"></script>
@@ -219,6 +295,7 @@
     <script src="js/dashboard.js"></script>
     <script src="js/node-webkit/webkit.js"></script>
     <script src="js/main.js"></script>
+
     <script>
       $('.fabmo-status').on('statechange',function(e,state){
         var percent = $('.progress').text();
@@ -234,32 +311,26 @@
         else
           $('.state').removeClass('success info default warning danger').addClass('default');
       });
-/*
-      $(document).ready(function(){
 
-        //theses handlers cannot catch wich sde is opened or close.
-        
-        $(document).on('open.fndtn.offcanvas', '[data-offcanvas]', function () {
-          if($(this).hasClass('offcanvas-overlap-left'))
-            console.log($(this));
-          else if($(this).hasClass('offcanvas-overlap-right'))
-            console.log($(this));
-        });
-
-        $(document).on('close.fndtn.offcanvas', '[data-offcanvas]', function () {
-          var off_canvas_wrap = $(this);
-          console.log($(this).attr('class'));
-        });
-
+      $("#remote-machine-menu > li").click(function () {
+        var count = $("#remote-machine-menu > li").length;
+        if(count > 2) {
+          if ( $( "#remote-machine-menu > li:nth-child(2)").is( ":hidden" ) ) {
+            $( "#remote-machine-menu > li").slice(1).slideDown( "fast" );
+          } 
+          else {
+            if($(this)[0]!=$( "#remote-machine-menu > li:last" )[0]) {
+              $("#remote-machine-menu > li:first-child").removeClass('current');
+              //$("#remote-machine-menu > li:first-child").children('span').removeClass('set_tool');
+              $(this).addClass('current');
+              //$(this).children('span').addClass('set_tool');
+              $(this).insertBefore($("#remote-machine-menu > li:first-child"));
+              $( "#remote-machine-menu > li").slice(1).slideUp( "fast" );
+            }
+          }
+        }
       });
-*/
+
     </script>
-
-
-
-
-
   </body>
 </html>
-
-

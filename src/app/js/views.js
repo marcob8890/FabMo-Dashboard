@@ -4,8 +4,14 @@ context.views.NavbarView = Backbone.View.extend({
 		this.render();
 	},
 	render : function() {
-		var template = _.template($("#navbar-template").html(), {});
-		this.$el.html(template);
+		//var template = _.template($("#navbar-template").html(), {});
+		//this.$el.html(template);
+
+        //Fetching the template contents
+        $.get('template/navbar.html', function (data) {
+            template = _.template(data, {});//Option to pass any dynamic values to template
+            this.$el.html(template);//adding the template content to the main template.
+        }, 'html');
 	}
 });
 
@@ -13,6 +19,7 @@ context.views.AppIconView = Backbone.View.extend({
 	tagName : 'li',
 	className : 'app-icon',
 	template : _.template($("#app-icon-template").html()),
+	
 	initialize : function() {
 		_.bindAll(this, 'render');
 		this.model.bind('change', this.render);
@@ -37,6 +44,7 @@ context.views.AppMenuView = Backbone.View.extend({
 	},
 	render : function() {
 		var element = jQuery(this.el);
+		var count = 0;
 		element.empty();
 		this.collection.forEach(function(item) {
 			var appIconView = new context.views.AppIconView({ model: item });
@@ -91,14 +99,18 @@ context.views.RemoteMachineMenuView = Backbone.View.extend({
 	render : function() {
 		var element = jQuery(this.el);
 		element.empty();
-		element.append('<li><label>Machines on Network <a href="#/refresh_machines" style="display:inline;">refresh</a></label></li>');
-		var template = _.template('<li ><a href="#/set_machine/<%= id %>"><%= hostname %></a></li>');
-
+		//element.append('<li><label>Machines on Network <a href="#/refresh_machines" style="display:inline;">refresh</a></label></li>');
+		//var template = _.template('<li ><a href="#/set_machine/<%= id %>"><%= hostname %></a></li>');
+		var template = _.template('<a href="#/set_machine/<%= id %>"><li class="item no-link <% current %> tool <% state %> <% hidden %>"><%= hostname %><span></span></li></a>');
 		this.collection.forEach(function(item) {
 			attr = _.clone(item.attributes);
 			attr.id = item.cid;
+			attr.hidden = '';
+			attr.state = '';
+			attr.current ='current';
 			element.append(template(attr));
 		}.bind(this));
+		element.append('<a href="#/refresh_machines"><li class="item no-link refresh" id="refresh_machines_on_network"></li></a>');
 		//element.append('<li><a href="#/refresh_machines">Refresh...</a></li>');
 
 		return this;
