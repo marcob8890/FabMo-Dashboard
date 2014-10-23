@@ -14,7 +14,9 @@
     "adm-zip" : "> 0.0.0",
     "uniq" : "> 0.0.0",
     "ncp" : "> 0.0.0",
-    "nodewebkit" : "> 0.0.0"
+    "nodewebkit" : "> 0.0.0",
+    "async" : ">0.0.0",
+    "node-uuid" : ">0.0.0"
   },
   "scripts" : {
     "start" : "nodewebkit"
