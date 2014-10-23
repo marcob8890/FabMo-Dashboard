@@ -1,10 +1,16 @@
 {
-	"name":"FabMo Linker",
+	"name":"FabMo-Linker",
 	"main":"app://fabmolinker/app/index.html",
 	"window": {
         "toolbar": true 
     	},
 	"detection_service_port" : 8080,
 	"debug" : false,
-	"local_engine_port" : 9876
+	"local_engine_port" : 9876,
+  "dependencies" : {
+    "restify" : "> 0.0.0",
+    "adm-zip" : "> 0.0.0",
+    "uniq" : "> 0.0.0",
+    "ncp" : "> 0.0.0"
+  }
 }
