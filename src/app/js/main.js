@@ -8,7 +8,7 @@
 
 // remoteMachines is the backbone collection of all the tools available on the network
 var remoteMachines = new context.models.RemoteMachines();
-remoteMachineMenuView = new context.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : remoteMachines});
+var remoteMachineMenuView = new context.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : remoteMachines});
 
 function refreshRemoteMachines(callback) {
 	DetectToolsOnTheNetworks(function(err, machines) {

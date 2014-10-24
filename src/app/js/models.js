@@ -15,8 +15,10 @@ context.models.Apps = Backbone.Collection.extend({
 
 context.models.RemoteMachine = Backbone.Model.extend({
 	defaults:{
+		//Add a listener when the state changes
 		hostname:'<unknown>',
-		network: []
+		network: [],
+		state: 'disc' //state = status : ''=green=OK : 'err'=red=Trying to connect, or error to connec : 'disc'=grey=Not connected
 	},
 	sync : function(method, model, option) {} // Override sync because this is a local model	
 });

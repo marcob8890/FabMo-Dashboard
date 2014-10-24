@@ -16,6 +16,7 @@ context.Router = Backbone.Router.extend({
 	},
 	set_machine: function(id) {
 		machine = remoteMachines.get(id);
+		//machine.set('state','err');
 		console.log("SETTING MACHINE");
 		console.log(machine.attributes);
 		ChooseBestWayToConnect(machine.attributes, function(ip, port) {

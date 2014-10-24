@@ -93,10 +93,10 @@
             <div id="widget-tools-network" class="widget">
               <ul class="off-canvas-list"><li><label>Network</label></li></ul>
               <ul class="off-canvas-list" id="remote-machine-menu">
-                <li class="item no-link tool current">Handibot_01<span></span></li>
-                <li class="item no-link hidden tool err">Handibot_03<span></span></li>   
-                <li class="item no-link hidden tool disc">Handibot_02<span></span></li>
-                <li class="item no-link hidden refresh" id="refresh_machines_on_network"></li>
+                <li class="item tool current"><span></span><a>Handibot_01</a></li>
+                <li class="item hidden tool err"><span></span><a>Handibot_02</a></li>
+                <li class="item hidden tool disc"><span></span><a>Handibot_03</a></li>
+                <li class="item hidden refresh" id="refresh_machines_on_network"></li>
               </ul>
             </div>
 
@@ -143,6 +143,7 @@
 
           <section class="main-section">
             <div id="navbar_container"></div>
+
             <div>
               <ul id="app_menu_container"></ul>
             </div>
@@ -312,24 +313,27 @@
           $('.state').removeClass('success info default warning danger').addClass('default');
       });
 
-      $("#remote-machine-menu > li").click(function () {
+
+      /*
+      $("#remote-machine-menu > li > a").click(function () {
         var count = $("#remote-machine-menu > li").length;
         if(count > 2) {
           if ( $( "#remote-machine-menu > li:nth-child(2)").is( ":hidden" ) ) {
             $( "#remote-machine-menu > li").slice(1).slideDown( "fast" );
           } 
           else {
-            if($(this)[0]!=$( "#remote-machine-menu > li:last" )[0]) {
+            if($(this).parent()[0]!=$( "#remote-machine-menu > li:last" )[0]) {
               $("#remote-machine-menu > li:first-child").removeClass('current');
               //$("#remote-machine-menu > li:first-child").children('span').removeClass('set_tool');
-              $(this).addClass('current');
+              $(this).parent().addClass('current');
               //$(this).children('span').addClass('set_tool');
-              $(this).insertBefore($("#remote-machine-menu > li:first-child"));
+              $(this).parent().insertBefore($("#remote-machine-menu > li:first-child"));
               $( "#remote-machine-menu > li").slice(1).slideUp( "fast" );
             }
           }
         }
       });
+      */
 
     </script>
   </body>

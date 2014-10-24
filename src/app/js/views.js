@@ -98,31 +98,59 @@ context.views.RemoteMachineMenuView = Backbone.View.extend({
 	},
 	render : function() {
 		var element = jQuery(this.el);
+		var cpt=0;
 		element.empty();
-		//element.append('<li><label>Machines on Network <a href="#/refresh_machines" style="display:inline;">refresh</a></label></li>');
-		//var template = _.template('<li ><a href="#/set_machine/<%= id %>"><%= hostname %></a></li>');
-		var template = _.template('<a href="#/set_machine/<%= id %>"><li class="item no-link <% current %> tool <% state %> <% hidden %>"><%= hostname %><span></span></li></a>');
+		var template = _.template('<li class="item <%= current %> tool <%= state %> <%= hidden %>"><span></span><a href="#/set_machine/<%= id %>"><%= hostname %></a></li>');
 		this.collection.forEach(function(item) {
+			//Move this on view, wich will concert 1 tool, and not all the tools
+			cpt++;
 			attr = _.clone(item.attributes);
 			attr.id = item.cid;
-			attr.hidden = '';
-			attr.state = '';
+			if (cpt>1) { attr.hidden = 'hidden'; } else { attr.hidden = '';}
 			attr.current ='current';
 			element.append(template(attr));
 		}.bind(this));
-		element.append('<a href="#/refresh_machines"><li class="item no-link refresh" id="refresh_machines_on_network"></li></a>');
-		//element.append('<li><a href="#/refresh_machines">Refresh...</a></li>');
+
+		if(cpt == 0) {
+			element.append('<li class="item refresh" id="refresh_machines_on_network"><a href="#/refresh_machines"></a></li>');
+		}
+		else {
+			element.append('<li class="item refresh hidden" id="refresh_machines_on_network"><a href="#/refresh_machines"></a></li>');
+		}
 
 		return this;
 	},
 	// hack for the "non-reload on same url" problem with backbone.js
 	// more explanation on http://movableapp.com/2012/06/how-to-refresh-router-action-backbonejs-tutorial/
     events: {
-        'click a' : 'onClick'
+        'click .tool > a' 	: 'onClick',
+        'click li.tool'		: 'showHideTools'
     },
+    
     onClick: function( e ) {
         router.navigate('/');
-    }
+    },
+
+    //Move this on view, wich will concert 1 tool, and not all the tools
+    showHideTools: function ( e ) {
+    	var o = this.$el.children();
+    	var c = o.length;
+		if (c > 1)
+			if( o.last().is(":hidden") ) {
+				o.slice(1).slideDown("fast");
+			}
+			else {
+				o.slice(1).slideUp("fast");
+				/*
+				if($(this).parent()[0]!=$( "#remote-machine-menu > li:last" )[0]) {
+	              $("#remote-machine-menu > li:first-child").removeClass('current');
+	              $(this).parent().addClass('current');
+	              $(this).parent().insertBefore($("#remote-machine-menu > li:first-child"));
+	              $( "#remote-machine-menu > li").slice(1).slideUp( "fast" );
+	            }
+            	*/
+			}
+    	}
 });
 
 
