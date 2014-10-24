@@ -1,11 +1,24 @@
 {
-  "name": "Link-API",
-  "description": "Link API for network for simplify the connection to your tool",
-  "main": "server.js",
-  "dependencies": {
-    "restify": "1.4.4",
-    "uniq": "1.0.1"
+	"name":"FabMo-Linker",
+	"main":"app://fabmolinker/app/index.html",
+	"readme":"README.md",
+    "repository":"https://github.com/ShopbotTools/FabMo-Dashboard.git",
+    "window": {
+        "toolbar": true 
+    	},
+	"detection_service_port" : 8080,
+	"debug" : false,
+	"local_engine_port" : 9876,
+  "dependencies" : {
+    "restify" : "> 0.0.0",
+    "adm-zip" : "> 0.0.0",
+    "uniq" : "> 0.0.0",
+    "ncp" : "> 0.0.0",
+    "nodewebkit" : "> 0.0.0",
+    "async" : ">0.0.0",
+    "node-uuid" : ">0.0.0"
+  },
+  "scripts" : {
+    "start" : "nodewebkit"
   }
-  "readmeFilename": "README.md",
-  "_nodeVersion": ">= v0.10.0"
 }

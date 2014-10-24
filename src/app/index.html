@@ -1,0 +1,340 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FabMo Dashboard</title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+
+    <!-- NAVBAR -->
+    <script type="text/template" id="navbar-template">
+      <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">FabMo Dashboard</a></h1>
+        </li>
+      </ul>
+      <section class="top-bar-section">
+      <ul class="right">
+        <li><a href="#" data-reveal-id="tool-modal">Tool</a></li>
+        <li><a href="#/menu">App Manager</a></li>
+      </ul>
+      </section>
+      </nav>
+    </script>
+    
+    <!-- APP ICONS -->
+    <script type="text/template" id="app-icon-template">
+      <a href="#/app/<%= id %>"><img src="<%= icon_url %>" alt="<%= name %>"></a>
+      <div class="app-title">
+        <a href="#/app/<%= id %>"><%= name %></a>
+      </div>
+    </script>
+
+
+    <!-- Settings form line-->
+    <script type="text/template" id="settings-form-line-template">
+     <div class="row">
+        <div class="small-3 columns">
+          <label for="<%= setting_label %>-label" class="right"><%= setting_label %></label>
+        </div>
+        <div class="small-9 columns">
+          <input type="text" id="<%= setting_label %>-label" value="<%= setting_value %>">
+        </div>
+      </div>
+    </script>
+
+
+    <!-- JOB-->
+    <script type="text/template" id="job-template">
+      <div class="job">
+        <ul>
+        <li><label>Job #<%= id %></label></li>
+        <% _.each( files, function( file ){ %>
+          <li><span><%= file.id %></span><span><%= file.status %></span></li> 
+        <% }); %>
+        </ul
+      </div>
+    </script>
+  </head>
+
+
+  <!-- Body of the page -->
+
+  <body>
+      <div style="height:100%" class="off-canvas-wrap" data-offcanvas>
+        <div class="inner-wrap">
+
+          <!-- New nav work -->
+
+
+          <!-- Nav-Bar & Buttons for sliding menus -->
+          <nav class="tab-bar">
+            <section class="left-small">
+              <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+            </section>
+            <section class="middle tab-bar-section">
+              <h1 class="title"><a href="#/menu">FabMo Dashboard</a></h1>
+            </section>
+            <section class="right-small">
+              <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+            </section>
+          </nav>
+
+
+          <!-- 
+              Sliding Wiget Menu (fix for large screen)
+          -->
+          <aside class="left-off-canvas-menu" id="left-menu">
+
+            <!-- ***** Machines on network Widget ***** -->
+            <div id="widget-tools-network" class="widget">
+              <ul class="off-canvas-list"><li><label>Network</label></li></ul>
+              <ul class="off-canvas-list" id="remote-machine-menu">
+                <li class="item tool current"><span></span><a>Handibot_01</a></li>
+                <li class="item hidden tool err"><span></span><a>Handibot_02</a></li>
+                <li class="item hidden tool disc"><span></span><a>Handibot_03</a></li>
+                <li class="item hidden refresh" id="refresh_machines_on_network"></li>
+              </ul>
+            </div>
+
+            <!-- ********** Links Widget ********** -->
+            <div id="widget-links-general" class="widget">
+              <ul class="off-canvas-list" id="util-menu-small">
+                <li><label>Utilities</label></li>
+                <li><a href="#/menu" id="icon_home">Home</a></li>
+                <li><a href="#" id="icon_global">MyHQ</a></li>
+                <li><a href="#/menu" id="icon_apps">Apps</a></li>
+                <li><a href="#" id="icon_social">Community</a></li>
+                <li><a href="#" id="icon_search">Search</a></li>
+                <li><a href="#" data-reveal-id="job-manager-modal" id="icon_folder">Ready to cut</a></li>
+                <li><a href="#" data-reveal-id="settings-modal" id="icon_settings">Settings</a></li>
+                <li><a href="#" data-reveal-id="tool-modal">Keypad</a></li>
+                <li><a href="#" data-reveal-id="home-zero-modal">Homing & Zeroing</a></li>
+              </ul>
+            </div>
+          </aside>
+
+          <aside class="right-off-canvas-menu">
+            <div id="widget-tools-position" class="widget">
+              <ul class="off-canvas-list fabmo-status fabmo-file-control" id="dro-content">
+                <li><label>Position & Control</label></li>
+                <li><a><strong>X: </strong><span class="posx"></span></a></li>
+                <li><a><strong>Y: </strong><span class="posy"></span></a></li>
+                <li><a><strong>Z: </strong><span class="posz"></span></a></li>
+                <li class="alert-box default state"></li>
+                <div  class="hide file-info">
+                  <li><a><strong>File: </strong><span class="filename"></span> </a></li>
+                  <li><div class="progress"></div></li>
+                </div>    
+                <li>
+                  <span class="fabmo-pause-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button warning ">Pause</a></span>
+                  <span class="fabmo-resume-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button success ">Resume</a></span>
+                  <span class="fabmo-stop-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button alert ">Stop</a></span>
+                </li>
+              </ul>
+            </div>
+          </aside>
+
+    
+          <!-- Main Content -->
+
+          <section class="main-section">
+            <div id="navbar_container"></div>
+
+            <div>
+              <ul id="app_menu_container"></ul>
+            </div>
+            <div id="modal_container"></div>
+            <div id="app-client-container">
+              <iframe class="app-iframe" nwdisable nwfaketop></iframe>
+            </div>
+            <div class="clear"></div>
+          </section>
+          <a class="exit-off-canvas"></a>
+        </div>
+      </div>    
+
+      <div id="tool-modal" class="reveal-modal" data-reveal>
+      <h4>Manual Control</h4>
+          <div class="small-12 columns fabmo-keypad">
+            <div class="row" >
+                <div class="small-4 columns"><button class="button button-plus-Z">↥</button></div>
+                  <div class="small-4 columns"><button class="button button-plus-Y">↑</button></div>
+                  <div class="small-4 columns"><button class="button button-minus-Z">↧</button></div>
+            </div>              
+            <div class="row" >
+                  <div class="small-4 columns"><button class="button button-minus-X">←</button></div>
+                  <div class="small-4 columns"><button class="button button-minus-Y">↓</button></div>
+                  <div class="small-4 columns"><button class="button button-plus-X">→</button></div>
+            </div> 
+          </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+    <div id="home-zero-modal" class="reveal-modal" data-reveal>
+      <h4>Homing and Zeroing</h4>
+      <div class="small-12 columns">
+          <div class="row" >
+               <div class="small-4 columns"><button class="button button-homexy">Home X&Y</button></div>
+              <div class="small-4 columns"><button class="button button-homez">Home Z</button></div>
+              <div class="small-4 columns"><button class="button button-probez">Probe Z</button></div>
+          </div>
+          <div class="row" >
+               <div class="small-4 columns"><button class="button button-zerox">Zero X</button></div>
+              <div class="small-4 columns"><button class="button button-zeroy">Zero Y</button></div>
+              <div class="small-4 columns"><button class="button button-zeroz">Zero Z</button></div>
+          </div> 
+
+      </div>
+
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+
+    <div id="job-manager-modal" class="reveal-modal" data-reveal>
+      <h4>Job Manager</h4>
+      <div id="job_list_container">
+
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+
+    <div id="settings-modal" class="reveal-modal" data-reveal>
+        <h4>Settings</h4>
+        <dl class="tabs" data-tab>
+          <dd class="active"><a href="#panel1">Dashboard</a></dd>
+          <dd><a href="#panel2">Engine</a></dd>
+          <dd><a href="#panel3">Driver</a></dd>
+        </dl>
+        <div class="tabs-content">
+          <div class="content active" id="panel1">
+            <div id="dashboard_settings_form">
+              
+            </div>
+          </div>
+          <div class="content" id="panel2">
+            <div id="engine_settings_form">
+              
+            </div>
+          </div>
+          <div class="content" id="panel3">
+            <div id="core_settings_form">
+              
+            </div>
+          </div>
+        </div>
+    <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/foundation.min.js"></script>
+    <script src="js/libs/underscore.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/libs/backbone.js"></script>
+    <script src="js/libs/FabMo-latest.js"></script>
+    <script src="js/libs/FabMoUI-latest.js"></script>    
+
+    <script src="js/libs/sortable.js"></script>
+
+    <script>
+      $(document).foundation({
+       offcanvas : {
+          open_method: 'overlap_single', 
+        }
+      });
+
+      var bar = document.getElementById('app_menu_container');
+      new Sortable(bar, {
+        group: "apps",
+        ghostClass: "sortable-ghost",
+        animation: 150,
+        store: {
+          /** Get the order of elements. Called once during initialization. **/
+          get: function (sortable) {
+              var order = localStorage.getItem(sortable.options.group);
+              return order ? order.split('|') : [];
+          },
+          /** Save the order of elements. Called every time at the drag end **/
+          set: function (sortable) {
+              var order = sortable.toArray();
+              localStorage.setItem(sortable.options.group, order.join('|'));
+          }
+        }
+      });
+
+      var bar = document.getElementById('left-menu');
+      new Sortable(bar, {
+        group: "widgets",
+        ghostClass: "sortable-ghost",
+        animation: 150,
+        store: {
+          /** Get the order of elements. Called once during initialization. **/
+          get: function (sortable) {
+              var order = localStorage.getItem(sortable.options.group);
+              return order ? order.split('|') : [];
+          },
+          /** Save the order of elements. Called every time at the drag end **/
+          set: function (sortable) {
+              var order = sortable.toArray();
+              localStorage.setItem(sortable.options.group, order.join('|'));
+          }
+        }
+      });
+    </script>
+
+    <!-- Order matters: Context singleton first, followed by its models and views -->
+    <script src="js/node-webkit/detection_service/server.js"></script>
+    <script src="js/context.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/views.js"></script>
+    <script src="js/routers.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/node-webkit/webkit.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+      $('.fabmo-status').on('statechange',function(e,state){
+        var percent = $('.progress').text();
+        if( percent!==''){
+          $('.progress').html('<span class="meter" style="width:'+percent.toString()+';">');
+        }
+        if (state === 'running' || state === 'manual' || state === 'homing' || state==='probing')
+          $('.state').removeClass('success info default warning danger').addClass('success');
+        else if (state === 'paused' || state === 'passthrough' || state === 'limit')
+          $('.state').removeClass('success info default warning danger').addClass('warning');
+        else if (state === 'Error' || state === 'Disconnected')
+          $('.state').removeClass('success info default warning danger').addClass('error');
+        else
+          $('.state').removeClass('success info default warning danger').addClass('default');
+      });
+
+
+      /*
+      $("#remote-machine-menu > li > a").click(function () {
+        var count = $("#remote-machine-menu > li").length;
+        if(count > 2) {
+          if ( $( "#remote-machine-menu > li:nth-child(2)").is( ":hidden" ) ) {
+            $( "#remote-machine-menu > li").slice(1).slideDown( "fast" );
+          } 
+          else {
+            if($(this).parent()[0]!=$( "#remote-machine-menu > li:last" )[0]) {
+              $("#remote-machine-menu > li:first-child").removeClass('current');
+              //$("#remote-machine-menu > li:first-child").children('span').removeClass('set_tool');
+              $(this).parent().addClass('current');
+              //$(this).children('span').addClass('set_tool');
+              $(this).parent().insertBefore($("#remote-machine-menu > li:first-child"));
+              $( "#remote-machine-menu > li").slice(1).slideUp( "fast" );
+            }
+          }
+        }
+      });
+      */
+
+    </script>
+  </body>
+</html>
