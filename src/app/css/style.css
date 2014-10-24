@@ -16,6 +16,7 @@ body,html{
     height:100%;
     width:100%;
     background-color: #eeeeee;
+    color:black;
 }
 
 .main-section{ 
@@ -51,7 +52,7 @@ aside{ margin-top:2.8125rem;}
 
 .left-menu.icon-bar > * { padding: 0.375rem 0.75rem;}
 
-ul.off-canvas-list li a:hover, ul.off-canvas-list li.no-link:hover {
+ul.off-canvas-list li:not(.tool) a:hover, ul.off-canvas-list li.no-link:hover {
 	background-color: rgba(0,0,0,0.025);
 	cursor: pointer;
 }
@@ -93,15 +94,6 @@ ul.off-canvas-list li { border-bottom: 2px solid #fbfbfb;}
 	background-position: center left 0.75rem;
 }
 
-ul.off-canvas-list .tool {
-	background-repeat: no-repeat;
-	background-size: 0.75rem;
-	background-position: center left 1.0875rem;
-	text-align: left;
-	padding-left: 2.75rem !important;
-}
-
-
 /* 
 *** Widgets Styles
 */
@@ -120,33 +112,62 @@ ul.off-canvas-list .tool {
 	height: 2.25rem;
 }
 
+.widget .refresh a {
+	height:2.25rem;
+}
+
 .widget .sortable-ghost {
 	border: 2px dashed #CCC;
-	background : url(../img/icon_plus_cross.png) no-repeat center;
+	background : url('../img/icon_plus_cross.png') no-repeat center;
 	background-size: 32px;
 }
 
 .widget .sortable-ghost > * {visibility: hidden;}
 
-.widget .tool 		{background-image: url('../img/icon_status_green.png');}
+.widget .tool 		{
+	background-image: url('../img/icon_status_green.png');
+	background-repeat: no-repeat;
+	background-size: 0.75rem;
+	background-position: center left 1.0875rem;
+	text-align: left;
+}
+
 .widget .tool.err 	{background-image: url('../img/icon_status_red.png');}
 .widget .tool.disc 	{background-image: url('../img/icon_status_grey.png');}
+
+.widget .tool:hover {
+	background-color: rgba(0, 0, 0, 0.025);
+}
+
+.widget .tool a {
+	z-index:1005;
+	padding-left: 2.75rem !important;
+	width:80.25%;
+}
+
+.widget .tool a:hover {
+	background-color: rgba(0, 0, 0, 0);
+}
 
 .widget .tool span {
 	-webkit-transition: opacity .15s;
 	transition: opacity .15s;
 	opacity: 0;
-	display: block;
 	cursor: pointer;
 	color: #c00;
-	width: 1.5rem;
-	height: 1.5rem;
-	display: inline-block;
-	background: red;
+	width: 19.75%;
+	height: 2.875rem;
+	background: url('../img/icon_details.png') center no-repeat;
+	background-size: 20px;
 	float: right;
+	z-index: 1010;
 }
 
 .widget .tool:hover span { opacity: 1;}
+
+.widget .tool span:hover {
+	background-size: 18px;
+}
 
 .widget ul li label {
 	/*
@@ -186,7 +207,7 @@ ul.off-canvas-list .tool {
 .current-tool.ok:hover {background-image: url('../img/icon_status_green.png');}
 .current-tool.err:hover {background-image: url('../img/icon_status_red.png');}
 .current-tool.disc:hover {background-image: url('../img/icon_status_grey.png');}
-*/
+
 
 /* ********** Icon apps grid ********** */
 .app-icon {
