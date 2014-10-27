@@ -102,7 +102,13 @@ ul.off-canvas-list li { border-bottom: 2px solid #fbfbfb;}
 	margin-bottom: 0.4375rem;
 }
 
-.widget .current.tool { background-color : #eeeeee;}
+.widget ul li:first-child label {
+	border-top: none;
+	border-bottom : 1px solid #eeeeee;
+	padding: 0.3rem 0.5rem 0.125rem;
+	background: white;
+	background:none;
+}
 
 .widget .hidden{ display: none;}
 
@@ -134,6 +140,8 @@ ul.off-canvas-list li { border-bottom: 2px solid #fbfbfb;}
 
 .widget .tool.err 	{background-image: url('../img/icon_status_red.png');}
 .widget .tool.disc 	{background-image: url('../img/icon_status_grey.png');}
+
+.widget .tool.current { background-color : #eeeeee;}
 
 .widget .tool:hover {
 	background-color: rgba(0, 0, 0, 0.025);
@@ -169,14 +177,11 @@ ul.off-canvas-list li { border-bottom: 2px solid #fbfbfb;}
 	background-size: 18px;
 }
 
-.widget ul li label {
-	/*
-	display:none;
-	*/
-	border-top: none;
-	border-bottom : 1px solid #eeeeee;
-	padding: 0.3rem 0.5rem 0.125rem;
-	background: white;
+.widget ul label.settings:hover {
+	background-image: url('../img/icon_more.png');
+	background-repeat: no-repeat;
+	background-size: 1.875rem;
+	background-position: center right 0.875rem;
 }
 
 .icon-bar { background: white;}
