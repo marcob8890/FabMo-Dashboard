@@ -4,17 +4,18 @@
 
 define(function(require) {
 
-var context = require('context')
-var models = require('models')
-var views = require('views')
-var routers = require('routers')
-var webkit = require('node-webkit/webkit')
+var context = require('context');
+var models = require('models');
+var views = require('views');
+var routers = require('routers');
+var webkit = require('node-webkit/webkit');
+
 
 // remoteMachines is the backbone collection of all the tools available on the network
 var remoteMachines = new context.models.RemoteMachines();
 var remoteMachineMenuView = new context.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : remoteMachines});
 
-function refreshRemoteMachines(callback) {
+context.refreshRemoteMachines = function refreshRemoteMachines(callback) {
 	DetectToolsOnTheNetworks(function(err, machines) {
 		if(err) {
 			return console.log(err);
@@ -31,14 +32,14 @@ function refreshRemoteMachines(callback) {
 		remoteMachines.reset(machine_models);
 		if(typeof callback === 'function') callback(null, remoteMachines);
 	},8080);
-}
+};
 
 switch(webkit.package.debug) {
 	// NORMAL MODE
 	case false:
 	case undefined:
 	case null:
-		refreshRemoteMachines(function(err,remoteMachines){
+		context.refreshRemoteMachines(function(err,remoteMachines){
 			if(remoteMachines.models.length === 0)
 			{
 				console.log('no machine detected');

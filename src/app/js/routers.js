@@ -32,7 +32,7 @@ define(function(require) {
 		},
 		refresh_machines: function() {
 			console.log("refresh asked");
-			refreshRemoteMachines(function(err,remoteMachines){
+			context.refreshRemoteMachines(function(err,remoteMachines){
 				if(remoteMachines.models.length === 0)
 				{
 					console.log('no machine detected');
@@ -53,5 +53,5 @@ define(function(require) {
 		}
 	});
 
-	return context.Routers
+	return context.Routers;
 });
