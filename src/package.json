@@ -18,6 +18,13 @@
     "async" : ">0.0.0",
     "node-uuid" : ">0.0.0"
   },
+  "devDependencies": {
+    "grunt" : "0.4.x",
+    "grunt-groc" : "^0.5.0",
+    "grunt-gh-pages" : "^0.9.1",
+    "grunt-open" : "^0.2.3",
+    "grunt-available-tasks" : "^0.5.0"
+  },
   "scripts" : {
     "start" : "nodewebkit"
   }
