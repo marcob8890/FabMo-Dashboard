@@ -5,28 +5,33 @@
  * the parts that we want the app to see.
  */
 
-Dashboard = function() {
-	this.machine = null;
-	this.message = "Test dashboard object";
-};
+define(function(require) {
+	context = require('context');
 
-Dashboard.prototype.keypad = function(){
-	$('#tool-modal').foundation('reveal', 'open');
-};
+	Dashboard = function() {
+		this.machine = null;
+		this.message = "Test dashboard object";
+	};
 
-Dashboard.prototype.DRO = function(){
-	openDROPanel();
-};
+	Dashboard.prototype.keypad = function(){
+		$('#tool-modal').foundation('reveal', 'open');
+	};
 
-Dashboard.prototype.homing = function(){
-	$('#home-zero-modal').foundation('reveal', 'open');
-};
+	Dashboard.prototype.DRO = function(){
+		openDROPanel();
+	};
 
-Dashboard.prototype.JobManager = function(){
-	var list_job = this.machine.list_job();
-	var list_job_view = new context.views.listJobView({el : '#job_list_container', collection : list_job});
-	$('#job-manager-modal').foundation('reveal', 'open');
-};
+	Dashboard.prototype.homing = function(){
+		$('#home-zero-modal').foundation('reveal', 'open');
+	};
 
+	Dashboard.prototype.JobManager = function(){
+		var list_job = this.machine.list_job();
+		var list_job_view = new context.views.listJobView({el : '#job_list_container', collection : list_job});
+		$('#job-manager-modal').foundation('reveal', 'open');
+	};
 
-var dashboard = new Dashboard();
+	var dashboard = new Dashboard();
+	return dashboard
+
+});

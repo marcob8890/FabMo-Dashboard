@@ -6,57 +6,12 @@
     <title>FabMo Dashboard</title>
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/style.css" />
-
-
-    <!-- NAVBAR -->
-    <script type="text/template" id="navbar-template">
-      <nav class="top-bar" data-topbar role="navigation">
-      <ul class="title-area">
-        <li class="name">
-          <h1><a href="#">FabMo Dashboard</a></h1>
-        </li>
-      </ul>
-      <section class="top-bar-section">
-      <ul class="right">
-        <li><a href="#" data-reveal-id="tool-modal">Tool</a></li>
-        <li><a href="#/menu">App Manager</a></li>
-      </ul>
-      </section>
-      </nav>
-    </script>
-    
-    <!-- APP ICONS -->
-    <script type="text/template" id="app-icon-template">
-      <a href="#/app/<%= id %>"><img src="<%= icon_url %>" alt="<%= name %>"></a>
-      <div class="app-title">
-        <a href="#/app/<%= id %>"><%= name %></a>
-      </div>
-    </script>
-
-
-    <!-- Settings form line-->
-    <script type="text/template" id="settings-form-line-template">
-     <div class="row">
-        <div class="small-3 columns">
-          <label for="<%= setting_label %>-label" class="right"><%= setting_label %></label>
-        </div>
-        <div class="small-9 columns">
-          <input type="text" id="<%= setting_label %>-label" value="<%= setting_value %>">
-        </div>
-      </div>
-    </script>
-
-
-    <!-- JOB-->
-    <script type="text/template" id="job-template">
-      <div class="job">
-        <ul>
-        <li><label>Job #<%= id %></label></li>
-        <% _.each( files, function( file ){ %>
-          <li><span><%= file.id %></span><span><%= file.status %></span></li> 
-        <% }); %>
-        </ul
-      </div>
+    <script type="text/javascript">
+      window.gui = require('nw.gui');
+      window.requireNode = window.require;
+      delete window.require;
+      window.requireNode.version = process.versions.node;
+      delete process.versions.node;
     </script>
   </head>
 
@@ -66,10 +21,7 @@
   <body>
       <div style="height:100%" class="off-canvas-wrap" data-offcanvas>
         <div class="inner-wrap">
-
           <!-- New nav work -->
-
-
           <!-- Nav-Bar & Buttons for sliding menus -->
           <nav class="tab-bar">
             <section class="left-small">
@@ -82,7 +34,6 @@
               <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
             </section>
           </nav>
-
 
           <!-- 
               Sliding Wiget Menu (fix for large screen)
@@ -120,7 +71,7 @@
           <aside class="right-off-canvas-menu">
             <div id="widget-tools-position" class="widget">
               <ul class="off-canvas-list fabmo-status fabmo-file-control" id="dro-content">
-                <li><label>Position & Control</label></li>
+                <li><label>Position &amp; Control</label></li>
                 <li><a><strong>X: </strong><span class="posx"></span></a></li>
                 <li><a><strong>Y: </strong><span class="posy"></span></a></li>
                 <li><a><strong>Z: </strong><span class="posz"></span></a></li>
@@ -285,17 +236,10 @@
           }
         }
       });
+
     </script>
 
-    <!-- Order matters: Context singleton first, followed by its models and views -->
-    <script src="js/node-webkit/detection_service/server.js"></script>
-    <script src="js/context.js"></script>
-    <script src="js/models.js"></script>
-    <script src="js/views.js"></script>
-    <script src="js/routers.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/node-webkit/webkit.js"></script>
-    <script src="js/main.js"></script>
+    <script data-main="js/app.js" src="js/libs/require.js"></script>
 
     <script>
       $('.fabmo-status').on('statechange',function(e,state){
@@ -312,29 +256,7 @@
         else
           $('.state').removeClass('success info default warning danger').addClass('default');
       });
-
-
-      /*
-      $("#remote-machine-menu > li > a").click(function () {
-        var count = $("#remote-machine-menu > li").length;
-        if(count > 2) {
-          if ( $( "#remote-machine-menu > li:nth-child(2)").is( ":hidden" ) ) {
-            $( "#remote-machine-menu > li").slice(1).slideDown( "fast" );
-          } 
-          else {
-            if($(this).parent()[0]!=$( "#remote-machine-menu > li:last" )[0]) {
-              $("#remote-machine-menu > li:first-child").removeClass('current');
-              //$("#remote-machine-menu > li:first-child").children('span').removeClass('set_tool');
-              $(this).parent().addClass('current');
-              //$(this).children('span').addClass('set_tool');
-              $(this).parent().insertBefore($("#remote-machine-menu > li:first-child"));
-              $( "#remote-machine-menu > li").slice(1).slideUp( "fast" );
-            }
-          }
-        }
-      });
-      */
-
     </script>
+
   </body>
 </html>

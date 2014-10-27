@@ -1,8 +1,12 @@
+define(function(require) {
+
 // Node webkit globals
-var nwkg_package_file = require('../package.json');
-var nwkg_win = require('nw.gui').Window.get();
-var nwkg_app_manager = require('./js/node-webkit/app_manager.js');
-var _ = require('./js/libs/underscore.js')._ ;
+var nwkg_package_file = requireNode('../package.json');
+var nwkg_win = window.gui.Window.get();
+var nwkg_app_manager = requireNode('./js/node-webkit/app_manager.js');
+var _ = requireNode('./js/libs/underscore.js')._ ;
+//var detection_service = requireNode('./js/node-webkit/detection_service/server.js');
+
 //var process = require('process');
 nwkg_win.on('document-start',function(frame){
 	try{
@@ -19,3 +23,9 @@ process.on('uncaughtException', function(err) {
 	console.log(err.stack);
 });
 */
+
+	return {
+		'package' : nwkg_package_file,
+		'app_manager' : nwkg_app_manager
+	}
+});

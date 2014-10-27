@@ -1,10 +1,14 @@
 /*
  * main.js kicks off the application once all the model and view prototypes have been created.
  */
- 
-// The navbarView is temporarily superseded by the 
-//navbarView = new context.views.NavbarView({el : "#navbar_container"});
 
+define(function(require) {
+
+var context = require('context')
+var models = require('models')
+var views = require('views')
+var routers = require('routers')
+var webkit = require('node-webkit/webkit')
 
 // remoteMachines is the backbone collection of all the tools available on the network
 var remoteMachines = new context.models.RemoteMachines();
@@ -29,7 +33,7 @@ function refreshRemoteMachines(callback) {
 	},8080);
 }
 
-switch(nwkg_package_file.debug) {
+switch(webkit.package.debug) {
 	// NORMAL MODE
 	case false:
 	case undefined:
@@ -78,7 +82,7 @@ switch(nwkg_package_file.debug) {
 					loadSettingsForms(dashboard.machine);
 				});
 			}
-		},nwkg_package_file.detection_service_port||8080);
+		},webkit.package.detection_service_port||8080);
 
 		break;
 }
@@ -87,7 +91,7 @@ switch(nwkg_package_file.debug) {
 
 appClientView = new context.views.AppClientView({el : "#app-client-container"});
 
-nwkg_app_manager.load_apps(nwkg_package_file.apps_dir || './apps', function(err, apps) {
+webkit.app_manager.load_apps(webkit.package.apps_dir || './apps', function(err, apps) {
 	context.apps = new context.models.Apps(apps);
 	appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
 });
@@ -185,3 +189,6 @@ function loadDriverSettings(machine){
 
 	});
 }
+
+});
+

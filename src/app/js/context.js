@@ -5,8 +5,12 @@
  * The application context is global, and this file should be included first, so that models.js, views.js and 
  * the application router can populate it with all of the necessary objects.
  */
-var context = {
-	models : {},
-	views : {},
-	router : null
-};
+
+ define(function () {
+	var context = {
+		models : {},
+		views : {},
+		router : null
+	};
+	return context;
+});
