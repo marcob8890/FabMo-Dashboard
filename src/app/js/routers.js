@@ -1,6 +1,6 @@
 define(function(require) {
 	context = require('context');
-
+	webkit = require('node-webkit/webkit')
 
 	context.Router = Backbone.Router.extend({
 		routes: {
