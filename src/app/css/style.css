@@ -22,6 +22,7 @@ body,html{
 .main-section{ 
 	width:auto;
 	height:auto;
+	float:left;
 }
 
 .off-canvas-wrap,.inner-wrap{ height:100%;}
@@ -41,13 +42,19 @@ body,html{
 
 /* ********** Menu Style ********** */
 
-/*
-aside{ margin-top:2.8125rem;}
-*/
-
 .right-off-canvas-menu, .left-off-canvas-menu { 
 	background-color :white;
 	box-shadow: 0 0 40px rgba(0,0,0,0.2);
+}
+
+/* Change #left-menu & #right-menu config on "desktop" view */
+@media only screen and (min-width: 64.063em) {
+	.right-off-canvas-menu, .left-off-canvas-menu {height: 100%;}
+	.offcanvas-overlap-right .left-off-canvas-menu,
+	.offcanvas-overlap-left .right-off-canvas-menu {position:relative !important;}
+	.right-off-canvas-menu	{float:right;}
+	.left-off-canvas-menu	{float:left;}
+	#close_menu.exit-off-canvas	{display:none !important;}
 }
 
 .left-menu.icon-bar > * { padding: 0.375rem 0.75rem;}
