@@ -17,6 +17,21 @@ define(function(require) {
 		model : models.App
 	});
 
+	models.Widget = Backbone.Model.extend({
+		defaults:{
+			name : '', //Name of the widget
+			id : '', //Id of the widget, will be the ID-container wich will hold the content of the widget
+			host_id : '', //ID of the area that host the widget
+			position : 1, //Position of the widget in the area
+			active : true, //Widget is currently used in the app
+		},
+		sync : function(method, model, option) {} // Override sync because this is a local model
+	});
+
+	models.Widgets = Backbone.Collection.extend({
+		model : models.Widget
+	});
+
 	models.RemoteMachine = Backbone.Model.extend({
 		defaults:{
 			//Add a listener when the state changes

@@ -89,6 +89,19 @@ define(function(require) {
 		}
 	});
 
+	views.WidgetView = Backbone.View.extend({
+		template : _.template(require('text!templates/widget.html')),
+		initialize : function() {
+			_.bindAll(this, 'render');
+			this.render();
+		},
+		render : function() {
+			this.setElement('#'+this.model.get('host_id'));
+			this.$el.append(this.template(this.model.toJSON()));
+			return this;
+		}
+	});
+
 	views.RemoteMachineMenuView = Backbone.View.extend({
 		tagName : 'ul',
 		className : 'off-canvas-list',
