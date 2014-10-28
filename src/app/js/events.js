@@ -48,24 +48,20 @@ $(document).keydown(function(e){
 });
 
 resizedoc = function(){
-	if($("body").width()>800) {
+	if($("body").width()/parseFloat($("body").css("font-size"))>64.063) {
 	  if($("#main").hasClass("offcanvas-overlap-right") && $("#main").hasClass("offcanvas-overlap-left")) {
 	    $(".main-section").css("width",$("body").width()-500+"px");
 	  }
 	  else if($("#main").hasClass("offcanvas-overlap-right") || $("#main").hasClass("offcanvas-overlap-left")) {
 	    $(".main-section").css("width",$("body").width()-250+"px");
 	  }
-	  else {
-	    $(".main-section").css("width","100%");
-	  }
+	  else {$(".main-section").css("width","100%");}
 	}
-	else {
-	  $(".main-section").css("width","100%");
-	}
+	else {$(".main-section").css("width","100%");}
 };
 
 resizedocclick = function(c){
-	if($("body").width()>800) {
+	if($("body").width()/parseFloat($("body").css("font-size"))>64.063) {
 	  if($("#main").hasClass("offcanvas-overlap-right") && $("#main").hasClass("offcanvas-overlap-left")) {
 	    $(".main-section").css("width",$("body").width()-250+"px");
 	  }
@@ -75,13 +71,9 @@ resizedocclick = function(c){
 	  else if(($("#main").hasClass("offcanvas-overlap-right") && c==1) || ($("#main").hasClass("offcanvas-overlap-left") && c==2)) {
 	    $(".main-section").css("width","100%");
 	  }
-	  else {
-	    $(".main-section").css("width",$("body").width()-250+"px");
-	  }
+	  else {$(".main-section").css("width",$("body").width()-250+"px");}
 	}
-	else {
-	  $(".main-section").css("width","100%");
-	}
+	else {$(".main-section").css("width","100%");}
 };
 
 $(".left-small").click( function() {resizedocclick(1);});
