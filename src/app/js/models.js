@@ -41,8 +41,6 @@ define(function(require) {
 		model : models.Files,
 	});
 
-
-
 	models.Job = Backbone.Model.extend({
 		defaults:{
 			id: null,
@@ -51,8 +49,6 @@ define(function(require) {
 		},
 		sync : function(method, model, option) {} // Override sync because this is a local model	
 	});
-
-
 
 	models.RemoteMachines = Backbone.Collection.extend({
 		model : models.RemoteMachine,
@@ -68,8 +64,6 @@ define(function(require) {
 		},
 		sync : function(method, model, option) {} // Override sync because this is a local model
 	});
-
-
 
 	models.SettingsForm = Backbone.Collection.extend({
 		model : models.SettingFormLine

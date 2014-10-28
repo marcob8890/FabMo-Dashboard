@@ -17,35 +17,35 @@ define(function(require) {
 			this.context.appMenuView.show();
 		},
 		set_machine: function(id) {
-			machine = remoteMachines.get(id);
+			machine = this.context.remoteMachines.get(id);
 			console.log("SETTING MACHINE");
 			console.log(machine.attributes);
 			ChooseBestWayToConnect(machine.attributes, function(ip, port) {
 				dashboard.machine = new FabMo(ip, port);
 				dashboard.ui= new FabMoUI(dashboard.machine);
-				bindKeypad(dashboard.ui);
-				loadSettingsForms(dashboard.machine);
-			});
+				this.context.bindKeypad(dashboard.ui);
+				this.context.loadSettingsForms(dashboard.machine);
+			}.bind(this));
 		},
 		refresh_machines: function() {
 			this.context.refreshRemoteMachines(function(err,remoteMachines){
-				if(remoteMachines.models.length === 0)
+				if(this.context.remoteMachines.models.length === 0)
 				{
 					console.log('no machine detected');
 				}
-				else if(remoteMachines.models.length === 1)
+				else if(this.context.remoteMachines.models.length === 1)
 				{
 					ChooseBestWayToConnect(remoteMachines.models[0].attributes,function(ip,port){
 						dashboard.machine = new FabMo(ip, port);
 						dashboard.ui= new FabMoUI(dashboard.machine);
-						bindKeypad(dashboard.ui);
+						this.context.bindKeypad(dashboard.ui);
 						this.context.loadSettingsForms(dashboard.machine);
-					});
+					}.bind(this));
 				}
 				else{
 					this.context.openSettingsPanel();
 				}
-			});
+			}.bind(this));
 		},
 		setContext: function(context) {
 			this.context = context;

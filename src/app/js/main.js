@@ -7,6 +7,8 @@ define(function(require) {
 var context = require('context');
 var webkit = require('node-webkit/webkit');
 
+dashboard = {}
+
 switch(webkit.package.debug) {
 	// NORMAL MODE
 	case false:
@@ -22,12 +24,12 @@ switch(webkit.package.debug) {
 				ChooseBestWayToConnect(context.remoteMachines.models[0].attributes,function(ip,port){
 					dashboard.machine = new FabMo(ip, port);
 					dashboard.ui= new FabMoUI(dashboard.machine);
-					bindKeypad(dashboard.ui);
-					loadSettingsForms(dashboard.machine);
+					context.bindKeypad(dashboard.ui);
+					context.loadSettingsForms(dashboard.machine);
 				});
 			}
 			else{
-				openSettingsPanel();
+				context.openSettingsPanel();
 			}
 		});
 		break;
@@ -52,8 +54,8 @@ switch(webkit.package.debug) {
 					]);
 					dashboard.machine = fabmo;
 					dashboard.ui = new FabMoUI(fabmo);
-					bindKeypad(dashboard.ui);
-					loadSettingsForms(dashboard.machine);
+					context.bindKeypad(dashboard.ui);
+					context.loadSettingsForms(dashboard.machine);
 				});
 			}
 		},webkit.package.detection_service_port||8080);
@@ -71,26 +73,13 @@ router = new context.Router();
 router.setContext(context);
 Backbone.history.start();
 
-function bindKeypad(ui){
-	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-		if($(this).is('#tool-modal'))
-			ui.allowKeypad();
-	});
-	$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
-		if($(this).is('#tool-modal'))
-			ui.forbidKeypad();
-	});
-}
+$('.button-homexy').click(function(e) {gcode('G28.2 X0 Y0'); });
+$('.button-homez').click(function(e) {gcode('G28.2 Z0'); });
+$('.button-probez').click(function(e) {gcode('G38.2 Z-4 F10\nG10 L2 P1 Z-0.125'); });   
 
-	$('.button-homexy').click(function(e) {gcode('G28.2 X0 Y0'); });
-	$('.button-homez').click(function(e) {gcode('G28.2 Z0'); });
-	$('.button-probez').click(function(e) {gcode('G38.2 Z-4 F10\nG10 L2 P1 Z-0.125'); });   
-
-	$('.button-zerox').click(function(e) {gcode('G28.3 X0'); });  
-	$('.button-zeroy').click(function(e) {gcode('G28.3 Y0'); });  
-	$('.button-zeroz').click(function(e) {gcode('G28.3 Z0'); });
-
-
+$('.button-zerox').click(function(e) {gcode('G28.3 X0'); });  
+$('.button-zeroy').click(function(e) {gcode('G28.3 Y0'); });  
+$('.button-zeroz').click(function(e) {gcode('G28.3 Z0'); });
 
 function gcode(string) {
 		dashboard.machine.gcode(string,function(err,data){

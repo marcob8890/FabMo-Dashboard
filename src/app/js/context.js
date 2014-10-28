@@ -12,8 +12,7 @@
  	var views = require('views');
  	var Router = require('routers');
 
-	var ApplicationContext = function() {
-
+	ApplicationContext = function() {
 		// Model/View/Router Prototypes
 		this.models = models;
 		this.views = views;
@@ -25,8 +24,6 @@
 		// View Instances
 		this.remoteMachineMenuView = new this.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : this.remoteMachines});
 		this.appClientView = new this.views.AppClientView({el : "#app-client-container"});
-
-
 	};
 
 	ApplicationContext.prototype.openSettingsPanel = function(){
@@ -72,7 +69,7 @@
 					console.log(settings_fields);
 					new this.views.SettingsFormView({collection : new this.models.SettingsForm(settings_fields), el : '#core_settings_form'});
 				}
-			});
+			}.bind(this));
 
 		});
 	}
@@ -91,10 +88,21 @@
 				});
 				machine_models.push(machine_model);
 			}
-			remoteMachines.reset(machine_models);
+			this.remoteMachines.reset(machine_models);
 			if(typeof callback === 'function') callback(null, this.remoteMachines);
-		},8080);
+		}.bind(this),8080);
 	};
+
+	ApplicationContext.prototype.bindKeypad = function(ui){
+		$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
+			if($(this).is('#tool-modal'))
+				ui.allowKeypad();
+		});
+		$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
+			if($(this).is('#tool-modal'))
+				ui.forbidKeypad();
+		});
+	}
 
 	return new ApplicationContext();
 });
