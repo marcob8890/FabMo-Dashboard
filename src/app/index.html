@@ -6,8 +6,10 @@
     <title>FabMo Dashboard</title>
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <script src="js/node-webkit/detection_service/server.js"></script>
     <script type="text/javascript">
       window.gui = require('nw.gui');
+
       window.requireNode = window.require;
       delete window.require;
       window.requireNode.version = process.versions.node;
