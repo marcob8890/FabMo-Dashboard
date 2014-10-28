@@ -5,34 +5,7 @@
 define(function(require) {
 
 var context = require('context');
-var models = require('models');
-var views = require('views');
-var routers = require('routers');
 var webkit = require('node-webkit/webkit');
-
-
-// remoteMachines is the backbone collection of all the tools available on the network
-var remoteMachines = new context.models.RemoteMachines();
-var remoteMachineMenuView = new context.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : remoteMachines});
-
-context.refreshRemoteMachines = function refreshRemoteMachines(callback) {
-	DetectToolsOnTheNetworks(function(err, machines) {
-		if(err) {
-			return console.log(err);
-		}
-		console.log(machines);
-		var machine_models = [];
-		for(var index in machines){
-			machine_model = new context.models.RemoteMachine({
-				hostname : machines[index].hostname,
-				network : machines[index].network
-			});
-			machine_models.push(machine_model);
-		}
-		remoteMachines.reset(machine_models);
-		if(typeof callback === 'function') callback(null, remoteMachines);
-	},8080);
-};
 
 switch(webkit.package.debug) {
 	// NORMAL MODE
@@ -40,13 +13,13 @@ switch(webkit.package.debug) {
 	case undefined:
 	case null:
 		context.refreshRemoteMachines(function(err,remoteMachines){
-			if(remoteMachines.models.length === 0)
+			if(context.remoteMachines.models.length === 0)
 			{
 				console.log('no machine detected');
 			}
-			else if(remoteMachines.models.length === 1)
+			else if(context.remoteMachines.models.length === 1)
 			{
-				ChooseBestWayToConnect(remoteMachines.models[0].attributes,function(ip,port){
+				ChooseBestWayToConnect(context.remoteMachines.models[0].attributes,function(ip,port){
 					dashboard.machine = new FabMo(ip, port);
 					dashboard.ui= new FabMoUI(dashboard.machine);
 					bindKeypad(dashboard.ui);
@@ -70,7 +43,7 @@ switch(webkit.package.debug) {
 					if(err)
 						console.log(err);
 					fabmo.hostname = info?info.surname:undefined;
-					remoteMachines.reset([
+					context.remoteMachines.reset([
 						new context.models.RemoteMachine({
 							hostname : fabmo.hostname,
 							ip : fabmo.ip,
@@ -88,17 +61,14 @@ switch(webkit.package.debug) {
 		break;
 }
 
-
-
-appClientView = new context.views.AppClientView({el : "#app-client-container"});
-
 webkit.app_manager.load_apps(webkit.package.apps_dir || './apps', function(err, apps) {
 	context.apps = new context.models.Apps(apps);
-	appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
+	context.appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
 });
 
 // Start the application
 router = new context.Router();
+router.setContext(context);
 Backbone.history.start();
 
 function bindKeypad(ui){
@@ -120,21 +90,6 @@ function bindKeypad(ui){
 	$('.button-zeroy').click(function(e) {gcode('G28.3 Y0'); });  
 	$('.button-zeroz').click(function(e) {gcode('G28.3 Z0'); });
 
-function openSettingsPanel(){
-	$('.off-canvas-wrap').foundation('offcanvas', 'show', 'offcanvas-overlap-right');
-}
-
-function openDROPanel(){
-	$('.off-canvas-wrap').foundation('offcanvas', 'show', 'offcanvas-overlap-left');
-}
-
-function closeSettingsPanel(){
-	$('.off-canvas-wrap').foundation('offcanvas', 'hide', 'offcanvas-overlap-right');
-}
-
-function closeDROPanel(){
-	$('.off-canvas-wrap').foundation('offcanvas', 'hide', 'offcanvas-overlap-left');
-}
 
 
 function gcode(string) {
@@ -154,42 +109,6 @@ function addJob(job,callback){
 	});
 }
 
-function loadSettingsForms(machine){
-	$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-		if($(this).is('#settings-modal')){
-			loadDriverSettings(machine);
-		}
-	});
-	/*$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
-		if($(this).is('#settings-modal')){
-			loadDriverSettings();
-		}
-	});*/
-}
-
-function loadDriverSettings(machine){
-	machine.get_config(function(err,config){
-		if(err){console.log(err);return;}
-		var settings_fields = [];
-		var count=0;
-		// TODO change it with the next implementation of the settings files
-		config.forEach(function(val,idx,arr){
-			var setting_field = {};
-			var key = Object.keys(val)[0];
-			setting_field.setting_label = key;
-			setting_field.setting_value = val[key];
-			setting_field.code = key;
-			setting_field.type="text";
-			settings_fields.push(setting_field);
-			count++;
-			if(count === config.length){
-				console.log(settings_fields);
-				new context.views.SettingsFormView({collection : new context.models.SettingsForm(settings_fields), el : '#core_settings_form'});
-			}
-		});
-
-	});
-}
 
 });
 

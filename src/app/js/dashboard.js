@@ -6,7 +6,6 @@
  */
 
 define(function(require) {
-	context = require('context');
 
 	Dashboard = function() {
 		this.machine = null;
@@ -18,7 +17,7 @@ define(function(require) {
 	};
 
 	Dashboard.prototype.DRO = function(){
-		openDROPanel();
+		context.openDROPanel();
 	};
 
 	Dashboard.prototype.homing = function(){
@@ -32,6 +31,7 @@ define(function(require) {
 	};
 
 	var dashboard = new Dashboard();
+	
 	return dashboard
 
 });

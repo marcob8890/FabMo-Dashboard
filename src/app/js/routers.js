@@ -1,8 +1,6 @@
 define(function(require) {
-	context = require('context');
-	webkit = require('node-webkit/webkit')
 
-	context.Router = Backbone.Router.extend({
+	var Router = Backbone.Router.extend({
 		routes: {
 			"app/:id"     		: "launch_app",
 			"menu"        		: "show_menu",
@@ -10,17 +8,16 @@ define(function(require) {
 			"set_machine/:id" 	: "set_machine"
 		},
 		launch_app: function(id) {
-			appClientView.setModel(context.apps.get(id));
-			appMenuView.hide();
-			appClientView.show();
+			this.context.appClientView.setModel(this.context.apps.get(id));
+			this.context.appMenuView.hide();
+			this.context.appClientView.show();
 		},
 		show_menu: function() {
-			appClientView.hide();
-			appMenuView.show();
+			this.context.appClientView.hide();
+			this.context.appMenuView.show();
 		},
 		set_machine: function(id) {
 			machine = remoteMachines.get(id);
-			//machine.set('state','err');
 			console.log("SETTING MACHINE");
 			console.log(machine.attributes);
 			ChooseBestWayToConnect(machine.attributes, function(ip, port) {
@@ -31,8 +28,7 @@ define(function(require) {
 			});
 		},
 		refresh_machines: function() {
-			console.log("refresh asked");
-			context.refreshRemoteMachines(function(err,remoteMachines){
+			this.context.refreshRemoteMachines(function(err,remoteMachines){
 				if(remoteMachines.models.length === 0)
 				{
 					console.log('no machine detected');
@@ -43,15 +39,18 @@ define(function(require) {
 						dashboard.machine = new FabMo(ip, port);
 						dashboard.ui= new FabMoUI(dashboard.machine);
 						bindKeypad(dashboard.ui);
-						loadSettingsForms(dashboard.machine);
+						this.context.loadSettingsForms(dashboard.machine);
 					});
 				}
 				else{
-					openSettingsPanel();
+					this.context.openSettingsPanel();
 				}
 			});
+		},
+		setContext: function(context) {
+			this.context = context;
 		}
 	});
 
-	return context.Routers;
+	return Router;
 });

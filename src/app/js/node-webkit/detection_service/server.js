@@ -2,10 +2,9 @@
  * @author jimmy
  */
 var os = require('os');
-var restify = require('restify');
+var restify = require('restify'); 
 
 var package_json = require('../package.json');
-
 var server = restify.createServer({name:"local_api"});
 
 // allow JSON over Cross-origin resource sharing 
@@ -16,7 +15,6 @@ server.use( function crossOrigin(req,res,next){
 });
 
 var routes = require('./js/node-webkit/detection_service/routes')(server);
-
 
 server.on('error',function (err) {
     if (err.code == 'EADDRINUSE')

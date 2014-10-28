@@ -1,8 +1,8 @@
 define(function(require) {
 
-	context = require('context');
+	models = {}
 
-	context.models.App = Backbone.Model.extend({
+	models.App = Backbone.Model.extend({
 		defaults:{
 			name : null,
 			icon_path : null,
@@ -13,11 +13,11 @@ define(function(require) {
 		sync : function(method, model, option) {} // Override sync because this is a local model
 	});
 
-	context.models.Apps = Backbone.Collection.extend({
-		model : context.models.App
+	models.Apps = Backbone.Collection.extend({
+		model : models.App
 	});
 
-	context.models.RemoteMachine = Backbone.Model.extend({
+	models.RemoteMachine = Backbone.Model.extend({
 		defaults:{
 			//Add a listener when the state changes
 			hostname:'<unknown>',
@@ -27,7 +27,7 @@ define(function(require) {
 		sync : function(method, model, option) {} // Override sync because this is a local model	
 	});
 
-	context.models.File = Backbone.Model.extend({
+	models.File = Backbone.Model.extend({
 		defaults:{
 			id: null,
 			status : 'pending',
@@ -37,16 +37,16 @@ define(function(require) {
 		
 	});
 
-	context.models.Files = Backbone.Collection.extend({
-		model : context.models.Files,
+	models.Files = Backbone.Collection.extend({
+		model : models.Files,
 	});
 
 
 
-	context.models.Job = Backbone.Model.extend({
+	models.Job = Backbone.Model.extend({
 		defaults:{
 			id: null,
-			files : new context.models.Files(),
+			files : new models.Files(),
 			status:'pending'
 		},
 		sync : function(method, model, option) {} // Override sync because this is a local model	
@@ -54,11 +54,11 @@ define(function(require) {
 
 
 
-	context.models.RemoteMachines = Backbone.Collection.extend({
-		model : context.models.RemoteMachine,
+	models.RemoteMachines = Backbone.Collection.extend({
+		model : models.RemoteMachine,
 	});
 
-	context.models.SettingFormLine = Backbone.Model.extend({
+	models.SettingFormLine = Backbone.Model.extend({
 		defaults:{
 			setting_label:null,
 			setting_value:null,
@@ -71,9 +71,9 @@ define(function(require) {
 
 
 
-	context.models.SettingsForm = Backbone.Collection.extend({
-		model : context.models.SettingFormLine
+	models.SettingsForm = Backbone.Collection.extend({
+		model : models.SettingFormLine
 	});
 
-	return context.models;
+	return models;
 });

@@ -1,8 +1,9 @@
 define(function(require) {
-	context = require('context');
+	models = require('models');
+	views = {}
 
 	// VIEWS
-	context.views.NavbarView = Backbone.View.extend({
+	views.NavbarView = Backbone.View.extend({
 		initialize : function() {
 			this.render();
 		},
@@ -18,7 +19,7 @@ define(function(require) {
 		}
 	});
 
-	context.views.AppIconView = Backbone.View.extend({
+	views.AppIconView = Backbone.View.extend({
 		tagName : 'li',
 		className : 'app-icon',
 		template : _.template(require('text!templates/app-icon.html')),
@@ -32,7 +33,7 @@ define(function(require) {
 		}
 	});
 
-	context.views.AppMenuView = Backbone.View.extend({
+	views.AppMenuView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'app-menu',
 		collection : null,
@@ -49,7 +50,7 @@ define(function(require) {
 			var count = 0;
 			element.empty();
 			this.collection.forEach(function(item) {
-				var appIconView = new context.views.AppIconView({ model: item });
+				var appIconView = new views.AppIconView({ model: item });
 				element.append(appIconView.render().el);
 			});
 			return this;
@@ -62,10 +63,10 @@ define(function(require) {
 		}
 	});
 
-	context.views.AppClientView = Backbone.View.extend({
+	views.AppClientView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'app',
-		model : new context.models.App(),
+		model : new models.App(),
 		initialize : function(options) {
 			_.bindAll(this, 'render');
 		},
@@ -74,6 +75,7 @@ define(function(require) {
 			iframe = element.find('.app-iframe');
 			url = this.model.get('app_url');
 			iframe.attr('src',url);
+			iframe.parent.dashboard = require('dashboard');
 		},
 		show : function() {
 			$(this.el).show();
@@ -87,7 +89,7 @@ define(function(require) {
 		}
 	});
 
-	context.views.RemoteMachineMenuView = Backbone.View.extend({
+	views.RemoteMachineMenuView = Backbone.View.extend({
 		tagName : 'ul',
 		className : 'off-canvas-list',
 		collection : null,
@@ -156,8 +158,7 @@ define(function(require) {
 	});
 
 
-
-	context.views.JobView = Backbone.View.extend({
+	views.JobView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'job',
 		template : _.template(require('text!templates/job.html')),
@@ -171,7 +172,7 @@ define(function(require) {
 		}
 	});
 
-	context.views.JobListView = Backbone.View.extend({
+	views.JobListView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'jobs_list',
 		collection : null,
@@ -187,7 +188,7 @@ define(function(require) {
 			var element = jQuery(this.el);
 			element.empty();
 			this.collection.forEach(function(item) {
-				var appIconView = new context.views.JobView({ model: item });
+				var appIconView = new views.JobView({ model: item });
 				element.append(JobView.render().el);
 			});
 			return this;
@@ -201,7 +202,7 @@ define(function(require) {
 	});
 
 
-	context.views.SettingsFormLineView = Backbone.View.extend({
+	views.SettingsFormLineView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'settings-form-line',
 		template : _.template(require('text!templates/settings-form-line.html')),
@@ -215,7 +216,7 @@ define(function(require) {
 		}
 	});
 
-	context.views.SettingsFormView = Backbone.View.extend({
+	views.SettingsFormView = Backbone.View.extend({
 		tagName : 'div',
 		className : 'settings-form',
 		collection : null,
@@ -231,7 +232,7 @@ define(function(require) {
 			var element = jQuery(this.el);
 			element.empty();
 			this.collection.forEach(function(item) {
-				var settingsFormLineView = new context.views.SettingsFormLineView({ model: item });
+				var settingsFormLineView = new views.SettingsFormLineView({ model: item });
 				element.append(settingsFormLineView.render().el);
 			});
 			return this;
@@ -244,5 +245,5 @@ define(function(require) {
 		}
 	});
 
-	return context.views;
+	return views;
 });
