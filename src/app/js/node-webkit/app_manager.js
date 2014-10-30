@@ -51,6 +51,7 @@ function copy_app(app_dir, callback) {
 					var package_info = JSON.parse(fs.readFileSync(pkg_info_path));
 					var app_info = {'name':package_info.name,
 									'icon_path':tmp_app_path+package_info.icon,
+									'icon_background_color':package_info.icon_color,
 									'app_path':tmp_app_path,
 									'app_url':'app://fabmolinker/'+path.join(tmp_app_path,package_info.main),
 									'icon_url':'app://fabmolinker'+path.join('tmp', tmp_app_path,package_info.icon),
@@ -80,6 +81,7 @@ function decompress_app(app_path,callback){
 		var package_info = JSON.parse(fs.readFileSync(pkg_info_path));
 		var app_info = {'name':package_info.name,
 						'icon_path':tmp_app_path+package_info.icon,
+						'icon_background_color':package_info.icon_color,
 						'app_path':tmp_app_path,
 						'app_url':'app://fabmolinker/'+path.join(tmp_app_path,package_info.main),
 						'icon_url':'app://fabmolinker'+path.join('tmp', tmp_app_path,package_info.icon),

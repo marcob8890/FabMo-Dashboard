@@ -1,6 +1,5 @@
 @import "fonts.css";
 
-
 .tab-bar { background: #313366;}
 .tab-bar a { color : white;}
 .right-small, .left-small { border-color: #efefef;}
@@ -32,6 +31,7 @@ body,html{
 .app-iframe {
 	width: 100%;
 	height: 100%;
+	border:0px;
 }
 
 #app-client-container {
@@ -224,22 +224,67 @@ ul.off-canvas-list li { border-bottom: 2px solid #fbfbfb;}
 /* ********** Icon apps grid ********** */
 .app-icon {
 	float: left;
-	width: 128px;
-	height: 96px;
+	width: 100px;
+	height: 120px;
 	text-align: center;
 	margin: 16px;
-	/*background-color:#eeeeee;*/
 }
 
 .app-icon img {
-/*	margin-top: 32px; */
-	width: 75%;
-	height: 75%;
+	width: 100px;
+	height: 100px;
+	padding: 8px;
+	border-radius: 8px;
+	box-shadow: 0 1px 6px rgba(0,0,0,0.25);
 }
 
-.sortable-ghost {
+.app-icon.sortable-ghost {
 	border: 3px dashed #CCC;
 	background : url(../img/icon_plus_cross.png) no-repeat center;
 	background-size: 48px;
 }
-.sortable-ghost > * {visibility: hidden;}
+
+.app-icon.sortable-ghost > * {visibility: hidden;}
+
+	/*
+	App Icon Colors
+	*/
+.app-icon img  {background : -webkit-linear-gradient(top, #A5A5A5 0%, #AAAAAA 100%);} /*Default = Grey*/
+.app-icon img.blue {background : -webkit-linear-gradient(top, #313366 0%, #414366 100%);}
+.app-icon img.green {background : -webkit-linear-gradient(top, #00DB41 0%, #15D648 100%);}
+.app-icon img.grey {background : -webkit-linear-gradient(top, #A5A5A5 0%, #AAAAAA 100%);}
+.app-icon img.orange {background : -webkit-linear-gradient(top, #db8729 0%, #D69148 100%);}
+.app-icon img.red {background : -webkit-linear-gradient(top, #B12024 0%, #AF3335 100%);}
+.app-icon img.yellow {background : -webkit-linear-gradient(top, #EDCF0B 0%, #EFD61A 100%);}
+
+/* ********** Scrollbars ********** */
+
+::-webkit-scrollbar {
+	width: 16px;
+	height: 16px;
+}
+
+/* Scrollbars Background */
+::-webkit-scrollbar-track-piece {
+	background: transparent none;
+	border: solid 6px transparent;
+	border-right-width: 8px;
+	margin: 4px;
+	-webkit-box-shadow: inset 1px 1px 0 0 rgb(137,131,117), inset -1px -1px 0 0 rgb(224,220,210);
+}
+
+/* Style : Vertical Bar; */
+::-webkit-scrollbar-thumb {
+	border: solid 0 transparent;
+	border-right-width: 4px;
+	border-left-width: 2px;
+	-webkit-border-radius: 5px;
+	-webkit-border-top-right-radius: 9px 5px;
+	-webkit-border-bottom-right-radius: 9px 5px;
+	-webkit-border-top-left-radius: 7px 5px;
+	-webkit-border-bottom-left-radius: 7px 5px;
+	-webkit-box-shadow: inset 0 0 0 1px rgb(79,79,79), inset 0 0 0 6px rgb(102,102,102);
+}
+::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 0 1px rgb(90,90,90), inset 0 0 0 6px rgb(110,110,110);
+}
