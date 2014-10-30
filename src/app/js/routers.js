@@ -1,3 +1,6 @@
+/*
+ * routers.js defines the application routers which map URLs to application functions.
+ */
 define(function(require) {
 
 	var Router = Backbone.Router.extend({

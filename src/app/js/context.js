@@ -1,9 +1,14 @@
 /*
  * This is the application context, which maintains all of the prototypes for all of the models and views
- * as well as instances of some of these which are needed by the application in general.
+ * as well as instances of some of these which are needed by the application in general.  The context provides 
+ * high-level application functions as well in the form of methods.
  * 
- * The application context is global, and this file should be included first, so that models.js, views.js and 
- * the application router can populate it with all of the necessary objects.
+ * context.js loads the application models, views and routers, and makes them available, so application script
+ * files need only `require('context')` in order to communicate with the top-level application.
+ * 
+ * This is the sort of application logic that would typically go in an `app.js` - owing to this being the main
+ * file of many single page web applications.  Here, we call it the "application context" because the notion of
+ * app is already monopolized by the FabMo apps concept. 
  */
 
  define(function (require) {

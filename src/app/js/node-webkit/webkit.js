@@ -5,13 +5,12 @@ var nwkg_package_file = requireNode('../package.json');
 var nwkg_win = window.gui.Window.get();
 var nwkg_app_manager = requireNode('./js/node-webkit/app_manager.js');
 var _ = requireNode('./js/libs/underscore.js')._ ;
-//var detection_service = requireNode('./js/node-webkit/detection_service/server.js');
-
-//var process = require('process');
 nwkg_win.on('document-start',function(frame){
 	try{
 		// create a global variable in the app context. (so developers can grap information directly from this variable, in a secure way.)
-		frame.contentWindow.dashboard = dashboard ;
+		dashboard = require('dashboard');
+		console.log("Binding dashboard (" + dashboard + ") to app...");
+		frame.contentWindow.dashboard = dashboard;
 	} catch(e) {
 		console.log(e);
 	}

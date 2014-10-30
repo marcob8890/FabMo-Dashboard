@@ -2,6 +2,7 @@ define(function(require) {
 
 	models = {}
 
+	// Model for a single app instance
 	models.App = Backbone.Model.extend({
 		defaults:{
 			name : null,
@@ -13,10 +14,12 @@ define(function(require) {
 		sync : function(method, model, option) {} // Override sync because this is a local model
 	});
 
+	// A collection of (all) apps
 	models.Apps = Backbone.Collection.extend({
 		model : models.App
 	});
 
+	// Not sure?
 	models.Widget = Backbone.Model.extend({
 		defaults:{
 			name : '', //Name of the widget
@@ -32,6 +35,7 @@ define(function(require) {
 		model : models.Widget
 	});
 
+	// Model for a remote machine, elligible to be connected to
 	models.RemoteMachine = Backbone.Model.extend({
 		defaults:{
 			//Add a listener when the state changes
@@ -42,6 +46,14 @@ define(function(require) {
 		sync : function(method, model, option) {} // Override sync because this is a local model	
 	});
 
+	// Collection of (all) remote machines
+	models.RemoteMachines = Backbone.Collection.extend({
+		model : models.RemoteMachine,
+	});
+
+
+
+	// TODO: File and Job models need to be reconciled
 	models.File = Backbone.Model.extend({
 		defaults:{
 			id: null,
@@ -65,10 +77,7 @@ define(function(require) {
 		sync : function(method, model, option) {} // Override sync because this is a local model	
 	});
 
-	models.RemoteMachines = Backbone.Collection.extend({
-		model : models.RemoteMachine,
-	});
-
+	// TODO: A form is not a good candidate for a model, this should be a view
 	models.SettingFormLine = Backbone.Model.extend({
 		defaults:{
 			setting_label:null,
