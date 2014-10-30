@@ -44,7 +44,7 @@ body,html{
 
 .right-off-canvas-menu, .left-off-canvas-menu { 
 	background-color :white;
-	box-shadow: 0 0 40px rgba(0,0,0,0.2);
+	box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
 /* Change #left-menu & #right-menu config on "desktop" view */
@@ -225,31 +225,59 @@ ul.off-canvas-list li { border-bottom: 2px solid #fbfbfb;}
 .app-icon {
 	float: left;
 	width: 100px;
-	height: 120px;
+	height: 128px;
 	text-align: center;
 	margin: 16px;
+	margin-bottom: 0;
+}
+
+.app-title { margin-top: 4px;}
+
+.app-title a {
+	font-family: 'source_sans_proregular';
+	color: #444;
+	-webkit-transition: opacity .3s;
+	transition: opacity .3s;
+}
+
+.app-icon:hover .app-title a {
+	color: #333;
+	-webkit-transition: opacity .6s;
+	transition: opacity .6s;
 }
 
 .app-icon img {
 	width: 100px;
 	height: 100px;
-	padding: 8px;
+	padding: 12px;
 	border-radius: 8px;
 	box-shadow: 0 1px 6px rgba(0,0,0,0.25);
+	opacity:0.92;
+	-webkit-transition: opacity .3s;
+	transition: opacity .3s;
 }
 
-.app-icon.sortable-ghost {
+.app-icon:hover img {
+	box-shadow: 0 1px 8px rgba(0,0,0,0.5);
+	opacity: 1;
+	-webkit-transition: opacity .6s;
+	transition: opacity .6s;
+}
+
+.app-icon.sortable-ghost, .sortable-ghost {
 	border: 3px dashed #CCC;
 	background : url(../img/icon_plus_cross.png) no-repeat center;
 	background-size: 48px;
 }
 
-.app-icon.sortable-ghost > * {visibility: hidden;}
+.app-icon.sortable-ghost > *, .sortable-ghost > * {visibility: hidden;}
 
 	/*
 	App Icon Colors
 	*/
 .app-icon img  {background : -webkit-linear-gradient(top, #A5A5A5 0%, #AAAAAA 100%);} /*Default = Grey*/
+.app-icon img.black {background : -webkit-linear-gradient(top, #0F0F0F 0%, #222326 100%);}
+.app-icon img.light-blue {background : -webkit-linear-gradient(top, #1E5799 0%, #346399 100%);}
 .app-icon img.blue {background : -webkit-linear-gradient(top, #313366 0%, #414366 100%);}
 .app-icon img.green {background : -webkit-linear-gradient(top, #00DB41 0%, #15D648 100%);}
 .app-icon img.grey {background : -webkit-linear-gradient(top, #A5A5A5 0%, #AAAAAA 100%);}
