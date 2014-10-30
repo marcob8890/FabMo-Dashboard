@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><title>app/js/models</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="app/js/models"><meta name="groc-project-path" content="app/js/models.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">app/js/models.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require)</span> {</span>
+
+	models = {}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Model for a single app instance</p></div></div><div class="code"><div class="wrapper">	models.App = Backbone.Model.extend({
+		defaults:{
+			name : <span class="hljs-literal">null</span>,
+			icon_path : <span class="hljs-literal">null</span>,
+			app_path : <span class="hljs-literal">null</span>,
+			app_url : <span class="hljs-literal">null</span>,
+			id : <span class="hljs-literal">null</span>
+		},
+		sync : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, model, option)</span> {</span>} <span class="hljs-comment">// Override sync because this is a local model</span>
+	});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A collection of (all) apps</p></div></div><div class="code"><div class="wrapper">	models.Apps = Backbone.Collection.extend({
+		model : models.App
+	});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Not sure?</p></div></div><div class="code"><div class="wrapper">	models.Widget = Backbone.Model.extend({
+		defaults:{
+			name : <span class="hljs-string">''</span>, <span class="hljs-comment">//Name of the widget</span>
+			id : <span class="hljs-string">''</span>, <span class="hljs-comment">//Id of the widget, will be the ID-container wich will hold the content of the widget</span>
+			host_id : <span class="hljs-string">''</span>, <span class="hljs-comment">//ID of the area that host the widget</span>
+			position : <span class="hljs-number">1</span>, <span class="hljs-comment">//Position of the widget in the area</span>
+			active : <span class="hljs-literal">true</span>, <span class="hljs-comment">//Widget is currently used in the app</span>
+		},
+		sync : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, model, option)</span> {</span>} <span class="hljs-comment">// Override sync because this is a local model</span>
+	});
+
+	models.Widgets = Backbone.Collection.extend({
+		model : models.Widget
+	});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Model for a remote machine, elligible to be connected to</p></div></div><div class="code"><div class="wrapper">	models.RemoteMachine = Backbone.Model.extend({
+		defaults:{
+			<span class="hljs-comment">//Add a listener when the state changes</span>
+			hostname:<span class="hljs-string">'&lt;unknown&gt;'</span>,
+			network: [],
+			state: <span class="hljs-string">'disc'</span> <span class="hljs-comment">//state = status : ''=green=OK : 'err'=red=Trying to connect, or error to connec : 'disc'=grey=Not connected</span>
+		},
+		sync : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, model, option)</span> {</span>} <span class="hljs-comment">// Override sync because this is a local model	</span>
+	});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Collection of (all) remote machines</p></div></div><div class="code"><div class="wrapper">	models.RemoteMachines = Backbone.Collection.extend({
+		model : models.RemoteMachine,
+	});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: File and Job models need to be reconciled</p></div></div><div class="code"><div class="wrapper">	models.File = Backbone.Model.extend({
+		defaults:{
+			id: <span class="hljs-literal">null</span>,
+			status : <span class="hljs-string">'pending'</span>,
+			url:<span class="hljs-string">''</span>
+		},
+		sync : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, model, option)</span> {</span>} <span class="hljs-comment">// Override sync because this is a local model	</span>
+		
+	});
+
+	models.Files = Backbone.Collection.extend({
+		model : models.Files,
+	});
+
+	models.Job = Backbone.Model.extend({
+		defaults:{
+			id: <span class="hljs-literal">null</span>,
+			files : <span class="hljs-keyword">new</span> models.Files(),
+			status:<span class="hljs-string">'pending'</span>
+		},
+		sync : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, model, option)</span> {</span>} <span class="hljs-comment">// Override sync because this is a local model	</span>
+	});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: A form is not a good candidate for a model, this should be a view</p></div></div><div class="code"><div class="wrapper">	models.SettingFormLine = Backbone.Model.extend({
+		defaults:{
+			setting_label:<span class="hljs-literal">null</span>,
+			setting_value:<span class="hljs-literal">null</span>,
+			type:<span class="hljs-string">"text"</span>,
+			code:<span class="hljs-literal">null</span>,
+			id : <span class="hljs-literal">null</span>
+		},
+		sync : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, model, option)</span> {</span>} <span class="hljs-comment">// Override sync because this is a local model</span>
+	});
+
+	models.SettingsForm = Backbone.Collection.extend({
+		model : models.SettingFormLine
+	});
+
+	<span class="hljs-keyword">return</span> models;
+});</div></div></div></div></body></html>

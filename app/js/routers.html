@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><title>app/js/routers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="app/js/routers"><meta name="groc-project-path" content="app/js/routers.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">app/js/routers.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>routers.js defines the application routers which map URLs to application functions.</p></div></div><div class="code"><div class="wrapper">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require)</span> {</span>
+
+	<span class="hljs-keyword">var</span> Router = Backbone.Router.extend({
+		routes: {
+			<span class="hljs-string">"app/:id"</span>     		: <span class="hljs-string">"launch_app"</span>,
+			<span class="hljs-string">"menu"</span>        		: <span class="hljs-string">"show_menu"</span>,
+			<span class="hljs-string">"refresh_machines"</span> 	: <span class="hljs-string">"refresh_machines"</span>,
+			<span class="hljs-string">"set_machine/:id"</span> 	: <span class="hljs-string">"set_machine"</span>
+		},
+		launch_app: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span> {</span>
+			<span class="hljs-keyword">this</span>.context.appClientView.setModel(<span class="hljs-keyword">this</span>.context.apps.get(id));
+			<span class="hljs-keyword">this</span>.context.appMenuView.hide();
+			<span class="hljs-keyword">this</span>.context.appClientView.show();
+		},
+		show_menu: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.context.appClientView.hide();
+			<span class="hljs-keyword">this</span>.context.appMenuView.show();
+		},
+		set_machine: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id)</span> {</span>
+			machine = <span class="hljs-keyword">this</span>.context.remoteMachines.get(id);
+			console.log(<span class="hljs-string">"SETTING MACHINE"</span>);
+			console.log(machine.attributes);
+			ChooseBestWayToConnect(machine.attributes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ip, port)</span> {</span>
+				dashboard.machine = <span class="hljs-keyword">new</span> FabMo(ip, port);
+				dashboard.ui= <span class="hljs-keyword">new</span> FabMoUI(dashboard.machine);
+				<span class="hljs-keyword">this</span>.context.bindKeypad(dashboard.ui);
+				<span class="hljs-keyword">this</span>.context.loadSettingsForms(dashboard.machine);
+			}.bind(<span class="hljs-keyword">this</span>));
+		},
+		refresh_machines: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.context.refreshRemoteMachines(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err,remoteMachines)</span>{</span>
+				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.context.remoteMachines.models.length === <span class="hljs-number">0</span>)
+				{
+					console.log(<span class="hljs-string">'no machine detected'</span>);
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.context.remoteMachines.models.length === <span class="hljs-number">1</span>)
+				{
+					ChooseBestWayToConnect(remoteMachines.models[<span class="hljs-number">0</span>].attributes,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ip,port)</span>{</span>
+						dashboard.machine = <span class="hljs-keyword">new</span> FabMo(ip, port);
+						dashboard.ui= <span class="hljs-keyword">new</span> FabMoUI(dashboard.machine);
+						<span class="hljs-keyword">this</span>.context.bindKeypad(dashboard.ui);
+						<span class="hljs-keyword">this</span>.context.loadSettingsForms(dashboard.machine);
+					}.bind(<span class="hljs-keyword">this</span>));
+				}
+				<span class="hljs-keyword">else</span>{
+					<span class="hljs-keyword">this</span>.context.openSettingsPanel();
+				}
+			}.bind(<span class="hljs-keyword">this</span>));
+		},
+		setContext: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(context)</span> {</span>
+			<span class="hljs-keyword">this</span>.context = context;
+		}
+	});
+
+	<span class="hljs-keyword">return</span> Router;
+});</div></div></div></div></body></html>

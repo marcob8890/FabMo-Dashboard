@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="en"><head><title>app/js/views</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="app/js/views"><meta name="groc-project-path" content="app/js/views.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">app/js/views.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require)</span> {</span>
+	models = <span class="hljs-built_in">require</span>(<span class="hljs-string">'models'</span>);
+	views = {}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>VIEWS</p></div></div><div class="code"><div class="wrapper">	views.NavbarView = Backbone.View.extend({
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.render();
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-comment">//var template = _.template($("#navbar-template").html(), {});</span>
+			<span class="hljs-comment">//this.$el.html(template);</span>
+
+	        <span class="hljs-comment">//Fetching the template contents</span>
+	        $.get(<span class="hljs-string">'template/navbar.html'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span>
+	            template = _.template(data, {});<span class="hljs-comment">//Option to pass any dynamic values to template</span>
+	            <span class="hljs-keyword">this</span>.$el.html(template);<span class="hljs-comment">//adding the template content to the main template.</span>
+	        }, <span class="hljs-string">'html'</span>);
+		}
+	});
+
+	views.AppIconView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'li'</span>,
+		className : <span class="hljs-string">'app-icon'</span>,
+		template : _.template(<span class="hljs-built_in">require</span>(<span class="hljs-string">'text!templates/app-icon.html'</span>)),
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+			<span class="hljs-keyword">this</span>.model.bind(<span class="hljs-string">'change'</span>, <span class="hljs-keyword">this</span>.render);
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.toJSON()));
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
+	});
+
+	views.AppMenuView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'div'</span>,
+		className : <span class="hljs-string">'app-menu'</span>,
+		collection : <span class="hljs-literal">null</span>,
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+			<span class="hljs-keyword">this</span>.collection = options.collection;
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'reset'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'add'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.render();
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">var</span> element = jQuery(<span class="hljs-keyword">this</span>.el);
+			<span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>;
+			element.empty();
+			<span class="hljs-keyword">this</span>.collection.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> {</span>
+				<span class="hljs-keyword">var</span> appIconView = <span class="hljs-keyword">new</span> views.AppIconView({ model: item });
+				element.append(appIconView.render().el);
+			});
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},
+		show : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).show();
+		},
+		hide : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).hide();
+		}
+	});
+
+	views.AppClientView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'div'</span>,
+		className : <span class="hljs-string">'app'</span>,
+		model : <span class="hljs-keyword">new</span> models.App(),
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			element = jQuery(<span class="hljs-keyword">this</span>.el);
+			iframe = element.find(<span class="hljs-string">'.app-iframe'</span>);
+			url = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'app_url'</span>);
+			iframe.attr(<span class="hljs-string">'src'</span>,url);
+			iframe.parent.dashboard = <span class="hljs-built_in">require</span>(<span class="hljs-string">'dashboard'</span>);
+		},
+		show : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).show();
+		},
+		hide : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arg)</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).hide();
+		},
+		setModel : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(model)</span> {</span>
+			<span class="hljs-keyword">this</span>.model.set(model.toJSON());
+			<span class="hljs-keyword">this</span>.render();
+		}
+	});
+
+	views.WidgetView = Backbone.View.extend({
+		template : _.template(<span class="hljs-built_in">require</span>(<span class="hljs-string">'text!templates/widget.html'</span>)),
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+			<span class="hljs-keyword">this</span>.render();
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.setElement(<span class="hljs-string">'#'</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">'host_id'</span>));
+			<span class="hljs-keyword">this</span>.$el.append(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.toJSON()));
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
+	});
+
+	views.RemoteMachineMenuView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'ul'</span>,
+		className : <span class="hljs-string">'off-canvas-list'</span>,
+		collection : <span class="hljs-literal">null</span>,
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+			<span class="hljs-keyword">this</span>.collection = options.collection;
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'reset'</span>, <span class="hljs-keyword">this</span>.render, <span class="hljs-keyword">this</span>);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'add'</span>, <span class="hljs-keyword">this</span>.render, <span class="hljs-keyword">this</span>);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-keyword">this</span>.render, <span class="hljs-keyword">this</span>);
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">var</span> element = jQuery(<span class="hljs-keyword">this</span>.el);
+			<span class="hljs-keyword">var</span> cpt=<span class="hljs-number">0</span>;
+			element.empty();
+			<span class="hljs-keyword">var</span> template = _.template(<span class="hljs-string">'&lt;li class="item &lt;%= current %&gt; tool &lt;%= state %&gt; &lt;%= hidden %&gt;"&gt;&lt;span&gt;&lt;/span&gt;&lt;a href="#/set_machine/&lt;%= id %&gt;"&gt;&lt;%= hostname %&gt;&lt;/a&gt;&lt;/li&gt;'</span>);
+			<span class="hljs-keyword">this</span>.collection.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> {</span>
+				<span class="hljs-comment">//Move this on view, wich will concert 1 tool, and not all the tools</span>
+				cpt++;
+				attr = _.clone(item.attributes);
+				attr.id = item.cid;
+				<span class="hljs-keyword">if</span> (cpt&gt;<span class="hljs-number">1</span>) { attr.hidden = <span class="hljs-string">'hidden'</span>; } <span class="hljs-keyword">else</span> { attr.hidden = <span class="hljs-string">''</span>;}
+				attr.current =<span class="hljs-string">'current'</span>;
+				element.append(template(attr));
+			}.bind(<span class="hljs-keyword">this</span>));
+
+			<span class="hljs-keyword">if</span>(cpt == <span class="hljs-number">0</span>) {
+				element.append(<span class="hljs-string">'&lt;li class="item refresh" id="refresh_machines_on_network"&gt;&lt;a href="#/refresh_machines"&gt;&lt;/a&gt;&lt;/li&gt;'</span>);
+			}
+			<span class="hljs-keyword">else</span> {
+				element.append(<span class="hljs-string">'&lt;li class="item refresh hidden" id="refresh_machines_on_network"&gt;&lt;a href="#/refresh_machines"&gt;&lt;/a&gt;&lt;/li&gt;'</span>);
+			}
+
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>hack for the &quot;non-reload on same url&quot; problem with backbone.js
+more explanation on <a href="http://movableapp.com/2012/06/how-to-refresh-router-action-backbonejs-tutorial/">http://movableapp.com/2012/06/how-to-refresh-router-action-backbonejs-tutorial/</a></p></div></div><div class="code"><div class="wrapper">	    events: {
+	        <span class="hljs-string">'click .tool &gt; a'</span> 	: <span class="hljs-string">'onClick'</span>,
+	        <span class="hljs-string">'click li.tool'</span>		: <span class="hljs-string">'showHideTools'</span>
+	    },
+	    
+	    onClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( e )</span> {</span>
+	        router.navigate(<span class="hljs-string">'/'</span>);
+	    },
+
+	    <span class="hljs-comment">//Move this on view, wich will concert 1 tool, and not all the tools</span>
+	    showHideTools: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">( e )</span> {</span>
+	    	<span class="hljs-keyword">var</span> o = <span class="hljs-keyword">this</span>.$el.children();
+	    	<span class="hljs-keyword">var</span> c = o.length;
+			<span class="hljs-keyword">if</span> (c &gt; <span class="hljs-number">1</span>)
+				<span class="hljs-keyword">if</span>( o.last().is(<span class="hljs-string">":hidden"</span>) ) {
+					o.slice(<span class="hljs-number">1</span>).slideDown(<span class="hljs-string">"fast"</span>);
+				}
+				<span class="hljs-keyword">else</span> {
+					o.slice(<span class="hljs-number">1</span>).slideUp(<span class="hljs-string">"fast"</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if($(this).parent()[0]!=$( &quot;#remote-machine-menu &gt; li:last&quot; )[0]) {
+                      $(&quot;#remote-machine-menu &gt; li:first-child&quot;).removeClass(&#39;current&#39;);
+                      $(this).parent().addClass(&#39;current&#39;);
+                      $(this).parent().insertBefore($(&quot;#remote-machine-menu &gt; li:first-child&quot;));
+                      $( &quot;#remote-machine-menu &gt; li&quot;).slice(1).slideUp( &quot;fast&quot; );
+                    }</p></div></div><div class="code"><div class="wrapper">				}
+	    	}
+	});
+
+
+	views.JobView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'div'</span>,
+		className : <span class="hljs-string">'job'</span>,
+		template : _.template(<span class="hljs-built_in">require</span>(<span class="hljs-string">'text!templates/job.html'</span>)),
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+			<span class="hljs-keyword">this</span>.model.bind(<span class="hljs-string">'change'</span>, <span class="hljs-keyword">this</span>.render);
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.toJSON()));
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
+	});
+
+	views.JobListView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'div'</span>,
+		className : <span class="hljs-string">'jobs_list'</span>,
+		collection : <span class="hljs-literal">null</span>,
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+			<span class="hljs-keyword">this</span>.collection = options.collection;
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'reset'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'add'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.render();
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">var</span> element = jQuery(<span class="hljs-keyword">this</span>.el);
+			element.empty();
+			<span class="hljs-keyword">this</span>.collection.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> {</span>
+				<span class="hljs-keyword">var</span> appIconView = <span class="hljs-keyword">new</span> views.JobView({ model: item });
+				element.append(JobView.render().el);
+			});
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},
+		show : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).show();
+		},
+		hide : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).hide();
+		}
+	});
+
+
+	views.SettingsFormLineView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'div'</span>,
+		className : <span class="hljs-string">'settings-form-line'</span>,
+		template : _.template(<span class="hljs-built_in">require</span>(<span class="hljs-string">'text!templates/settings-form-line.html'</span>)),
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+			<span class="hljs-keyword">this</span>.model.bind(<span class="hljs-string">'change'</span>, <span class="hljs-keyword">this</span>.render);
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.toJSON()));
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
+	});
+
+	views.SettingsFormView = Backbone.View.extend({
+		tagName : <span class="hljs-string">'div'</span>,
+		className : <span class="hljs-string">'settings-form'</span>,
+		collection : <span class="hljs-literal">null</span>,
+		initialize : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+			_.bindAll(<span class="hljs-keyword">this</span>, <span class="hljs-string">'render'</span>);
+			<span class="hljs-keyword">this</span>.collection = options.collection;
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'reset'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'add'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.collection.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-keyword">this</span>.render);
+			<span class="hljs-keyword">this</span>.render();
+		},
+		render : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">var</span> element = jQuery(<span class="hljs-keyword">this</span>.el);
+			element.empty();
+			<span class="hljs-keyword">this</span>.collection.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span> {</span>
+				<span class="hljs-keyword">var</span> settingsFormLineView = <span class="hljs-keyword">new</span> views.SettingsFormLineView({ model: item });
+				element.append(settingsFormLineView.render().el);
+			});
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		},
+		show : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).show();
+		},
+		hide : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$(<span class="hljs-keyword">this</span>.el).hide();
+		}
+	});
+
+	<span class="hljs-keyword">return</span> views;
+});</div></div></div></div></body></html>

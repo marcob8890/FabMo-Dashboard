@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><title>app/js/context</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="app/js/context"><meta name="groc-project-path" content="app/js/context.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">app/js/context.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>This is the application context, which maintains all of the prototypes for all of the models and views
+as well as instances of some of these which are needed by the application in general.  The context provides 
+high-level application functions as well in the form of methods.</p>
+<p>context.js loads the application models, views and routers, and makes them available, so application script
+files need only <code>require(&#39;context&#39;)</code> in order to communicate with the top-level application.</p>
+<p>This is the sort of application logic that would typically go in an <code>app.js</code> - owing to this being the main
+file of many single page web applications.  Here, we call it the &quot;application context&quot; because the notion of
+app is already monopolized by the FabMo apps concept. </p></div></div><div class="code"><div class="wrapper"> define(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(require)</span> {</span>
+
+ 	<span class="hljs-keyword">var</span> models = <span class="hljs-built_in">require</span>(<span class="hljs-string">'models'</span>);
+ 	<span class="hljs-keyword">var</span> views = <span class="hljs-built_in">require</span>(<span class="hljs-string">'views'</span>);
+ 	<span class="hljs-keyword">var</span> Router = <span class="hljs-built_in">require</span>(<span class="hljs-string">'routers'</span>);
+
+	ApplicationContext = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Model/View/Router Prototypes</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">this</span>.models = models;
+		<span class="hljs-keyword">this</span>.views = views;
+		<span class="hljs-keyword">this</span>.Router = Router;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Model Instances</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">this</span>.remoteMachines = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.models.RemoteMachines();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>View Instances</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">this</span>.remoteMachineMenuView = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.views.RemoteMachineMenuView({el : <span class="hljs-string">'#remote-machine-menu'</span>, collection : <span class="hljs-keyword">this</span>.remoteMachines});
+		<span class="hljs-keyword">this</span>.appClientView = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.views.AppClientView({el : <span class="hljs-string">"#app-client-container"</span>});
+	};
+
+	ApplicationContext.prototype.openSettingsPanel = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+		$(<span class="hljs-string">'.off-canvas-wrap'</span>).foundation(<span class="hljs-string">'offcanvas'</span>, <span class="hljs-string">'show'</span>, <span class="hljs-string">'offcanvas-overlap-right'</span>);
+	}
+
+	ApplicationContext.prototype.openDROPanel = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+		$(<span class="hljs-string">'.off-canvas-wrap'</span>).foundation(<span class="hljs-string">'offcanvas'</span>, <span class="hljs-string">'show'</span>, <span class="hljs-string">'offcanvas-overlap-left'</span>);
+	}
+
+	ApplicationContext.prototype.closeSettingsPanel = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+		$(<span class="hljs-string">'.off-canvas-wrap'</span>).foundation(<span class="hljs-string">'offcanvas'</span>, <span class="hljs-string">'hide'</span>, <span class="hljs-string">'offcanvas-overlap-right'</span>);
+	}
+
+	ApplicationContext.prototype.closeDROPanel = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+		$(<span class="hljs-string">'.off-canvas-wrap'</span>).foundation(<span class="hljs-string">'offcanvas'</span>, <span class="hljs-string">'hide'</span>, <span class="hljs-string">'offcanvas-overlap-left'</span>);
+	}
+
+	ApplicationContext.prototype.loadSettingsForms = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(machine)</span>{</span>
+		$(document).on(<span class="hljs-string">'opened.fndtn.reveal'</span>, <span class="hljs-string">'[data-reveal]'</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+			<span class="hljs-keyword">if</span>($(<span class="hljs-keyword">this</span>).is(<span class="hljs-string">'#settings-modal'</span>)){
+				loadDriverSettings(machine);
+			}
+		});
+	}
+
+	ApplicationContext.prototype.loadDriverSettings = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(machine)</span>{</span>
+		machine.get_config(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err,config)</span>{</span>
+			<span class="hljs-keyword">if</span>(err){console.log(err);<span class="hljs-keyword">return</span>;}
+			<span class="hljs-keyword">var</span> settings_fields = [];
+			<span class="hljs-keyword">var</span> count=<span class="hljs-number">0</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO change it with the next implementation of the settings files</p></div></div><div class="code"><div class="wrapper">			config.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val,idx,arr)</span>{</span>
+				<span class="hljs-keyword">var</span> setting_field = {};
+				<span class="hljs-keyword">var</span> key = <span class="hljs-built_in">Object</span>.keys(val)[<span class="hljs-number">0</span>];
+				setting_field.setting_label = key;
+				setting_field.setting_value = val[key];
+				setting_field.code = key;
+				setting_field.type=<span class="hljs-string">"text"</span>;
+				settings_fields.push(setting_field);
+				count++;
+				<span class="hljs-keyword">if</span>(count === config.length){
+					console.log(settings_fields);
+					<span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.views.SettingsFormView({collection : <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.models.SettingsForm(settings_fields), el : <span class="hljs-string">'#core_settings_form'</span>});
+				}
+			}.bind(<span class="hljs-keyword">this</span>));
+
+		});
+	}
+
+	ApplicationContext.prototype.refreshRemoteMachines = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span> {</span>
+		DetectToolsOnTheNetworks(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, machines)</span> {</span>
+			<span class="hljs-keyword">if</span>(err) {
+				<span class="hljs-keyword">return</span> console.log(err);
+			}
+			console.log(machines);
+			<span class="hljs-keyword">var</span> machine_models = [];
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> index <span class="hljs-keyword">in</span> machines){
+				machine_model = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.models.RemoteMachine({
+					hostname : machines[index].hostname,
+					network : machines[index].network
+				});
+				machine_models.push(machine_model);
+			}
+			<span class="hljs-keyword">this</span>.remoteMachines.reset(machine_models);
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> callback === <span class="hljs-string">'function'</span>) callback(<span class="hljs-literal">null</span>, <span class="hljs-keyword">this</span>.remoteMachines);
+		}.bind(<span class="hljs-keyword">this</span>),<span class="hljs-number">8080</span>);
+	};
+
+	ApplicationContext.prototype.bindKeypad = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ui)</span>{</span>
+		$(document).on(<span class="hljs-string">'opened.fndtn.reveal'</span>, <span class="hljs-string">'[data-reveal]'</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+			<span class="hljs-keyword">if</span>($(<span class="hljs-keyword">this</span>).is(<span class="hljs-string">'#tool-modal'</span>))
+				ui.allowKeypad();
+		});
+		$(document).on(<span class="hljs-string">'close.fndtn.reveal'</span>, <span class="hljs-string">'[data-reveal]'</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> {</span>
+			<span class="hljs-keyword">if</span>($(<span class="hljs-keyword">this</span>).is(<span class="hljs-string">'#tool-modal'</span>))
+				ui.forbidKeypad();
+		});
+	}
+
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ApplicationContext();
+});</div></div></div></div></body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><title>app/js/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="app/js/main"><meta name="groc-project-path" content="app/js/main.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">app/js/main.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>main.js is the entry point for the application.</p></div></div><div class="code"><div class="wrapper">define(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(require)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>context is the application context
+dashboard is the application context, but only the parts we want the apps to see</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">var</span> context = <span class="hljs-built_in">require</span>(<span class="hljs-string">'context'</span>);
+	<span class="hljs-keyword">var</span> dashboard = <span class="hljs-built_in">require</span>(<span class="hljs-string">'dashboard'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The webkit module deals with node-specific functionality (detection service, etc)</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">var</span> webkit = <span class="hljs-built_in">require</span>(<span class="hljs-string">'node-webkit/webkit'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Read the package.json and behave differently if we&#39;re in a debug environment</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">switch</span>(webkit.package.debug) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>NORMAL MODE</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">case</span> <span class="hljs-literal">false</span>:
+		<span class="hljs-keyword">case</span> <span class="hljs-literal">undefined</span>:
+		<span class="hljs-keyword">case</span> <span class="hljs-literal">null</span>:</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Do we really need to access remoteMachines through the context here</p></div></div><div class="code"><div class="wrapper">			context.refreshRemoteMachines(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err,remoteMachines)</span>{</span>
+				<span class="hljs-keyword">if</span>(context.remoteMachines.models.length === <span class="hljs-number">0</span>)
+				{
+					console.log(<span class="hljs-string">'no machine detected'</span>);
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(context.remoteMachines.models.length === <span class="hljs-number">1</span>)
+				{
+					ChooseBestWayToConnect(context.remoteMachines.models[<span class="hljs-number">0</span>].attributes,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ip,port)</span>{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Once connected, update the dashboard with the all of the connection information</p></div></div><div class="code"><div class="wrapper">						dashboard.machine = <span class="hljs-keyword">new</span> FabMo(ip, port);
+						dashboard.ui= <span class="hljs-keyword">new</span> FabMoUI(dashboard.machine);
+						context.bindKeypad(dashboard.ui);
+						context.loadSettingsForms(dashboard.machine);
+					});
+				}
+				<span class="hljs-keyword">else</span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Display the settings panel if we couldn&#39;t find any machines on the network?</p></div></div><div class="code"><div class="wrapper">					context.openSettingsPanel();
+				}
+			});
+			<span class="hljs-keyword">break</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DEBUG MODE</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">default</span>:
+			FabMoAutoConnect(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err,fabmo)</span>{</span>
+				<span class="hljs-keyword">if</span>(err){
+					<span class="hljs-keyword">return</span> console.log(err);
+				} <span class="hljs-keyword">else</span> {
+					fabmo.get_info(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err,info)</span>{</span>
+						<span class="hljs-keyword">if</span>(err) {
+							console.log(err);
+						}
+						fabmo.hostname = info?info.surname:<span class="hljs-literal">undefined</span>;
+						context.remoteMachines.reset([
+							<span class="hljs-keyword">new</span> context.models.RemoteMachine({
+								hostname : fabmo.hostname,
+								ip : fabmo.ip,
+								port : fabmo.port
+							})
+						]);
+						dashboard.machine = fabmo;
+						dashboard.ui = <span class="hljs-keyword">new</span> FabMoUI(fabmo);
+						context.bindKeypad(dashboard.ui);
+						context.loadSettingsForms(dashboard.machine);
+					});
+				}
+			},webkit.package.detection_service_port||<span class="hljs-number">8080</span>);
+
+			<span class="hljs-keyword">break</span>;
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Load the apps from disk, and update the apps collection model</p></div></div><div class="code"><div class="wrapper">	webkit.app_manager.load_apps(webkit.package.apps_dir || <span class="hljs-string">'./apps'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err, apps)</span> {</span>
+		context.apps = <span class="hljs-keyword">new</span> context.models.Apps(apps);
+		context.appMenuView = <span class="hljs-keyword">new</span> context.views.AppMenuView({collection : context.apps, el : <span class="hljs-string">'#app_menu_container'</span>});
+	});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Start the application</p></div></div><div class="code"><div class="wrapper">	router = <span class="hljs-keyword">new</span> context.Router();
+	router.setContext(context);
+	Backbone.history.start();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Functions for dispatching g-code to the tool</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gcode</span><span class="hljs-params">(string)</span> {</span>
+		dashboard.machine.gcode(string,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err,data)</span>{</span>
+			<span class="hljs-keyword">if</span>(!err) {
+				console.log(<span class="hljs-string">'Success: '</span> + string);
+			} <span class="hljs-keyword">else</span> {
+				console.log(<span class="hljs-string">'Failure: '</span> + string);
+			}
+		});
+	}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addJob</span><span class="hljs-params">(job,callback)</span>{</span>
+	dashboard.machine.send_job(job,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span>{</span>
+		<span class="hljs-keyword">if</span>(err){console.log(err);callback(err);<span class="hljs-keyword">return</span>;}
+		<span class="hljs-keyword">if</span>(callback &amp;&amp; <span class="hljs-keyword">typeof</span>(callback) === <span class="hljs-string">"function"</span>)callback(<span class="hljs-literal">undefined</span>);
+	});
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Handlers for the home/probe buttons</p></div></div><div class="code"><div class="wrapper">$(<span class="hljs-string">'.button-homexy'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>gcode(<span class="hljs-string">'G28.2 X0 Y0'</span>); });
+$(<span class="hljs-string">'.button-homez'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>gcode(<span class="hljs-string">'G28.2 Z0'</span>); });
+$(<span class="hljs-string">'.button-probez'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>gcode(<span class="hljs-string">'G38.2 Z-4 F10\nG10 L2 P1 Z-0.125'</span>); });
+$(<span class="hljs-string">'.button-zerox'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>gcode(<span class="hljs-string">'G28.3 X0'</span>); });  
+$(<span class="hljs-string">'.button-zeroy'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>gcode(<span class="hljs-string">'G28.3 Y0'</span>); });  
+$(<span class="hljs-string">'.button-zeroz'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>gcode(<span class="hljs-string">'G28.3 Z0'</span>); });
+
+});</div></div></div></div></body></html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><title>app/js/events</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="app/js/events"><meta name="groc-project-path" content="app/js/events.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">app/js/events.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>Events and keypress handlers in the FabMo-Dashboard</p></div></div><div class="code"><div class="wrapper">$(document).keydown(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span>{</span>
+	<span class="hljs-keyword">if</span> (e.keyCode == <span class="hljs-number">75</span>) {
+		<span class="hljs-keyword">if</span>($(<span class="hljs-string">'#tool-modal'</span>).hasClass(<span class="hljs-string">'open'</span>)) {
+    		$(<span class="hljs-string">'#tool-modal'</span>).foundation(<span class="hljs-string">'reveal'</span>, <span class="hljs-string">'close'</span>);
+    	}
+    	<span class="hljs-keyword">else</span> {
+    		$(<span class="hljs-string">'#tool-modal'</span>).foundation(<span class="hljs-string">'reveal'</span>, <span class="hljs-string">'open'</span>);
+    	}
+	}
+
+	<span class="hljs-comment">/*if($('#tool-modal').hasClass('open')) {
+	    if (e.keyCode == 37) {
+	        alert("Left !");
+	    }
+	 
+	    if (e.keyCode == 39) {
+	        alert("Right !");
+	    }
+
+	    if (e.keyCode == 38) {
+	        alert("Up !");
+	    }
+	 
+	    if (e.keyCode == 40) {
+	        alert("Down !");
+	    }
+
+	    if (e.keyCode == 33) {
+	    	if(e.ctrlKey)
+	        	alert("Ctrl + Page Up !");
+	        else if (e.shiftKey)
+	        	alert("Shift + Page Up !");
+	        else
+	        	alert("Just -- Page Up !");
+	    }
+	 
+	    if (e.keyCode == 34) {
+	        if(e.ctrlKey)
+	        	alert("Ctrl + Page Down !");
+	        else if (e.shiftKey)
+	        	alert("Shift + Page Down !");
+	        else
+	        	alert("Just -- Page Down !");
+	    }
+	}*/</span>
+});
+
+resizedoc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+	<span class="hljs-keyword">if</span>($(<span class="hljs-string">"body"</span>).width()/<span class="hljs-built_in">parseFloat</span>($(<span class="hljs-string">"body"</span>).css(<span class="hljs-string">"font-size"</span>))&gt;<span class="hljs-number">64.063</span>) {
+	  <span class="hljs-keyword">if</span>($(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-right"</span>) &amp;&amp; $(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-left"</span>)) {
+	    $(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,$(<span class="hljs-string">"body"</span>).width()-<span class="hljs-number">500</span>+<span class="hljs-string">"px"</span>);
+	  }
+	  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>($(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-right"</span>) || $(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-left"</span>)) {
+	    $(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,$(<span class="hljs-string">"body"</span>).width()-<span class="hljs-number">250</span>+<span class="hljs-string">"px"</span>);
+	  }
+	  <span class="hljs-keyword">else</span> {$(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,<span class="hljs-string">"100%"</span>);}
+	}
+	<span class="hljs-keyword">else</span> {$(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,<span class="hljs-string">"100%"</span>);}
+};
+
+resizedocclick = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(c)</span>{</span>
+	<span class="hljs-keyword">if</span>($(<span class="hljs-string">"body"</span>).width()/<span class="hljs-built_in">parseFloat</span>($(<span class="hljs-string">"body"</span>).css(<span class="hljs-string">"font-size"</span>))&gt;<span class="hljs-number">64.063</span>) {
+	  <span class="hljs-keyword">if</span>($(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-right"</span>) &amp;&amp; $(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-left"</span>)) {
+	    $(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,$(<span class="hljs-string">"body"</span>).width()-<span class="hljs-number">250</span>+<span class="hljs-string">"px"</span>);
+	  }
+	  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(($(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-right"</span>) &amp;&amp; c==<span class="hljs-number">2</span>) || ($(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-left"</span>) &amp;&amp; c==<span class="hljs-number">1</span>)) {
+	    $(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,$(<span class="hljs-string">"body"</span>).width()-<span class="hljs-number">500</span>+<span class="hljs-string">"px"</span>);
+	  }
+	  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(($(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-right"</span>) &amp;&amp; c==<span class="hljs-number">1</span>) || ($(<span class="hljs-string">"#main"</span>).hasClass(<span class="hljs-string">"offcanvas-overlap-left"</span>) &amp;&amp; c==<span class="hljs-number">2</span>)) {
+	    $(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,<span class="hljs-string">"100%"</span>);
+	  }
+	  <span class="hljs-keyword">else</span> {$(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,$(<span class="hljs-string">"body"</span>).width()-<span class="hljs-number">250</span>+<span class="hljs-string">"px"</span>);}
+	}
+	<span class="hljs-keyword">else</span> {$(<span class="hljs-string">".main-section"</span>).css(<span class="hljs-string">"width"</span>,<span class="hljs-string">"100%"</span>);}
+};
+
+$(<span class="hljs-string">".left-small"</span>).click( <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>resizedocclick(<span class="hljs-number">1</span>);});
+$(<span class="hljs-string">".right-small"</span>).click( <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>resizedocclick(<span class="hljs-number">2</span>);});
+
+
+$(window).resize( <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>resizedoc();});
+$(document).ready( <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>resizedoc();});</div></div></div></div></body></html>
