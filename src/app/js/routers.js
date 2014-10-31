@@ -3,6 +3,8 @@
  */
 define(function(require) {
 
+	var dashboard = require('dashboard');
+
 	var Router = Backbone.Router.extend({
 		routes: {
 			"app/:id"     		: "launch_app",

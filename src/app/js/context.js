@@ -84,12 +84,14 @@
 			if(err) {
 				return console.log(err);
 			}
+			console.log("REMOTE MACHINES")
 			console.log(machines);
 			var machine_models = [];
 			for(var index in machines){
 				machine_model = new this.models.RemoteMachine({
 					hostname : machines[index].hostname,
-					network : machines[index].network
+					network : machines[index].network,
+					server_port : machines[index].server_port
 				});
 				machine_models.push(machine_model);
 			}

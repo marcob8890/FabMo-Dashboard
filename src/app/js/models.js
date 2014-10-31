@@ -41,6 +41,7 @@ define(function(require) {
 			//Add a listener when the state changes
 			hostname:'<unknown>',
 			network: [],
+			server_port: 8080,
 			state: 'disc' //state = status : ''=green=OK : 'err'=red=Trying to connect, or error to connec : 'disc'=grey=Not connected
 		},
 		sync : function(method, model, option) {} // Override sync because this is a local model	
@@ -50,8 +51,6 @@ define(function(require) {
 	models.RemoteMachines = Backbone.Collection.extend({
 		model : models.RemoteMachine,
 	});
-
-
 
 	// TODO: File and Job models need to be reconciled
 	models.File = Backbone.Model.extend({
