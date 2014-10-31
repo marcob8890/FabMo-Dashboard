@@ -621,9 +621,10 @@ function FabMoAutoConnect(callback,linker_port){
 
 
 
-function ChooseBestWayToConnect(tool,callback){ //return an ip_adress
-// automatic selection of the best way to talk to the tool
-// base on this priority : usb > ethernet > wifi > wifi-direct
+function ChooseBestWayToConnect(tool,callback){ 
+	// Returns an IP address and port
+	// Automatic selection of the best way to talk to the tool
+	// Based on this priority : USB > ethernet > wifi > wifi-direct
 	if (!callback)
 		throw "this function need a callback to work !";
 	console.log("Choosing best way to connect");
@@ -674,7 +675,7 @@ function DetectToolsOnTheNetworks(callback, linker_port){
 		throw "this function need a callback to work !";
 	var port = linker_port || 8080; //port of the link API
 	$.ajax({
-		url: 'http://0.0.0.0:' + port + '/where_is_my_tool',
+		url: 'http://127.0.0.1:' + port + '/where_is_my_tool',
 		type: "GET",
 		dataType : 'json'
 	}).done(function(data){
