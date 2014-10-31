@@ -25,6 +25,7 @@
 
 		// Model Instances
 		this.remoteMachines = new this.models.RemoteMachines();
+		this.widgets = new this.models.Widgets();
 
 		// View Instances
 		this.remoteMachineMenuView = new this.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : this.remoteMachines});

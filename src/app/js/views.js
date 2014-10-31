@@ -137,6 +137,7 @@ define(function(require) {
 
 			return this;
 		},
+		
 		// hack for the "non-reload on same url" problem with backbone.js
 		// more explanation on http://movableapp.com/2012/06/how-to-refresh-router-action-backbonejs-tutorial/
 	    events: {

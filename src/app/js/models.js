@@ -7,6 +7,7 @@ define(function(require) {
 		defaults:{
 			name : null,
 			icon_path : null,
+			icon_background_color : null,
 			app_path : null,
 			app_url : null,
 			id : null
@@ -19,7 +20,7 @@ define(function(require) {
 		model : models.App
 	});
 
-	// Not sure?
+	// Model for a widget container (div structure wich display the name of the widget, and create an area to receive the content of the widget)
 	models.Widget = Backbone.Model.extend({
 		defaults:{
 			name : '', //Name of the widget
