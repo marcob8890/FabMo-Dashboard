@@ -1,5 +1,4 @@
 // Events and keypress handlers in the FabMo-Dashboard
-
 $(document).keydown(function(e){
 	if (e.keyCode == 75) {
 		if($('#tool-modal').hasClass('open')) {
@@ -79,6 +78,7 @@ resizedocclick = function(c){
 $(".left-small").click( function() {resizedocclick(1);});
 $(".right-small").click( function() {resizedocclick(2);});
 
-
-$(window).resize( function() {resizedoc();});
-$(document).ready( function() {resizedoc();});
+$(document).ready( function() {
+	resizedoc();
+	$(window).resize( function() {resizedoc();});
+});
