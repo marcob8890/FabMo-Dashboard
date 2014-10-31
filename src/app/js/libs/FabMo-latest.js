@@ -621,9 +621,10 @@ function FabMoAutoConnect(callback,linker_port){
 
 
 
-function ChooseBestWayToConnect(tool,callback){ //return an ip_adress
-// automatic selection of the best way to talk to the tool
-// base on this priority : usb > ethernet > wifi > wifi-direct
+function ChooseBestWayToConnect(tool,callback){ 
+	// Returns an IP address and port
+	// Automatic selection of the best way to talk to the tool
+	// Based on this priority : USB > ethernet > wifi > wifi-direct
 	if (!callback)
 		throw "this function need a callback to work !";
 	console.log("Choosing best way to connect");

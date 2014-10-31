@@ -1,34 +1,33 @@
-FabMo Dashboard Node webkit version
-===========
+FabMo-Dashboard
+===============
+The FabMo dashboard is a desktop application for communicating with the FabMo CNC environment.  It allows you to connect to your FabMo capable tool, execute G-Code and OpenSBP files, and run FabMo apps, which are special purpose CNC softwares designed for performing fabrication tasks.
 
-## Introduction
-This branch contains sources and binaries for running the FabMo Dashboard based on node webkit.  
-it provide an embedded webview based on Chromium, that allow use to run apps on Mac, Linux and Windows.  
-[STILL IN DEVELOPMENT]
+Getting the FabMo Dashboard
+---------------------------
+There currently aren't any "official" binary builds of the FabMo dashboard, but the dashboard is easy to run from source, as described below.
 
-## Instruction
-[Download The last version of node-webkit](http://dl.node-webkit.org) 
+Running from Source
+-------------------
+To run the dashboard, you need node.js and the FabMo-Dashboard source.  From the `src` directory, you can install the dependencies with: 
 
-### For Windows :  
+```
+npm install
+```
 
-drag the FabMoGW-[version].nw file on the nw.exe executable.  
+Once the dependencies are successfully installed, run the dashboard (from the `src` directory) with:
 
-### For MAC OSX :  
+```
+npm start
+```
 
-just run the FabMoGW-[version].nw file.
+Documentation
+-------------
+Source code documentation is available at http://shopbottools.github.io/FabMo-Dashboard/
 
-### For Linux :  
+You can rebuild the documentation from source by running:
 
-Use the nw executable in the extracted folder to run the FabMoGW-[version].nw  
-In case of troubleshooting with libudev.so.0, [click here](https://github.com/rogerwang/node-webkit/wiki/The-solution-of-lacking-libudev.so.0)
+```
+grunt doc
+```
 
-### Dependencies
-* restify
-* async
-* adm-zip
-* uniq
-* ncp
-* node-uuid
-
-## Reference
-[Node webkit](https://github.com/rogerwang/node-webkit)
+from the `src` directory.
