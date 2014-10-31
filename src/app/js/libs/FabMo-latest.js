@@ -674,7 +674,7 @@ function DetectToolsOnTheNetworks(callback, linker_port){
 		throw "this function need a callback to work !";
 	var port = linker_port || 8080; //port of the link API
 	$.ajax({
-		url: 'http://localhost:' + port + '/where_is_my_tool',
+		url: 'http://0.0.0.0:' + port + '/where_is_my_tool',
 		type: "GET",
 		dataType : 'json'
 	}).done(function(data){
