@@ -12,7 +12,14 @@ define(function(require) {
 	// The webkit module deals with node-specific functionality (detection service, etc)
 	var webkit = require('node-webkit/webkit');
 
-	// Read the package.json and behave differently if we're in a debug environment
+
+	// Load the apps from disk, and update the apps collection model
+	webkit.app_manager.load_apps(webkit.package.apps_dir || './apps', function(err, apps) {
+		context.apps = new context.models.Apps(apps);
+		context.appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
+
+
+// Read the package.json and behave differently if we're in a debug environment
 	switch(webkit.package.debug) {
 		// NORMAL MODE
 		case false:
@@ -69,11 +76,11 @@ define(function(require) {
 			break;
 	}
 
-	// Load the apps from disk, and update the apps collection model
-	webkit.app_manager.load_apps(webkit.package.apps_dir || './apps', function(err, apps) {
-		context.apps = new context.models.Apps(apps);
-		context.appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
+		
 	});
+
+
+	
 
 	// Start the application
 	router = new context.Router();
