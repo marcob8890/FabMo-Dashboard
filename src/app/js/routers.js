@@ -38,9 +38,9 @@ define(function(require) {
 				{
 					console.log('no machine detected');
 				}
-				else (this.context.remoteMachines.models.length >= 1)
+				else if(this.context.remoteMachines.models.length >= 1)
 				{
-					ChooseBestWayToConnect(remoteMachines.models[0].attributes,function(ip,port){
+					ChooseBestWayToConnect(this.context.remoteMachines.models[0].attributes,function(ip,port){
 						dashboard.machine = new FabMo(ip, port);
 						dashboard.ui= new FabMoUI(dashboard.machine);
 						this.context.bindKeypad(dashboard.ui);
