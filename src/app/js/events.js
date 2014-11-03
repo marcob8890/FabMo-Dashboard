@@ -75,8 +75,8 @@ resizedocclick = function(c){
 	else {$(".main-section").css("width","100%");}
 };
 
-$(".left-small").click( function() {resizedocclick(1);});
-$(".right-small").click( function() {resizedocclick(2);});
+$(".left-small .left-off-canvas-toggle").click( function() {resizedocclick(1);});
+$(".right-small .right-off-canvas-toggle").click( function() {resizedocclick(2);});
 
 $(document).ready( function() {
 	resizedoc();
