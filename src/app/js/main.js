@@ -12,12 +12,10 @@ define(function(require) {
 	// The webkit module deals with node-specific functionality (detection service, etc)
 	var webkit = require('node-webkit/webkit');
 
-
 	// Load the apps from disk, and update the apps collection model
 	webkit.app_manager.load_apps(webkit.package.apps_dir || './apps', function(err, apps) {
 		context.apps = new context.models.Apps(apps);
 		context.appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
-
 
 // Read the package.json and behave differently if we're in a debug environment
 	switch(webkit.package.debug) {
@@ -29,9 +27,9 @@ define(function(require) {
 			context.refreshRemoteMachines(function(err,remoteMachines){
 				if(context.remoteMachines.models.length === 0)
 				{
-					console.log('no machine detected');
+					console.log('no machine detected debug');
 				}
-				else if(context.remoteMachines.models.length === 1)
+				else if(context.remoteMachines.models.length >= 1)
 				{
 					ChooseBestWayToConnect(context.remoteMachines.models[0].attributes,function(ip,port){
 						// Once connected, update the dashboard with the all of the connection information
@@ -39,11 +37,11 @@ define(function(require) {
 						dashboard.ui= new FabMoUI(dashboard.machine);
 						context.bindKeypad(dashboard.ui);
 						context.loadSettingsForms(dashboard.machine);
+						context.remoteMachines.forEach(function(item) {
+							item.set("current","");
+						});
+						context.remoteMachines.models[0].set("current","current");
 					});
-				}
-				else{
-					// Display the settings panel if we couldn't find any machines on the network?
-					context.openSettingsPanel();
 				}
 			});
 			break;

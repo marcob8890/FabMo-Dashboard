@@ -10,16 +10,24 @@ define(function(require) {
 			"app/:id"     		: "launch_app",
 			"menu"        		: "show_menu",
 			"refresh_machines" 	: "refresh_machines",
-			"set_machine/:id" 	: "set_machine"
+			"set_machine/:id" 	: "set_machine",
+			"page/:name"		: "show_page"
 		},
 		launch_app: function(id) {
 			this.context.appClientView.setModel(this.context.apps.get(id));
 			this.context.appMenuView.hide();
 			this.context.appClientView.show();
+			this.context.hideModalContainer();
 		},
 		show_menu: function() {
 			this.context.appClientView.hide();
 			this.context.appMenuView.show();
+			this.context.hideModalContainer();
+		},
+		show_page: function(page) {
+			this.context.appClientView.hide();
+			this.context.appMenuView.hide();
+			this.context.showModalContainer(page);
 		},
 		set_machine: function(id) {
 			machine = this.context.remoteMachines.get(id);
@@ -30,6 +38,10 @@ define(function(require) {
 				dashboard.ui= new FabMoUI(dashboard.machine);
 				this.context.bindKeypad(dashboard.ui);
 				this.context.loadSettingsForms(dashboard.machine);
+				this.context.remoteMachines.forEach(function(item) {
+					item.set("current","");
+				});
+				this.context.remoteMachines.get(id).set("current","current");
 			}.bind(this));
 		},
 		refresh_machines: function() {
@@ -45,6 +57,7 @@ define(function(require) {
 						dashboard.ui= new FabMoUI(dashboard.machine);
 						this.context.bindKeypad(dashboard.ui);
 						this.context.loadSettingsForms(dashboard.machine);
+						this.context.remoteMachines.models[0].set("current","current");
 					}.bind(this));
 				}
 			}.bind(this));
