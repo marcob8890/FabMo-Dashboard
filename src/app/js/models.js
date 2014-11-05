@@ -20,6 +20,14 @@ define(function(require) {
 		model : models.App
 	});
 
+	//Model for the page content (settings / jobLists...)
+	models.Page = Backbone.Model.extend({
+		defaults:{
+			name : 'page' //Tiny Model, need a view just for displaying the name
+		},
+		sync : function(method, model, option) {} // Override sync because this is a local model
+	});
+
 	// Model for a widget container (div structure wich display the name of the widget, and create an area to receive the content of the widget)
 	models.Widget = Backbone.Model.extend({
 		defaults:{
@@ -43,7 +51,8 @@ define(function(require) {
 			hostname:'<unknown>',
 			network: [],
 			server_port: 8080,
-			state: 'disc' //state = status : ''=green=OK : 'err'=red=Trying to connect, or error to connec : 'disc'=grey=Not connected
+			current:'',
+			state: '' //state = status : ''=green=OK : 'err'=red=Trying to connect, or error to connec : 'disc'=grey=Not connected
 		},
 		sync : function(method, model, option) {} // Override sync because this is a local model	
 	});

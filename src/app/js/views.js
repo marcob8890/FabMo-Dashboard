@@ -89,6 +89,19 @@ define(function(require) {
 		}
 	});
 
+	views.PageView = Backbone.View.extend({
+		collection:null,
+		template:_.template(require('text!templates/settings.html')),
+		initialize : function() {
+			_.bindAll(this, 'render');
+			this.model.bind('change', this.render);
+		},
+		render : function() {
+			this.$el.html(this.template(this.model.toJSON()));
+			return this;
+		}
+	});
+
 	views.WidgetView = Backbone.View.extend({
 		template : _.template(require('text!templates/widget.html')),
 		initialize : function() {
@@ -97,6 +110,19 @@ define(function(require) {
 		},
 		render : function() {
 			this.setElement('#'+this.model.get('host_id'));
+			this.$el.append(this.template(this.model.toJSON()));
+			return this;
+		}
+	});
+
+	views.SingleMachineView = Backbone.View.extend({
+		template : _.template(require('text!templates/single-machine-view.html')),
+		initialize : function() {
+			_.bindAll(this, 'render');
+			this.render();
+		},
+		render : function() {
+			this.model.set("id",this.model.cid);
 			this.$el.append(this.template(this.model.toJSON()));
 			return this;
 		}
@@ -111,29 +137,19 @@ define(function(require) {
 			this.collection.bind('reset', this.render, this);
 			this.collection.bind('add', this.render, this);
 			this.collection.bind('remove', this.render, this);
+			this.collection.bind('change', this.render, this);
 			_.bindAll(this, 'render');
 		},
 		render : function() {
-			var element = jQuery(this.el);
-			var cpt=0;
-			element.empty();
-			var template = _.template('<li class="item <%= current %> tool <%= state %> <%= hidden %>"><span></span><a href="#/set_machine/<%= id %>"><%= hostname %></a></li>');
-			this.collection.forEach(function(item) {
-				//Move this on view, wich will concert 1 tool, and not all the tools
-				cpt++;
-				attr = _.clone(item.attributes);
-				attr.id = item.cid;
-				if (cpt>1) { attr.hidden = 'hidden'; } else { attr.hidden = '';}
-				attr.current ='current';
-				element.append(template(attr));
-			}.bind(this));
+			jQuery('.tools-other').empty();
 
-			if(cpt == 0) {
-				element.append('<li class="item refresh" id="refresh_machines_on_network"><a href="#/refresh_machines"></a></li>');
-			}
-			else {
-				element.append('<li class="item refresh hidden" id="refresh_machines_on_network"><a href="#/refresh_machines"></a></li>');
-			}
+			this.collection.forEach(function(item) {
+				if(item.get("current")=="current") {
+					jQuery('.tools-current').empty();
+					var singleRemoteMachine = new views.SingleMachineView({ model: item,el:'.tools-current'});
+				}
+				var singleRemoteMachine = new views.SingleMachineView({ model: item,el:'.tools-other'});
+			}.bind(this));
 
 			return this;
 		},
