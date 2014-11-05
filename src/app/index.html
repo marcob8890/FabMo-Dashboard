@@ -22,15 +22,36 @@
   <body>
       <div id="main" style="height:100%" class="off-canvas-wrap" data-offcanvas>
         <div class="inner-wrap">
+
           <!-- New nav work -->
           <!-- Nav-Bar & Buttons for sliding menus -->
           <nav class="tab-bar">
-            <section class="left-small">
+ 
+            <!-- ***** Left-Menu Button Section ***** -->
+            <section class="left-small left show-for-small-only">
               <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
             </section>
-            <section class="middle tab-bar-section">
+
+            <!-- ***** Machines on network Section ***** -->
+            <section class="left show-for-medium-up" id="tools-container">
+              <button data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="dropdown tools-current"> 
+                <li><a href="#/refresh_machines">Refresh</a></li>
+              </button>
+              <ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
+                <div class="tools-other">
+                  <li><a href="#">Refresh</a></li>
+                </div>
+                <div class="tools-refresh">
+                  <li><a href="#/refresh_machines"></a></li>
+                </div>
+            </section>
+
+            <!-- ***** Machines on network Widget ***** -->
+            <section class="middle">
               <h1 class="title"><a href="#/menu">FabMo Dashboard</a></h1>
             </section>
+
+            <!-- ***** Right-Menu Button Section ***** -->
             <section class="right-small">
               <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
             </section>
@@ -42,10 +63,12 @@
           <aside class="left-off-canvas-menu" id="left-menu">
 
             <!-- ***** Machines on network Widget ***** -->
-            <div id="widget-tools-network" class="widget">
+            <div id="widget-tools-network" class="widget show-for-small-only">
               <ul class="off-canvas-list"><li><label>Network</label></li></ul>
-              <ul class="off-canvas-list" id="remote-machine-menu">
-                <li class="item refresh" id="refresh_machines_on_network"><a href="#/refresh_machines"></a></li>
+              <ul class="off-canvas-list">
+                <div class="tools-current"></div>
+                <div class="tools-other hidden"></div>
+                <li class="item refresh"><a href="#/refresh_machines"></a></li>
               </ul>
             </div>
 
@@ -53,15 +76,17 @@
             <div id="widget-links-general" class="widget">
               <ul class="off-canvas-list" id="util-menu-small">
                 <li><label>Utilities</label></li>
-                <li><a href="#/menu" id="icon_home">Home</a></li>
-                <li><a href="#" id="icon_global">MyHQ</a></li>
-                <li><a href="#/menu" id="icon_apps">Apps</a></li>
-                <li><a href="#" id="icon_social">Community</a></li>
-                <li><a href="#" id="icon_search">Search</a></li>
-                <li><a href="#" data-reveal-id="job-manager-modal" id="icon_folder">Ready to cut</a></li>
-                <li><a href="#" data-reveal-id="settings-modal" id="icon_settings">Settings</a></li>
-                <li><a href="#" data-reveal-id="tool-modal">Keypad</a></li>
-                <li><a href="#" data-reveal-id="home-zero-modal">Homing & Zeroing</a></li>
+                <li><a href="#/menu" id="icon_home"><span>Home</span></a></li>
+                <li><a href="#" data-reveal-id="job-manager-modal" id="icon_jobs"><span>Jobs Queue</span></a></li>
+                <li><a href="#" id="icon_folder"><span>Upload a file</span></a></li>
+                <li><a href="#" id="icon_search"><span>Search</span></a></li>
+                <li><a href="#" id="icon_global"><span>MyHQ</span></a></li>
+                <li><a href="#/menu" id="icon_apps"><span>Apps</span></a></li>
+                <li><a href="#" id="icon_social"><span>Community</span></a></li>
+                <li><a href="#/page/settings" id="icon_settings"><span>Settings</span></a></li>
+                <li><a href="#" data-reveal-id="tool-modal"><span>Keypad</span></a></li>
+                <li><a href="#" data-reveal-id="home-zero-modal"><span>Homing & Zeroing</span></a></li>
+                <li><a href="#" id="icon_colapse"><span>Collapse</span></a></li>
               </ul>
             </div>
           </aside>
@@ -96,10 +121,18 @@
             <div>
               <ul id="app_menu_container"></ul>
             </div>
-            <div id="modal_container"></div>
+
+            <div id="modal_container" style="display:none;">
+              <h2>Settings</h2>
+                <div id="page_container">
+                  content
+                </div>
+            </div>
+
             <div id="app-client-container">
               <iframe class="app-iframe" nwdisable nwfaketop></iframe>
             </div>
+
             <div class="clear"></div>
           </section>
           <a id="close_menu" class="exit-off-canvas"></a>
@@ -146,7 +179,6 @@
     <div id="job-manager-modal" class="reveal-modal" data-reveal>
       <h4>Job Manager</h4>
       <div id="job_list_container">
-
       </div>
       <a class="close-reveal-modal">&#215;</a>
     </div>
@@ -182,6 +214,7 @@
 
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/foundation.min.js"></script>
+    <script src="js/libs/foundation/foundation.dropdown.js"></script>
     <script src="js/libs/underscore.js"></script>
     <script src="js/events.js"></script>
     <script src="js/libs/backbone.js"></script>
@@ -191,7 +224,8 @@
     <script src="js/libs/sortable.js"></script>
 
     <script>
-      $(document).foundation({
+      $(document).ready(function(){
+          $(document).foundation({
        offcanvas : {
           open_method: 'overlap_single', 
         }
@@ -215,25 +249,7 @@
           }
         }
       });
-
-      var bar = document.getElementById('left-menu');
-      new Sortable(bar, {
-        group: "widgets",
-        ghostClass: "sortable-ghost",
-        animation: 150,
-        store: {
-          /** Get the order of elements. Called once during initialization. **/
-          get: function (sortable) {
-              var order = localStorage.getItem(sortable.options.group);
-              return order ? order.split('|') : [];
-          },
-          /** Save the order of elements. Called every time at the drag end **/
-          set: function (sortable) {
-              var order = sortable.toArray();
-              localStorage.setItem(sortable.options.group, order.join('|'));
-          }
-        }
-      });
+    });
 
     </script>
 
