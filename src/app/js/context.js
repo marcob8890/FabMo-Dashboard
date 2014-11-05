@@ -26,10 +26,12 @@
 		// Model Instances
 		this.remoteMachines = new this.models.RemoteMachines();
 		this.widgets = new this.models.Widgets();
+		this.page = new this.models.Page();
 
 		// View Instances
-		this.remoteMachineMenuView = new this.views.RemoteMachineMenuView({el : '#remote-machine-menu', collection : this.remoteMachines});
+		this.remoteMachineMenuView = new this.views.RemoteMachineMenuView({collection : this.remoteMachines});
 		this.appClientView = new this.views.AppClientView({el : "#app-client-container"});
+		this.pageView = new this.views.PageView({model: this.page, el : '#modal_container'});
 	};
 
 	ApplicationContext.prototype.openSettingsPanel = function(){
@@ -54,6 +56,15 @@
 				loadDriverSettings(machine);
 			}
 		});
+	}
+
+	ApplicationContext.prototype.showModalContainer = function(name){
+		this.page.set("name",name);
+		$('#modal_container').show();
+	}
+
+	ApplicationContext.prototype.hideModalContainer = function(){
+		$('#modal_container').hide();
 	}
 
 	ApplicationContext.prototype.loadDriverSettings = function(machine){
