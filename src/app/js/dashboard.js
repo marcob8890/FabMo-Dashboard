@@ -10,6 +10,7 @@ define(function(require) {
 	Dashboard = function() {
 		this.machine = null;
 		this.message = "Test dashboard object";
+		this.allowKeypad = true;
 	};
 
 	// Brings up the keypad/DRO in the dashboard
@@ -32,6 +33,19 @@ define(function(require) {
 		var list_job = this.machine.list_job();
 		var list_job_view = new context.views.listJobView({el : '#job_list_container', collection : list_job});
 		$('#job-manager-modal').foundation('reveal', 'open');
+	};
+
+	Dashboard.prototype.keyCommands = function(){
+		$(document).keydown(function(e){
+			if ( (e.keyCode == 75) && (this.allowKeypad) ){
+				if($('#tool-modal').hasClass('open')) {
+		    		$('#tool-modal').foundation('reveal', 'close');
+		    	}
+		    	else {
+		    		$('#tool-modal').foundation('reveal', 'open');
+		    	}
+		    }
+		});
 	};
 
 	// The dashboard is a singleton which we create here and make available as this module's export.
