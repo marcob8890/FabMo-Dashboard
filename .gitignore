@@ -4,4 +4,7 @@
 *node_modules*
 src/tmp
 src/docs-dist
+*.log
+*.swp
+*.bak
 
