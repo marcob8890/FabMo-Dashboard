@@ -30,6 +30,7 @@ define(function(require) {
 			this.context.showModalContainer(page);
 			if(page =='settings') {
 				this.context.loadDriverSettings(dashboard.machine);
+				$('#modal_container').foundation('tab', 'init');
 			}
 		},
 		set_machine: function(id) {
