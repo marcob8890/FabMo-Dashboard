@@ -69,11 +69,8 @@
 		}
 		else {
 			machine.get_config(function(err,config){
-
 				if(err){console.log(err);return;}
-
 				var settings_fields = [];
-
 				for(var propt in config.engine){
 				    var setting_field = {};
 					setting_field.setting_label = propt;
@@ -82,7 +79,6 @@
 					setting_field.type="text";
 					settings_fields.push(setting_field);
 				}
-
 				new this.views.SettingsFormView({collection : new this.models.SettingsForm(settings_fields), el : '#core_settings_form'});
 			});
 		}
@@ -110,14 +106,12 @@
 	};
 
 	ApplicationContext.prototype.bindKeypad = function(ui){
-		$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-			if($(this).is('#tool-modal'))
-				ui.allowKeypad();
-		});
-		$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
-			if($(this).is('#tool-modal'))
-				ui.forbidKeypad();
-		});
+		if($(".fabmo-keypad").hasClass("hidden")) {
+			ui.forbidKeypad();
+		}
+		else {
+			ui.allowKeypad();
+		}
 	}
 
 	return new ApplicationContext();

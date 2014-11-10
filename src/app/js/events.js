@@ -1,13 +1,5 @@
 // Events and keypress handlers in the FabMo-Dashboard
 $(document).keydown(function(e){
-	if (e.keyCode == 75) {
-		if($('#tool-modal').hasClass('open')) {
-    		$('#tool-modal').foundation('reveal', 'close');
-    	}
-    	else {
-    		$('#tool-modal').foundation('reveal', 'open');
-    	}
-	}
 
 	/*if($('#tool-modal').hasClass('open')) {
 	    if (e.keyCode == 37) {
@@ -134,11 +126,4 @@ $(document).ready( function() {
 	$(window).resize( function() {resizedoc();});
 	$("#icon_colapse").click(function() { colapseMenu(); });
 	$("#widget-tools-network div").click( function() {widgetToolsNetwork(); });
-	$("#modal_container").bind('DOMNodeInserted DOMNodeRemoved', function() {
-		$(document).foundation({
-	        offcanvas : {
-	          open_method: 'overlap_single', 
-	        }
-	    });
-	});
 });

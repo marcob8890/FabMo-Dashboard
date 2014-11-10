@@ -15,7 +15,8 @@ define(function(require) {
 
 	// Brings up the keypad/DRO in the dashboard
 	Dashboard.prototype.keypad = function(){
-		$('#tool-modal').foundation('reveal', 'open');
+		//$('#tool-modal').foundation('reveal', 'open');
+		1;
 	};
 
 	// Brings up the DRO (if separate from the keypad) in the dashboard
@@ -38,12 +39,7 @@ define(function(require) {
 	Dashboard.prototype.keyCommands = function(){
 		$(document).keydown(function(e){
 			if ( (e.keyCode == 75) && (this.allowKeypad) ){
-				if($('#tool-modal').hasClass('open')) {
-		    		$('#tool-modal').foundation('reveal', 'close');
-		    	}
-		    	else {
-		    		$('#tool-modal').foundation('reveal', 'open');
-		    	}
+				1;
 		    }
 		});
 	};
