@@ -36,7 +36,6 @@ define(function(require) {
 						dashboard.machine = new FabMo(ip, port);
 						dashboard.ui= new FabMoUI(dashboard.machine);
 						context.bindKeypad(dashboard.ui);
-						context.loadSettingsForms(dashboard.machine);
 						context.remoteMachines.forEach(function(item) {
 							item.set("current","");
 						});
@@ -66,7 +65,6 @@ define(function(require) {
 						dashboard.machine = fabmo;
 						dashboard.ui = new FabMoUI(fabmo);
 						context.bindKeypad(dashboard.ui);
-						context.loadSettingsForms(dashboard.machine);
 					});
 				}
 			},webkit.package.detection_service_port||8080);

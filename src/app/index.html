@@ -122,12 +122,7 @@
               <ul id="app_menu_container"></ul>
             </div>
 
-            <div id="modal_container" style="display:none;">
-              <h2>Settings</h2>
-                <div id="page_container">
-                  content
-                </div>
-            </div>
+            <div id="modal_container" style="display:none;"></div>
 
             <div id="app-client-container">
               <iframe class="app-iframe" nwdisable nwfaketop></iframe>
@@ -183,35 +178,6 @@
       <a class="close-reveal-modal">&#215;</a>
     </div>
 
-
-    <div id="settings-modal" class="reveal-modal" data-reveal>
-        <h4>Settings</h4>
-        <dl class="tabs" data-tab>
-          <dd class="active"><a href="#panel1">Dashboard</a></dd>
-          <dd><a href="#panel2">Engine</a></dd>
-          <dd><a href="#panel3">Driver</a></dd>
-        </dl>
-        <div class="tabs-content">
-          <div class="content active" id="panel1">
-            <div id="dashboard_settings_form">
-              
-            </div>
-          </div>
-          <div class="content" id="panel2">
-            <div id="engine_settings_form">
-              
-            </div>
-          </div>
-          <div class="content" id="panel3">
-            <div id="core_settings_form">
-              
-            </div>
-          </div>
-        </div>
-    <a class="close-reveal-modal">&#215;</a>
-    </div>
-
-
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/foundation.min.js"></script>
     <script src="js/libs/foundation/foundation.dropdown.js"></script>
@@ -224,35 +190,15 @@
     <script src="js/libs/sortable.js"></script>
 
     <script>
-      $(document).ready(function(){
-          $(document).foundation({
-       offcanvas : {
+    $(document).ready(function(){
+      $(document).foundation({
+        offcanvas : {
           open_method: 'overlap_single', 
         }
       });
-
-      var bar = document.getElementById('app_menu_container');
-      new Sortable(bar, {
-        group: "apps",
-        ghostClass: "sortable-ghost",
-        animation: 150,
-        store: {
-          /** Get the order of elements. Called once during initialization. **/
-          get: function (sortable) {
-              var order = localStorage.getItem(sortable.options.group);
-              return order ? order.split('|') : [];
-          },
-          /** Save the order of elements. Called every time at the drag end **/
-          set: function (sortable) {
-              var order = sortable.toArray();
-              localStorage.setItem(sortable.options.group, order.join('|'));
-          }
-        }
-      });
     });
-
     </script>
-
+    
     <script data-main="js/app.js" src="js/libs/require.js"></script>
 
     <script>

@@ -111,9 +111,34 @@ widgetToolsNetwork = function() {
 };
 
 $(document).ready( function() {
+	var bar = document.getElementById('app_menu_container');
+		new Sortable(bar, {
+		group: "apps",
+		ghostClass: "sortable-ghost",
+		animation: 150,
+		store: {
+		  /** Get the order of elements. Called once during initialization. **/
+		  get: function (sortable) {
+		      var order = localStorage.getItem(sortable.options.group);
+		      return order ? order.split('|') : [];
+		  },
+		  /** Save the order of elements. Called every time at the drag end **/
+		  set: function (sortable) {
+		      var order = sortable.toArray();
+		      localStorage.setItem(sortable.options.group, order.join('|'));
+		  }
+		}
+	});
 	resizedoc();
 	$(".right-small .right-off-canvas-toggle").click( function() {resizedocclick();});
 	$(window).resize( function() {resizedoc();});
 	$("#icon_colapse").click(function() { colapseMenu(); });
 	$("#widget-tools-network div").click( function() {widgetToolsNetwork(); });
+	$("#modal_container").bind('DOMNodeInserted DOMNodeRemoved', function() {
+		$(document).foundation({
+	        offcanvas : {
+	          open_method: 'overlap_single', 
+	        }
+	    });
+	});
 });

@@ -91,7 +91,7 @@ define(function(require) {
 
 	views.PageView = Backbone.View.extend({
 		collection:null,
-		template:_.template(require('text!templates/settings.html')),
+		template:_.template(require('text!templates/page.html')),
 		initialize : function() {
 			_.bindAll(this, 'render');
 			this.model.bind('change', this.render);
@@ -142,6 +142,7 @@ define(function(require) {
 		},
 		render : function() {
 			jQuery('.tools-other').empty();
+			jQuery('.tools-current').html('<li><a href="#">Refresh</a></li>');
 
 			this.collection.forEach(function(item) {
 				if(item.get("current")=="current") {
