@@ -50,7 +50,7 @@ body,html{
 	width:10rem;
 	max-width: 12rem;
 	overflow: hidden;
-	white-space: nowrap.
+	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 
@@ -108,7 +108,21 @@ body,html{
 	background-size: 1.25rem;
 }
 
+#right-position-container {
+	height: 100%;
+	width: 10rem;
+	position: absolute;
+	color:#eee;
+	right: 3rem;
+	top: 0;
+	vertical-align: middle;
+}
 
+
+#right-position-container span, #right-position-container label {
+	color:white;
+	font-size: 0.9375rem;
+}
 
 /* ********** Menu Style ********** */
 
@@ -133,7 +147,7 @@ body,html{
 }
 
 
-/* Change #left-menu & #right-menu config on "desktop" view */
+/* Change #left-menu & #right-menu config */
 @media only screen and (min-width: 64.063em) {
 	.right-off-canvas-menu	{float:right;}
 	.offcanvas-overlap-left .right-off-canvas-menu {position:relative !important;}
@@ -334,18 +348,102 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 #icon_status:hover {background-image: url('../img/icon_status_w.png');}
 */
 
+/***
+*** Right Menu ***
+***/
+
+#position {
+	background-color:#9c210c;
+	color: #eee;
+}
+
+#position ul .axis {
+	height: 2rem;
+	padding:0;
+	font-family: 'source_sans_proextralight';
+}
+
+#position ul li:first-child label {
+	color:#dd8728;;
+	font-size: 2.25rem;
+	font-family: 'source_sans_proextralight';
+	font-weight: 300;
+	text-transform: capitalize;
+	text-align: center;
+	border-bottom: none;
+}
+
+#position ul .axis:first-child label {
+	border-top: 1px solid #eee;
+}
+
+#position ul .axis label {
+	border:none;
+	color:#eee;
+	border-bottom: 1px solid #eee;
+	background: none;
+	font-size: 1.125rem;
+	padding: 0 0.125rem;
+	font-family: 'source_sans_proregular';
+	font-weight: 100;
+}
+
+#position ul .axis span {
+	float:	right;
+}
+
+#position ul .axis .pos {
+	font-family: 'source_sans_proextralight';
+	margin-right: 0.250rem;
+}
+
+#position ul .axis .in {
+	font-size: 0.625rem;
+	text-transform: lowercase;
+	vertical-align: baseline;
+}
+
+#position ul .switch {
+	margin-left: 0.5em;
+}
+
+#position ul .small-5:last-child .switch {
+	margin-left: -0.5em;
+	margin-right: 0.5em;
+}
+
+#position ul .switch .columns {
+	text-align: center;
+	padding:0;
+	font-size: 0.75rem;
+	font-family: 'source_sans_proextralight';
+}
+
+#position ul .small-5 {
+	padding:0;
+}
+
 #keypad {
 	background-color:#dd8728;
 }
 
 #keypad ul li:first-child label {
+	font-family: 'source_sans_probold';
 	color:#9c210c;
-	text-align: center;
+	font-size:0.93875rem;
+	font-weight: bolder;
+	text-transform: capitalize;
 	border-bottom: none;
 }
 
 #keypad .axis { 
 	height:9rem;
+}
+
+#keypad .axis button:focus {
+	/*
+	outline: none !important;
+	*/
 }
 
 #keypad .axis button {
@@ -380,9 +478,8 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 	top: 0.65rem;
 }
 
-
 #keypad .axis .button-plus-X {
-	right:1rem;
+	left:5.5rem;
 	bottom:3.25rem;
 }
 
@@ -412,7 +509,7 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 
 #keypad .axis .button-plus-Y {
 	top:1rem;
-	right: 3.25rem;
+	left: 3.25rem;
 }
 
 #keypad .axis .button-plus-Y::before {
@@ -426,7 +523,7 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 
 #keypad .axis .button-minus-Z {
 	bottom:1.5rem;
-	left:1rem;
+	right:1rem;
 }
 
 #keypad .axis .button-minus-Z::before {

@@ -1,43 +1,6 @@
 // Events and keypress handlers in the FabMo-Dashboard
-$(document).keydown(function(e){
 
-	/*if($('#tool-modal').hasClass('open')) {
-	    if (e.keyCode == 37) {
-	        alert("Left !");
-	    }
-	 
-	    if (e.keyCode == 39) {
-	        alert("Right !");
-	    }
-
-	    if (e.keyCode == 38) {
-	        alert("Up !");
-	    }
-	 
-	    if (e.keyCode == 40) {
-	        alert("Down !");
-	    }
-
-	    if (e.keyCode == 33) {
-	    	if(e.ctrlKey)
-	        	alert("Ctrl + Page Up !");
-	        else if (e.shiftKey)
-	        	alert("Shift + Page Up !");
-	        else
-	        	alert("Just -- Page Up !");
-	    }
-	 
-	    if (e.keyCode == 34) {
-	        if(e.ctrlKey)
-	        	alert("Ctrl + Page Down !");
-	        else if (e.shiftKey)
-	        	alert("Shift + Page Down !");
-	        else
-	        	alert("Just -- Page Down !");
-	    }
-	}*/
-});
-
+/********** Layout Resize Fonctions **********/
 resizedoc = function(){
 	var l=0; var r=0;
 
@@ -55,7 +18,7 @@ resizedoc = function(){
 	else {l=0;}
 
 	if( ($("#main").hasClass("offcanvas-overlap-left")) && ($("body").width()/parseFloat($("body").css("font-size")))>60.063) {
-		r=250;
+		r=parseInt($("#right-menu").css("width")+1);
 	} else {r=0;}
 
 	r=r+l;
@@ -69,7 +32,7 @@ resizedocclick = function(){
 	else {l=0;}
 
 	if( !($("#main").hasClass("offcanvas-overlap-left")) && ($("body").width()/parseFloat($("body").css("font-size")))>60.063) {
-		r=250;
+		r=parseInt($("#right-menu").css("width")+1);
 	} else {r=0;}
 
 	r=r+l;
@@ -102,6 +65,8 @@ widgetToolsNetwork = function() {
 	}
 };
 
+
+/********** Document Ready Init **********/
 $(document).ready( function() {
 	var bar = document.getElementById('app_menu_container');
 		new Sortable(bar, {
