@@ -68,6 +68,12 @@ widgetToolsNetwork = function() {
 
 /********** Document Ready Init **********/
 $(document).ready( function() {
+	$(document).foundation({
+      offcanvas : {
+        open_method: 'overlap_single', 
+      }
+    });
+
 	var bar = document.getElementById('app_menu_container');
 		new Sortable(bar, {
 		group: "apps",
@@ -87,8 +93,26 @@ $(document).ready( function() {
 		}
 	});
 	resizedoc();
+	
 	$(".right-small .right-off-canvas-toggle").click( function() {resizedocclick();});
 	$(window).resize( function() {resizedoc();});
 	$("#icon_colapse").click(function() { colapseMenu(); });
 	$("#widget-tools-network div").click( function() {widgetToolsNetwork(); });
+
+	$('.fabmo-status').on('statechange',function(e,state){
+        var percent = $('.progress').text();
+        if( percent!==''){
+          $('.progress').html('<span class="meter" style="width:'+percent.toString()+';">');
+        }
+        if (state === 'running' || state === 'manual' || state === 'homing' || state==='probing')
+          $('.state').removeClass('success info default warning danger').addClass('success');
+        else if (state === 'paused' || state === 'passthrough' || state === 'limit')
+          $('.state').removeClass('success info default warning danger').addClass('warning');
+        else if (state === 'Error' || state === 'Disconnected')
+          $('.state').removeClass('success info default warning danger').addClass('error');
+        else
+          $('.state').removeClass('success info default warning danger').addClass('default');
+      });
+
+
 });

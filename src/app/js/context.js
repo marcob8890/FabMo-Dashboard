@@ -108,9 +108,11 @@
 	ApplicationContext.prototype.bindKeypad = function(ui){
 		if($(".fabmo-keypad").hasClass("hidden")) {
 			ui.forbidKeypad();
+			console.log("forbidKeypad");
 		}
 		else {
 			ui.allowKeypad();
+			console.log("allowKeypad");
 		}
 	}
 

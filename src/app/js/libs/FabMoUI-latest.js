@@ -164,9 +164,9 @@ FabMoUI.prototype.updateStatus = function(){
 			}
 		}
 		else if(err == that.tool.default_error.no_device){
-			$(that.posX_selector).html('???');
-			$(that.posY_selector).html('???');
-			$(that.posZ_selector).html('???');
+			$(that.posX_selector).html('X.XXX');
+			$(that.posY_selector).html('X.XXX');
+			$(that.posZ_selector).html('X.XXX');
 			$(that.status_div_selector).removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle fabmo-status-passthrough');
 			$(that.status_div_selector).removeClass('fabmo-status-disconnected');
 			$(that.state_selector).html('Disconnected');
@@ -180,9 +180,9 @@ FabMoUI.prototype.updateStatus = function(){
 
 		}
 		else{
-			$(that.posX_selector).html('???');
-			$(that.posY_selector).html('???');
-			$(that.posZ_selector).html('???');
+			$(that.posX_selector).html('X.XXX');
+			$(that.posY_selector).html('X.XXX');
+			$(that.posZ_selector).html('X.XXX');
 			$(that.status_div_selector).removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle fabmo-status-passthrough');
 			$(that.status_div_selector).removeClass('fabmo-status-disconnected');
 			$(that.state_selector).html('Unknown Error');
@@ -279,7 +279,6 @@ FabMoUI.prototype.Keypad = function(){
 			}
 		}
 	});
-
 
 	$(that.plusX_button_selector).mousedown(function(e) {
 		var e1 = jQuery.Event("keydown");

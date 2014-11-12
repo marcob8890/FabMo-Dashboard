@@ -7,16 +7,18 @@
 
 define(function(require) {
 
+	/*** Init *///
 	Dashboard = function() {
 		this.machine = null;
 		this.message = "Test dashboard object";
-		this.allowKeypad = true;
+		this.keyCommands();
 	};
+
+	/*** Prototypes ***/
 
 	// Brings up the keypad/DRO in the dashboard
 	Dashboard.prototype.keypad = function(){
-		//$('#tool-modal').foundation('reveal', 'open');
-		1;
+		keypad();
 	};
 
 	// Brings up the DRO (if separate from the keypad) in the dashboard
@@ -38,11 +40,22 @@ define(function(require) {
 
 	Dashboard.prototype.keyCommands = function(){
 		$(document).keydown(function(e){
-			if ( (e.keyCode == 75) && (this.allowKeypad) ){
-				1;
-		    }
+			if ( (e.which == 75)) {
+				keypad();
+			}
 		});
 	};
+
+	/*** Functions ***/
+	keypad = function() {
+		if($("#main").hasClass("offcanvas-overlap-left")){
+			$("#main").removeClass("offcanvas-overlap-left");
+		}
+		else {
+			$("#main").addClass("offcanvas-overlap-left");
+		}
+		resizedoc();
+	}
 
 	// The dashboard is a singleton which we create here and make available as this module's export.
 	var dashboard = new Dashboard();
