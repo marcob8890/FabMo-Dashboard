@@ -663,46 +663,63 @@ function ChooseBestWayToConnect(tool,callback){
 		throw "this function need a callback to work !";
 	console.log("Choosing best way to connect");
 	console.log(tool);
-	tool.network.forEach(function(val,key){
-		if(val.interface === "usb0")
-		{
-			callback(val.ip_address,tool.server_port);
-			return;
-		}
-	});
-	tool.network.forEach(function(val,key){
-		
-		if(val.interface === "eth0")
-		{
-			callback(val.ip_address,tool.server_port);
-			return;
-		}
-	});
-
-	tool.network.forEach(function(val,key){
-		if(val.interface === "en0")
-		{
-			console.log("Choosing en0");
-			callback(val.ip_address,tool.server_port);
-			return;
-		}
-	});
-
-	tool.network.forEach(function(val,key){
-		if(val.interface === "wlan0")
-		{
-			callback(val.ip_address,tool.server_port);
-			return;
-		}
-	});
-	tool.network.forEach(function(val,key){
-		if(val.interface === "wlan1")
-		{
-			callback(val.ip_address,tool.server_port);
-			return;
-		}
-	});
+	list_itr = [];
+	for(var idx in tool.network){
+		list_itr.push(tool.network[idx].interface);
+	}
+	console.log(list_itr);
+	if(list_itr.indexOf("usb0") > -1)
+	{
+		tool.network.forEach(function(val,key){
+			if(val.interface === "usb0")
+			{
+				callback(val.ip_address,tool.server_port);
+				return;
+			}
+		});
+	}
+	if(list_itr.indexOf("eth0") > -1)
+	{
+		tool.network.forEach(function(val,key){
+			if(val.interface === "eth0")
+			{
+				callback(val.ip_address,tool.server_port);
+				return;
+			}
+		});
+	}
+	if(list_itr.indexOf("en0") > -1)
+	{
+		tool.network.forEach(function(val,key){
+			if(val.interface === "en0")
+			{
+				callback(val.ip_address,tool.server_port);
+				return;
+			}
+		});
+	}	
+	if(list_itr.indexOf("wlan0") > -1)
+	{
+		tool.network.forEach(function(val,key){
+			if(val.interface === "wlan0")
+			{
+				callback(val.ip_address,tool.server_port);
+				return;
+			}
+		});
+	}
+	if(list_itr.indexOf("wlan1") > -1)
+	{
+		tool.network.forEach(function(val,key){
+			if(val.interface === "wlan1")
+			{
+				callback(val.ip_address,tool.server_port);
+				return;
+			}
+		});
+	}		
 }
+
 
 function DetectToolsOnTheNetworks(callback, linker_port){
 	if (!callback)
