@@ -114,5 +114,5 @@ $(document).ready( function() {
           $('.state').removeClass('success info default warning danger').addClass('default');
       });
 
-
+	toastr.options["positionClass"] = "toast-bottom-center";
 });

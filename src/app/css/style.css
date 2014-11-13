@@ -517,7 +517,7 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 	border-right-width: 0.375em;
 }
 
-#keypad:(.hidden) ul li:first-child label::after{
+#keypad.hidden ul li:first-child label::after{
 	border-top-color: #9c210c;
 	bottom: 0.1875em;
 	right: 0;

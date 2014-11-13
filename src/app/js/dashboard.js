@@ -10,25 +10,14 @@ define(function(require) {
 	/*** Init *///
 	Dashboard = function() {
 		this.machine = null;
-		this.message = "Test dashboard object";
-		this.keyCommands();
+		this.keyCommands(this);
 	};
 
 	/*** Prototypes ***/
 
-	// Brings up the keypad/DRO in the dashboard
-	Dashboard.prototype.keypad = function(){
-		keypad();
-	};
-
 	// Brings up the DRO (if separate from the keypad) in the dashboard
 	Dashboard.prototype.DRO = function(){
 		context.openDROPanel();
-	};
-
-	// Bring up the home/zero display
-	Dashboard.prototype.homing = function(){
-		$('#home-zero-modal').foundation('reveal', 'open');
 	};
 
 	// Bring up the job manager
@@ -38,16 +27,8 @@ define(function(require) {
 		$('#job-manager-modal').foundation('reveal', 'open');
 	};
 
-	Dashboard.prototype.keyCommands = function(){
-		$(document).keydown(function(e){
-			if ( (e.which == 75)) {
-				keypad();
-			}
-		});
-	};
-
-	/*** Functions ***/
-	keypad = function() {
+	// Open and close the right menu
+	Dashboard.prototype.bindRightMenu = function() {
 		if($("#main").hasClass("offcanvas-overlap-left")){
 			$("#main").removeClass("offcanvas-overlap-left");
 		}
@@ -57,9 +38,37 @@ define(function(require) {
 		resizedoc();
 	}
 
+	// React to keydown on "k" shortcute, show / hide right menu and show keypad if allowed
+	Dashboard.prototype.keyCommands = function(dashboard){
+		$(document).keydown(function(e){
+			if ((e.which == 75)) {
+				dashboard.keypad(dashboard);
+			}
+		});
+	};
+
+	Dashboard.prototype.keypad = function(dashboard) {
+		if (dashboard.machine) {
+			if(dashboard.ui.statusKeypad()) {
+				dashboard.bindRightMenu();
+			}
+			else dashboard.notification("error","KeyPad Unvailable");
+		}
+		else dashboard.notification("warning","Please Connect to a tool");
+	};
+
+	Dashboard.prototype.notification = function(type,message) {
+		if(type=='info') 			toastr.info(message);
+		else if (type=="success") 	toastr.success(message);
+		else if (type=="warning") 	toastr.warning(message);
+		else if (type=="error") 	toastr.error(message);
+	}
+
+
+	/*** Functions ***/
 	jobManager = function() {
 		require('context').launchApp('job-manager');
-	}
+	};
 
 	// The dashboard is a singleton which we create here and make available as this module's export.
 	var dashboard = new Dashboard();
