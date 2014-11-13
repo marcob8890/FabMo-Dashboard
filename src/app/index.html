@@ -51,8 +51,19 @@
               <h1 class="title"><a href="#/menu">FabMo Dashboard</a></h1>
             </section>
 
+            <!-- ***** Tool Position Section ***** -->
+            <section class="right show-for-medium-up fabmo-status" id="right-position-container">
+              <div class="small-6 columns">
+                <label>X :<span class="posx right"></span></label>
+                <label>Y :<span class="posy right"></span></label>
+              </div>
+              <div class="small-6 columns">
+                <label>Z :<span class="posz right"></span></label>
+              </div>
+            </section>
+
             <!-- ***** Right-Menu Button Section ***** -->
-            <section class="right-small">
+            <section class="right-small right">
               <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
             </section>
           </nav>
@@ -77,39 +88,124 @@
               <ul class="off-canvas-list" id="util-menu-small">
                 <li><label>Utilities</label></li>
                 <li><a href="#/menu" id="icon_home"><span>Home</span></a></li>
-                <li><a href="#" data-reveal-id="job-manager-modal" id="icon_jobs"><span>Jobs Queue</span></a></li>
+                <li><a href="#/app/job-manager" id="icon_jobs"><span>Job Queue</span></a></li>
                 <li><a href="#" id="icon_folder"><span>Upload a file</span></a></li>
                 <li><a href="#" id="icon_search"><span>Search</span></a></li>
                 <li><a href="#" id="icon_global"><span>MyHQ</span></a></li>
                 <li><a href="#/menu" id="icon_apps"><span>Apps</span></a></li>
                 <li><a href="#" id="icon_social"><span>Community</span></a></li>
                 <li><a href="#/page/settings" id="icon_settings"><span>Settings</span></a></li>
-                <li><a href="#" data-reveal-id="tool-modal"><span>Keypad</span></a></li>
-                <li><a href="#" data-reveal-id="home-zero-modal"><span>Homing & Zeroing</span></a></li>
                 <li><a href="#" id="icon_colapse"><span>Collapse</span></a></li>
               </ul>
             </div>
           </aside>
 
-          <aside class="right-off-canvas-menu">
-            <div id="widget-tools-position" class="widget">
-              <ul class="off-canvas-list fabmo-status fabmo-file-control" id="dro-content">
-                <li><label>Position &amp; Control</label></li>
-                <li><a><strong>X: </strong><span class="posx"></span></a></li>
-                <li><a><strong>Y: </strong><span class="posy"></span></a></li>
-                <li><a><strong>Z: </strong><span class="posz"></span></a></li>
+          <aside class="right-off-canvas-menu" id="right-menu">
+
+            <!-- ********** Tool Position Widget ********** -->
+            <div id="position" class="widget">
+              <ul class="off-canvas-list fabmo-status">
+                <li><label>Position</label></li>
+                <li>
+                  <div class="row axis">
+                    <div class="small-8 columns">
+                      <label>X<span class="in">in</span><span class="posx pos"></span></label>
+                    </div>
+                    <div class="small-2 columns home"><span class="button-zerox">X<label>0</label></span></div>
+                    <div class="small-2 columns set"><span class="button-homexy"></span></div>
+                  </div>
+                  <div class="row axis">
+                    <div class="small-8 columns">
+                      <label>Y<span class="in">in</span><span class="posy pos"></span></label>
+                    </div>
+                    <div class="small-2 columns home"><span class="button-zeroy">Y<label>0</label></span></div>
+                    <div class="small-2 columns set"><span class="button-homez"></span></div>
+                  </div>
+                  <div class="row axis">
+                    <div class="small-8 columns">
+                      <label>Z<span class="in">in</span><span class="posz pos"></span></label>
+                    </div>
+                    <div class="small-2 columns home"><span class="button-zeroz">Z<label>0</label></span></div>
+                    <div class="small-2 columns set"><span class="button-probez"></span></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row inOut">
+                    <div class="small-6 columns">Inputs</div>
+                    <div class="small-6 columns">Outputs</div>
+                  </div>
+                  <div class="row inOutSwitch">
+                    <div class="small-6 columns">
+                      <div class="row switch">
+                        <div class="small-3 columns prox-sw-1">| 1 |</div><div class="small-3 columns prox-sw-2">| 2 |</div>
+                        <div class="small-3 columns prox-sw-3">| 3 |</div><div class="small-3 columns prox-sw-4">| 4 |</div>
+                        <div class="small-3 columns prox-sw-5">| 5 |</div><div class="small-3 columns prox-sw-6">| 6 |</div>
+                        <div class="small-3 columns prox-sw-7">| 7 |</div><div class="small-3 columns prox-sw-8">| 8 |</div>
+                        <div class="small-3 columns prox-sw-9">| 9 |</div><div class="small-3 columns prox-sw-10">| 10 |</div>
+                        <div class="small-3 columns prox-sw-11">| 11 |</div><div class="small-3 columns prox-sw-12">| 12 |</div>
+                      </div>
+                    </div>
+                     <div class="small-6 columns">
+                      <div class="row switch">
+                        <div class="small-3 columns prox-sw-1">| 1 |</div><div class="small-3 columns prox-sw-2">| 2 |</div>
+                        <div class="small-3 columns prox-sw-3">| 3 |</div><div class="small-3 columns prox-sw-4">| 4 |</div>
+                        <div class="small-3 columns prox-sw-5">| 5 |</div><div class="small-3 columns prox-sw-6">| 6 |</div>
+                        <div class="small-3 columns prox-sw-7">| 7 |</div><div class="small-3 columns prox-sw-8">| 8 |</div>
+                        <div class="small-3 columns prox-sw-9">| 9 |</div><div class="small-3 columns prox-sw-10">| 10 |</div>
+                        <div class="small-3 columns prox-sw-11">| 11 |</div><div class="small-3 columns prox-sw-12">| 12 |</div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- ********** Keypad Widget ********** -->
+            <div id="keypad" class="widget fabmo-keypad">
+              <ul class="off-canvas-list">
+                <li><label>Keypad</label></li>
+                <li>
+                  <div class="row" >
+                    <div class="small-8 columns axis">
+                        <button class="button button-minus-X"></button>
+                        <button class="button button-minus-Y"></button>
+                        <button class="button button-plus-X"></button>
+                        <button class="button button-plus-Y"></button>
+                    </div>
+                    <div class="small-4 columns axis">
+                        <button class="button button-plus-Z"></button>
+                        <button class="button button-minus-Z"></button>
+                    </div> 
+                  </div>              
+                  </li>
+              </ul>
+            </div>
+
+            <!-- ************ File Control Widget ************ -->
+            <div id="job-info" class="widget fabmo-file-control">
+              <ul>
+                <li>Current Job</li>
                 <li class="alert-box default state"></li>
                 <div  class="hide file-info">
                   <li><a><strong>File: </strong><span class="filename"></span> </a></li>
                   <li><div class="progress"></div></li>
                 </div>    
                 <li>
-                  <span class="fabmo-pause-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button warning ">Pause</a></span>
-                  <span class="fabmo-resume-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button success ">Resume</a></span>
-                  <span class="fabmo-stop-button hide"><a style="margin-left: 5px; margin-right: 5px;" class="small button alert ">Stop</a></span>
+                  <div class="row">
+                    <div class="small-4 columns">
+                      <span class="fabmo-pause-button hide"><a class="small button warning ">P</a></span>
+                    </div>
+                    <div class="small-4 columns">
+                      <span class="fabmo-resume-button hide"><a class="small button success ">R</a></span>
+                    </div>
+                    <div class="small-4 columns">
+                      <span class="fabmo-stop-button hide"><a class="small button alert ">S</a></span>
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>
+
           </aside>
 
     
@@ -122,12 +218,7 @@
               <ul id="app_menu_container"></ul>
             </div>
 
-            <div id="modal_container" style="display:none;">
-              <h2>Settings</h2>
-                <div id="page_container">
-                  content
-                </div>
-            </div>
+            <div id="modal_container" style="display:none;"></div>
 
             <div id="app-client-container">
               <iframe class="app-iframe" nwdisable nwfaketop></iframe>
@@ -138,23 +229,6 @@
           <a id="close_menu" class="exit-off-canvas"></a>
         </div>
       </div>    
-
-      <div id="tool-modal" class="reveal-modal" data-reveal>
-      <h4>Manual Control</h4>
-          <div class="small-12 columns fabmo-keypad">
-            <div class="row" >
-                <div class="small-4 columns"><button class="button button-plus-Z">↥</button></div>
-                  <div class="small-4 columns"><button class="button button-plus-Y">↑</button></div>
-                  <div class="small-4 columns"><button class="button button-minus-Z">↧</button></div>
-            </div>              
-            <div class="row" >
-                  <div class="small-4 columns"><button class="button button-minus-X">←</button></div>
-                  <div class="small-4 columns"><button class="button button-minus-Y">↓</button></div>
-                  <div class="small-4 columns"><button class="button button-plus-X">→</button></div>
-            </div> 
-          </div>
-      <a class="close-reveal-modal">&#215;</a>
-    </div>
 
     <div id="home-zero-modal" class="reveal-modal" data-reveal>
       <h4>Homing and Zeroing</h4>
@@ -183,35 +257,6 @@
       <a class="close-reveal-modal">&#215;</a>
     </div>
 
-
-    <div id="settings-modal" class="reveal-modal" data-reveal>
-        <h4>Settings</h4>
-        <dl class="tabs" data-tab>
-          <dd class="active"><a href="#panel1">Dashboard</a></dd>
-          <dd><a href="#panel2">Engine</a></dd>
-          <dd><a href="#panel3">Driver</a></dd>
-        </dl>
-        <div class="tabs-content">
-          <div class="content active" id="panel1">
-            <div id="dashboard_settings_form">
-              
-            </div>
-          </div>
-          <div class="content" id="panel2">
-            <div id="engine_settings_form">
-              
-            </div>
-          </div>
-          <div class="content" id="panel3">
-            <div id="core_settings_form">
-              
-            </div>
-          </div>
-        </div>
-    <a class="close-reveal-modal">&#215;</a>
-    </div>
-
-
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/foundation.min.js"></script>
     <script src="js/libs/foundation/foundation.dropdown.js"></script>
@@ -222,55 +267,8 @@
     <script src="js/libs/FabMoUI-latest.js"></script>    
 
     <script src="js/libs/sortable.js"></script>
-
-    <script>
-      $(document).ready(function(){
-          $(document).foundation({
-       offcanvas : {
-          open_method: 'overlap_single', 
-        }
-      });
-
-      var bar = document.getElementById('app_menu_container');
-      new Sortable(bar, {
-        group: "apps",
-        ghostClass: "sortable-ghost",
-        animation: 150,
-        store: {
-          /** Get the order of elements. Called once during initialization. **/
-          get: function (sortable) {
-              var order = localStorage.getItem(sortable.options.group);
-              return order ? order.split('|') : [];
-          },
-          /** Save the order of elements. Called every time at the drag end **/
-          set: function (sortable) {
-              var order = sortable.toArray();
-              localStorage.setItem(sortable.options.group, order.join('|'));
-          }
-        }
-      });
-    });
-
-    </script>
-
+    
     <script data-main="js/app.js" src="js/libs/require.js"></script>
-
-    <script>
-      $('.fabmo-status').on('statechange',function(e,state){
-        var percent = $('.progress').text();
-        if( percent!==''){
-          $('.progress').html('<span class="meter" style="width:'+percent.toString()+';">');
-        }
-        if (state === 'running' || state === 'manual' || state === 'homing' || state==='probing')
-          $('.state').removeClass('success info default warning danger').addClass('success');
-        else if (state === 'paused' || state === 'passthrough' || state === 'limit')
-          $('.state').removeClass('success info default warning danger').addClass('warning');
-        else if (state === 'Error' || state === 'Disconnected')
-          $('.state').removeClass('success info default warning danger').addClass('error');
-        else
-          $('.state').removeClass('success info default warning danger').addClass('default');
-      });
-    </script>
 
   </body>
 </html>

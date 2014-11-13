@@ -47,12 +47,19 @@ body,html{
 #tools-container {
 	margin-left: 1rem;
 	height: 100%;
+	width:10rem;
+	max-width: 12rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 #tools-container button {
 	padding: 0px;
+	margin-right: 20px;
 	margin-bottom: 0px;
 	height: 100%;
+	max-width: inherit;
 }
 
 #tools-container *:focus {
@@ -101,7 +108,21 @@ body,html{
 	background-size: 1.25rem;
 }
 
+#right-position-container {
+	height: 100%;
+	width: 10.5rem;
+	position: absolute;
+	color:#eee;
+	right: 3rem;
+	top: 0;
+	vertical-align: middle;
+}
 
+
+#right-position-container span, #right-position-container label {
+	color:white;
+	font-size: 0.9375rem;
+}
 
 /* ********** Menu Style ********** */
 
@@ -115,16 +136,18 @@ body,html{
 	width : 11.375rem;
 }
 
-.left-off-canvas-menu::-webkit-scrollbar { 
+.left-off-canvas-menu::-webkit-scrollbar,
+.right-off-canvas-menu::-webkit-scrollbar { 
     display: none; 
 }
 
 .right-off-canvas-menu {
-	background-color: #444444;
+	background-color: #eeeeee;
+	width : 13.875rem;
 }
 
 
-/* Change #left-menu & #right-menu config on "desktop" view */
+/* Change #left-menu & #right-menu config */
 @media only screen and (min-width: 64.063em) {
 	.right-off-canvas-menu	{float:right;}
 	.offcanvas-overlap-left .right-off-canvas-menu {position:relative !important;}
@@ -222,7 +245,7 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 	color:#dddddd;
 }
 
-.widget .hidden{ display: none;}
+.widget .hidden .toHide { display: none;}
 
 .widget .refresh {
 	background: url('../img/icon_refresh.png') center no-repeat;
@@ -325,6 +348,301 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 #icon_status:hover {background-image: url('../img/icon_status_w.png');}
 */
 
+/***
+*** Right Menu ***
+***/
+
+#position {
+	background-color:#9c210c;
+	color: #eee;
+	margin-bottom:0;
+	padding-bottom:0.5rem;
+}
+
+#position ul .axis {
+	height: 2rem;
+	padding:0;
+	font-family: 'source_sans_proextralight';
+}
+
+#position ul li:first-child label {
+	color:#dd8728;;
+	font-size: 2.25rem;
+	font-family: 'source_sans_proextralight';
+	font-weight: 300;
+	text-transform: capitalize;
+	text-align: center;
+	border-bottom: none;
+}
+
+#position ul .axis:first-child > .columns > label {
+	border-top: 1px solid #eee;
+}
+
+#position ul .axis > .columns > label {
+	border:none;
+	color:#eee;
+	border-bottom: 1px solid #eee;
+	background: none;
+	font-size: 1.125rem;
+	padding: 0 0.125rem;
+	font-family: 'source_sans_proregular';
+	font-weight: 100;
+}
+
+#position ul .axis span {
+	float:	right;
+}
+
+#position ul .axis .pos {
+	font-family: 'source_sans_proextralight';
+	margin-right: 0.250rem;
+}
+
+#position ul .axis .in {
+	font-size: 0.625rem;
+	text-transform: lowercase;
+	vertical-align: baseline;
+}
+
+#position ul .axis .home, #position ul .axis .set {
+	padding:0;
+	text-align: center;
+}
+
+#position ul .axis .home span, #position ul .axis .set span {
+	width: 1.625rem;
+	height: 1.625rem;
+	float: left;
+	margin-top:0.0625em;
+}
+
+#position ul .axis .home:hover, #position ul .axis .set:hover {
+	cursor: pointer;
+}
+
+#position ul .axis .home span {
+	background: #dd8728;
+	font-family: 'source_sans_proregular';
+	font-size: 1.0625rem;
+	font-weight: bold;
+}
+
+#position ul .axis .home span label {
+	font-size: 0.5rem;
+	background: none;
+	display: inline;
+	border:none;
+	color:#eee;
+	padding: 0;
+	padding-left: 0.125em;
+	font-weight: 100;
+	vertical-align: text-bottom;
+}
+
+#position ul .axis .set span {
+	background-color: #eee;
+}
+
+#position ul .button-homexy, #position ul .button-homez, #position ul .button-probez {
+	background-size: 1.375rem;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#position ul .button-homexy 	{ background-image: url('../img/icon_go-home.png'); }
+#position ul .button-homez		{ background-image: url('../img/icon_mv-xy.png'); }
+#position ul .button-probez	{ background-image: url('../img/icon_zero-z.png'); }
+
+
+#position ul .columns{
+	position:relative;
+}
+
+#position ul .inOut {
+	font-size: 0.875rem;
+}
+
+#position ul .inOut .columns {
+	font-size: 0.8125rem;
+}
+
+#position ul .inOut:not(.hidden) .columns::after{
+	border-top-color: #eee;
+	right: 0.9375em;
+	bottom:0;
+}
+
+#position ul .inOut:(.hidden) .columns::after{
+	border-bottom-color: #eee;
+	right: 0.9375em;
+}
+
+#position ul .switch {
+	padding-left: 0.9375em;
+	padding-right: 0.375em;
+}
+
+#position ul .switch .columns {
+	text-align: left;
+	padding:0;
+	font-size: 0.75rem;
+	font-family: 'source_sans_proextralight';
+}
+
+#keypad {
+	background-color:#dd8728;
+}
+
+#keypad ul li:first-child label {
+	font-family: 'source_sans_probold';
+	color:#9c210c;
+	font-size:0.93875rem;
+	font-weight: bolder;
+	text-transform: capitalize;
+	border-bottom: none;
+	width: 4.75rem;
+	margin: 0 auto;
+	position:relative;
+}
+
+#keypad ul li:first-child label::after,
+#position ul .inOut .columns::after {
+	content: ' ';
+	height: 0;
+	position: absolute;
+	width: 0;
+	border: 0.5em solid transparent;
+	border-left-width: 0.375em;
+	border-right-width: 0.375em;
+}
+
+#keypad:(.hidden) ul li:first-child label::after{
+	border-top-color: #9c210c;
+	bottom: 0.1875em;
+	right: 0;
+}
+
+#keypad:not(.hidden) ul li:first-child label::after{
+	border-bottom-color: #9c210c;
+	bottom: 0.6875em;
+	right: 0;
+}
+
+#keypad .axis { 
+	height:9rem;
+}
+
+#keypad .axis button:focus {
+	/*
+	outline: none !important;
+	*/
+}
+
+#keypad .axis button {
+	position:absolute;
+	width: 2.5rem;
+	height: 2.5rem;
+	padding: 0;
+	margin: 0;
+	border-radius: 1.25rem;
+	background-color: white;
+}
+
+#keypad .axis .button::before, #keypad .axis .button::after  {
+	content: ' ';
+	height: 0;
+	position: absolute;
+	width: 0;
+	border: 0.85rem solid transparent; /* arrow size */
+}
+
+#keypad .axis .button-minus-X {
+	left:1rem;
+	top:3.25rem;
+}
+
+#keypad .axis .button-minus-X::before {
+	border-right-color: #9c210c;  /* arrow color */
+	border-top-width: 0.65rem;
+	border-bottom-width: 0.65rem;
+	position: absolute;
+	left: -0.1rem;
+	top: 0.65rem;
+}
+
+#keypad .axis .button-plus-X {
+	left:5.5rem;
+	bottom:3.25rem;
+}
+
+#keypad .axis .button-plus-X::before {
+	border-left-color: #9c210c;  /* arrow color */
+	border-top-width: 0.65rem;
+	border-bottom-width: 0.65rem;
+	position: absolute;
+	right: -0.1rem;
+	top: 0.65rem
+}
+
+#keypad .axis .button-minus-Y {
+	bottom:1rem;
+	left:3.25rem;
+}
+
+#keypad .axis .button-minus-Y::before {
+	border-top-color: #9c210c;  /* arrow color */
+	border-left-width: 0.65rem;
+	border-right-width: 0.65rem;
+	position: absolute;
+	bottom: -0.1rem;
+	left: 0.65rem
+}
+
+
+#keypad .axis .button-plus-Y {
+	top:1rem;
+	left: 3.25rem;
+}
+
+#keypad .axis .button-plus-Y::before {
+	border-bottom-color: #9c210c;  /* arrow color */
+	border-left-width: 0.65rem;
+	border-right-width: 0.65rem;
+	position: absolute;
+	top: -0.1rem;
+	left: 0.65rem
+}
+
+#keypad .axis .button-minus-Z {
+	bottom:1.5rem;
+	right:1rem;
+}
+
+#keypad .axis .button-minus-Z::before {
+	border-top-color: #9c210c;  /* arrow color */
+	border-left-width: 0.65rem;
+	border-right-width: 0.65rem;
+	position: absolute;
+	bottom: -0.1rem;
+	left: 0.65rem
+}
+
+
+#keypad .axis .button-plus-Z {
+	top:1.5rem;
+	right: 1rem;
+}
+
+#keypad .axis .button-plus-Z::before {
+	border-bottom-color: #9c210c;  /* arrow color */
+	border-left-width: 0.65rem;
+	border-right-width: 0.65rem;
+	position: absolute;
+	top: -0.1rem;
+	left: 0.65rem
+}
+
 
 /* ********** Icon apps grid ********** */
 
@@ -378,7 +696,7 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 
 .app-icon.sortable-ghost, .sortable-ghost {
 	border: 3px dashed #CCC;
-	background : url(../img/icon_plus_cross.png) no-repeat center;
+	background : url('../img/icon_plus_cross.png') no-repeat center;
 	background-size: 48px;
 }
 

@@ -51,11 +51,7 @@
 	}
 
 	ApplicationContext.prototype.loadSettingsForms = function(machine){
-		$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-			if($(this).is('#settings-modal')){
-				loadDriverSettings(machine);
-			}
-		});
+		loadDriverSettings(machine);
 	}
 
 	ApplicationContext.prototype.showModalContainer = function(name){
@@ -68,27 +64,24 @@
 	}
 
 	ApplicationContext.prototype.loadDriverSettings = function(machine){
-		machine.get_config(function(err,config){
-			if(err){console.log(err);return;}
-			var settings_fields = [];
-			var count=0;
-			// TODO change it with the next implementation of the settings files
-			config.forEach(function(val,idx,arr){
-				var setting_field = {};
-				var key = Object.keys(val)[0];
-				setting_field.setting_label = key;
-				setting_field.setting_value = val[key];
-				setting_field.code = key;
-				setting_field.type="text";
-				settings_fields.push(setting_field);
-				count++;
-				if(count === config.length){
-					console.log(settings_fields);
-					new this.views.SettingsFormView({collection : new this.models.SettingsForm(settings_fields), el : '#core_settings_form'});
+		if(machine==null) {
+			console.log("No machine selected");
+		}
+		else {
+			machine.get_config(function(err,config){
+				if(err){console.log(err);return;}
+				var settings_fields = [];
+				for(var propt in config.engine){
+				    var setting_field = {};
+					setting_field.setting_label = propt;
+					setting_field.setting_value = config.engine[propt];
+					setting_field.code = propt;
+					setting_field.type="text";
+					settings_fields.push(setting_field);
 				}
-			}.bind(this));
-
-		});
+				new this.views.SettingsFormView({collection : new this.models.SettingsForm(settings_fields), el : '#core_settings_form'});
+			});
+		}
 	}
 
 	ApplicationContext.prototype.refreshRemoteMachines = function(callback) {
@@ -113,15 +106,19 @@
 	};
 
 	ApplicationContext.prototype.bindKeypad = function(ui){
-		$(document).on('opened.fndtn.reveal', '[data-reveal]',  function (e) {
-			if($(this).is('#tool-modal'))
-				ui.allowKeypad();
-		});
-		$(document).on('close.fndtn.reveal', '[data-reveal]',  function (e) {
-			if($(this).is('#tool-modal'))
-				ui.forbidKeypad();
-		});
+		if($(".fabmo-keypad").hasClass("hidden")) {
+			ui.forbidKeypad();
+			console.log("forbidKeypad");
+		}
+		else {
+			ui.allowKeypad();
+			console.log("allowKeypad");
+		}
 	}
 
+	ApplicationContext.launchApp = function(id) {
+		Router.launch_app(id);
+	}
+	
 	return new ApplicationContext();
 });

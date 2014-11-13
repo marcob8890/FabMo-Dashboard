@@ -14,7 +14,9 @@ define(function(require) {
 			"page/:name"		: "show_page"
 		},
 		launch_app: function(id) {
-			this.context.appClientView.setModel(this.context.apps.get(id));
+			app = this.context.apps.get(id);
+			console.log(JSON.stringify(app))
+			this.context.appClientView.setModel(app);
 			this.context.appMenuView.hide();
 			this.context.appClientView.show();
 			this.context.hideModalContainer();
@@ -28,6 +30,10 @@ define(function(require) {
 			this.context.appClientView.hide();
 			this.context.appMenuView.hide();
 			this.context.showModalContainer(page);
+			if(page =='settings') {
+				this.context.loadDriverSettings(dashboard.machine);
+				$('#modal_container').foundation('tab', 'init');
+			}
 		},
 		set_machine: function(id) {
 			machine = this.context.remoteMachines.get(id);
@@ -37,7 +43,6 @@ define(function(require) {
 				dashboard.machine = new FabMo(ip, port);
 				dashboard.ui= new FabMoUI(dashboard.machine);
 				this.context.bindKeypad(dashboard.ui);
-				this.context.loadSettingsForms(dashboard.machine);
 				this.context.remoteMachines.forEach(function(item) {
 					item.set("current","");
 				});
@@ -56,7 +61,6 @@ define(function(require) {
 						dashboard.machine = new FabMo(ip, port);
 						dashboard.ui= new FabMoUI(dashboard.machine);
 						this.context.bindKeypad(dashboard.ui);
-						this.context.loadSettingsForms(dashboard.machine);
 						this.context.remoteMachines.models[0].set("current","current");
 					}.bind(this));
 				}

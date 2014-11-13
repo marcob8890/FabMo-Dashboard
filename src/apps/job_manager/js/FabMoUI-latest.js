@@ -1,4 +1,11 @@
+$('.fabmo-state').removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle ');
+$('.fabmo-state').addClass('fabmo-status-idle');
+$('.fabmo-state').html(status.state);
+$('.fabmo-posx').html(status.posx);
+
 function FabMoUI(tool, options){
+	this.event_handlers = {'status' : []};
+
 	this.tool = tool;
 	// the tool we need to check for
 
@@ -34,7 +41,7 @@ function FabMoUI(tool, options){
 	this.progress_selector = this.file_info_div_selector + ' .progress';
 
 
-	this.stop_button_selector = this.file_control_selector + ' .fabmo-stop-button';
+	this.stop_button_selector = this.file_control_selector + ' .fabmo-stop-button'
 	this.resume_button_selector = this.file_control_selector + ' .fabmo-resume-button';
 	this.pause_button_selector = this.file_control_selector + ' .fabmo-pause-button';
 
@@ -57,7 +64,7 @@ function FabMoUI(tool, options){
 
 	if(this.file_control){
 		this.my_file_control = this.FileControl;
-		this.FileControl();
+		this.FileControl()
 	}
 
 }
@@ -71,13 +78,18 @@ FabMoUI.prototype.updateText = function(control, txt) {
 	if(v != txt) {
 		control.val(txt);
 	}
-};
+}
 
 FabMoUI.prototype.updateStatus = function(){
 	var that=this;
 	that.tool.get_status(function(err, status){
 		if(!err){
-			
+
+			handlers = that.event_handlers['status'];
+			for(var i=0; i<handlers.length; i++) {
+				typeof handlers[i] === 'function' && handlers[i](status);
+			}
+
 			var x = status.posx.toFixed(3);
 			var y = status.posy.toFixed(3);
 			var z = status.posz.toFixed(3);
@@ -164,9 +176,9 @@ FabMoUI.prototype.updateStatus = function(){
 			}
 		}
 		else if(err == that.tool.default_error.no_device){
-			$(that.posX_selector).html('X.XXX');
-			$(that.posY_selector).html('X.XXX');
-			$(that.posZ_selector).html('X.XXX');
+			$(that.posX_selector).html('???');
+			$(that.posY_selector).html('???');
+			$(that.posZ_selector).html('???');
 			$(that.status_div_selector).removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle fabmo-status-passthrough');
 			$(that.status_div_selector).removeClass('fabmo-status-disconnected');
 			$(that.state_selector).html('Disconnected');
@@ -180,9 +192,9 @@ FabMoUI.prototype.updateStatus = function(){
 
 		}
 		else{
-			$(that.posX_selector).html('X.XXX');
-			$(that.posY_selector).html('X.XXX');
-			$(that.posZ_selector).html('X.XXX');
+			$(that.posX_selector).html('???');
+			$(that.posY_selector).html('???');
+			$(that.posZ_selector).html('???');
 			$(that.status_div_selector).removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle fabmo-status-passthrough');
 			$(that.status_div_selector).removeClass('fabmo-status-disconnected');
 			$(that.state_selector).html('Unknown Error');
@@ -196,14 +208,12 @@ FabMoUI.prototype.updateStatus = function(){
 		}
 	});
 
-};
-
-
+}
 
 FabMoUI.prototype.Keypad = function(){
 	var that = this;
 	this.keypad_allow=false;
-	that.lock_right = false;
+	that.lock_right = false
 	that.lock_left = false;
 	that.lock_up = false;
 	that.lock_down = false;
@@ -289,7 +299,7 @@ FabMoUI.prototype.Keypad = function(){
 			e1.which = 39;
 			$(that.keypad_div_selector).trigger(e1);
 			$(this).unbind('mouseleave');
-		});
+		})
 	}); 
 	$(that.minusX_button_selector).mousedown(function(e) {
 		var e1 = jQuery.Event("keydown");
@@ -300,7 +310,7 @@ FabMoUI.prototype.Keypad = function(){
 			e1.which = 37;
 			$(that.keypad_div_selector).trigger(e1);
 			$(this).unbind('mouseleave');
-		});
+		})
 	});
 	$(that.plusY_button_selector).mousedown(function(e) {
 		var e1 = jQuery.Event("keydown");
@@ -311,7 +321,7 @@ FabMoUI.prototype.Keypad = function(){
 			e1.which = 38;
 			$(that.keypad_div_selector).trigger(e1);
 			$(this).unbind('mouseleave');
-		});
+		})
 	}); 
 	$(that.minusY_button_selector).mousedown(function(e) {
 		var e1 = jQuery.Event("keydown");
@@ -322,7 +332,7 @@ FabMoUI.prototype.Keypad = function(){
 			e1.which = 40;
 			$(that.keypad_div_selector).trigger(e1);
 			$(this).unbind('mouseleave');
-		});
+		})
 	});
 	$(that.plusZ_button_selector).mousedown(function(e) {
 		var e1 = jQuery.Event("keydown");
@@ -333,7 +343,7 @@ FabMoUI.prototype.Keypad = function(){
 			e1.which = 33;
 			$(that.keypad_div_selector).trigger(e1);
 			$(this).unbind('mouseleave');
-		});
+		})
 	}); 
 	$(that.minusZ_button_selector).mousedown(function(e) {
 		var e1 = jQuery.Event("keydown");
@@ -344,7 +354,7 @@ FabMoUI.prototype.Keypad = function(){
 			e1.which = 34;
 			$(that.keypad_div_selector).trigger(e1);
 			$(this).unbind('mouseleave');
-		});
+		})
 	});
 
 	$(that.plusX_button_selector).mouseup(function(e) {
@@ -377,16 +387,16 @@ FabMoUI.prototype.Keypad = function(){
 		e1.which = 34; 
 		$(that.keypad_div_selector).trigger(e1);
 	});
-};
+}
 
 
 FabMoUI.prototype.allowKeypad = function(){
 	this.keypad_allow = true;
-};
+}
 
 FabMoUI.prototype.forbidKeypad = function(){
 	this.keypad_allow = false;
-};
+}
 
 FabMoUI.prototype.FileControl = function(){
 	var that = this;
@@ -399,5 +409,11 @@ FabMoUI.prototype.FileControl = function(){
 	$(that.stop_button_selector).click(function(e) {
 		that.tool.quit(function(){});
 	});
+}
 
- };
+FabMoUI.prototype.on = function(event, callback) {
+	if(event == 'status') {
+		this.event_handlers['status'].push(callback);
+		console.log(this.event_handlers)
+	}
+}

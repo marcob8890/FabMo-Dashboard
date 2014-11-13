@@ -1,51 +1,6 @@
 // Events and keypress handlers in the FabMo-Dashboard
-$(document).keydown(function(e){
-	if (e.keyCode == 75) {
-		if($('#tool-modal').hasClass('open')) {
-    		$('#tool-modal').foundation('reveal', 'close');
-    	}
-    	else {
-    		$('#tool-modal').foundation('reveal', 'open');
-    	}
-	}
 
-	/*if($('#tool-modal').hasClass('open')) {
-	    if (e.keyCode == 37) {
-	        alert("Left !");
-	    }
-	 
-	    if (e.keyCode == 39) {
-	        alert("Right !");
-	    }
-
-	    if (e.keyCode == 38) {
-	        alert("Up !");
-	    }
-	 
-	    if (e.keyCode == 40) {
-	        alert("Down !");
-	    }
-
-	    if (e.keyCode == 33) {
-	    	if(e.ctrlKey)
-	        	alert("Ctrl + Page Up !");
-	        else if (e.shiftKey)
-	        	alert("Shift + Page Up !");
-	        else
-	        	alert("Just -- Page Up !");
-	    }
-	 
-	    if (e.keyCode == 34) {
-	        if(e.ctrlKey)
-	        	alert("Ctrl + Page Down !");
-	        else if (e.shiftKey)
-	        	alert("Shift + Page Down !");
-	        else
-	        	alert("Just -- Page Down !");
-	    }
-	}*/
-});
-
+/********** Layout Resize Fonctions **********/
 resizedoc = function(){
 	var l=0; var r=0;
 
@@ -63,7 +18,7 @@ resizedoc = function(){
 	else {l=0;}
 
 	if( ($("#main").hasClass("offcanvas-overlap-left")) && ($("body").width()/parseFloat($("body").css("font-size")))>60.063) {
-		r=250;
+		r=parseInt($("#right-menu").css("width")+1);
 	} else {r=0;}
 
 	r=r+l;
@@ -77,7 +32,7 @@ resizedocclick = function(){
 	else {l=0;}
 
 	if( !($("#main").hasClass("offcanvas-overlap-left")) && ($("body").width()/parseFloat($("body").css("font-size")))>60.063) {
-		r=250;
+		r=parseInt($("#right-menu").css("width")+1);
 	} else {r=0;}
 
 	r=r+l;
@@ -110,10 +65,54 @@ widgetToolsNetwork = function() {
 	}
 };
 
+
+/********** Document Ready Init **********/
 $(document).ready( function() {
+	$(document).foundation({
+      offcanvas : {
+        open_method: 'overlap_single', 
+      }
+    });
+
+	var bar = document.getElementById('app_menu_container');
+		new Sortable(bar, {
+		group: "apps",
+		ghostClass: "sortable-ghost",
+		animation: 150,
+		store: {
+		  /** Get the order of elements. Called once during initialization. **/
+		  get: function (sortable) {
+		      var order = localStorage.getItem(sortable.options.group);
+		      return order ? order.split('|') : [];
+		  },
+		  /** Save the order of elements. Called every time at the drag end **/
+		  set: function (sortable) {
+		      var order = sortable.toArray();
+		      localStorage.setItem(sortable.options.group, order.join('|'));
+		  }
+		}
+	});
 	resizedoc();
+	
 	$(".right-small .right-off-canvas-toggle").click( function() {resizedocclick();});
 	$(window).resize( function() {resizedoc();});
 	$("#icon_colapse").click(function() { colapseMenu(); });
 	$("#widget-tools-network div").click( function() {widgetToolsNetwork(); });
+
+	$('.fabmo-status').on('statechange',function(e,state){
+        var percent = $('.progress').text();
+        if( percent!==''){
+          $('.progress').html('<span class="meter" style="width:'+percent.toString()+';">');
+        }
+        if (state === 'running' || state === 'manual' || state === 'homing' || state==='probing')
+          $('.state').removeClass('success info default warning danger').addClass('success');
+        else if (state === 'paused' || state === 'passthrough' || state === 'limit')
+          $('.state').removeClass('success info default warning danger').addClass('warning');
+        else if (state === 'Error' || state === 'Disconnected')
+          $('.state').removeClass('success info default warning danger').addClass('error');
+        else
+          $('.state').removeClass('success info default warning danger').addClass('default');
+      });
+
+
 });

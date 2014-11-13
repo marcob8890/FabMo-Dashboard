@@ -55,7 +55,7 @@ function copy_app(app_dir, callback) {
 									'app_path':tmp_app_path,
 									'app_url':'app://fabmolinker/'+path.join(tmp_app_path,package_info.main),
 									'icon_url':'app://fabmolinker'+path.join('tmp', tmp_app_path,package_info.icon),
-									'id':uuid.v1()};
+									'id':package_info.id || uuid.v1()};
 					callback(null, app_info);
 				} catch(e) {
 					return callback(e);
@@ -85,7 +85,7 @@ function decompress_app(app_path,callback){
 						'app_path':tmp_app_path,
 						'app_url':'app://fabmolinker/'+path.join(tmp_app_path,package_info.main),
 						'icon_url':'app://fabmolinker'+path.join('tmp', tmp_app_path,package_info.icon),
-						'id':uuid.v1()};
+						'id':package_info.id || uuid.v1()};
 		callback(false, app_info);
 	}
 	catch(e){
