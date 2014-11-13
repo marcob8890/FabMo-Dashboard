@@ -394,7 +394,6 @@ FabMo.prototype.stop_move =  function(callback)
 };
 
 
-
 FabMo.prototype.list_jobs_by_id = function(callback)
 {
 	if (!callback)
@@ -485,29 +484,64 @@ FabMo.prototype.get_job_in_queue = function(id,callback)
 };
 
 
-FabMo.prototype.add_job = function(job,callback)
+// take a form data, look for a file field, and upload the file load in it
+FabMo.prototype.add_job =  function(formdata,callback)
 {
 	if (!callback)
 		throw "this function need a callback to work !";
 	var that=this;
-	$.ajax({
-		url: this.url.job,
-		type: "POST",
-		dataType : 'json', 
-		data : {"job" : job},
-		success: function( data ) {
-			callback(undefined);
-		},
-		error: function(data, err) {
-	    		var error = that.default_error.no_device;
-			error.sys_err = err;
-		 	callback(error);
-		}
-	});
+	var formData;
+	if (formdata instanceof jQuery){ //if it's a form
+		var file = (formdata.find('input:file'))[0].files[0];
+		// Create a new FormData object.
+		formData = new FormData();
+		formData.append('file', file, file.name);
+	}
+	else // else it's a formData
+	{
+		formData = formdata;
+	}		
+	if (formData) {
+		$.ajax({
+			url: this.url.job,
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			DataType:'json',
+			success: function( data ) {
+				return callback(null, data);
+				console.log(data);
+				if (data.responseJSON && data.responseJSON[0]) {
+					callback(null,data.responseJSON[0]);
+				}
+				else if(data.responseJSON) {
+					callback(null, data.responseJSON);
+				}
+				else {
+					callback(null,JSON.parse(data.responseText));
+				}
+			},
+			error : function(data, err) {
+				if (data.status === 400){callback(that.default_error.file.upload.bad_request);}
+				else if (data.status === 415){callback(that.default_error.file.upload.not_allowed);}
+				else if (data.status === 302){
+					if (data.responseJSON && data.responseJSON[0])
+						callback(undefined,data.responseJSON[0]);
+					else if(data.responseJSON)
+						callback(undefined, data.responseJSON);
+					else
+						callback(undefined, JSON.parse(data.responseText));
+				}
+				else{
+					var error = that.default_error.no_device;
+					error.sys_err = err;
+				 	callback(error);
+				}
+			}
+		});
+	}
 };
-
-
-
 
 // take a form data, look for a file field, and upload the file load in it
 FabMo.prototype.upload_file =  function(formdata,callback)
