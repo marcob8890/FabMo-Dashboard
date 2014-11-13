@@ -32,7 +32,7 @@ define(function(require) {
 	};
 
 	// Bring up the job manager
-	Dashboard.prototype.JobManager = function(){
+	Dashboard.prototype.jobManager = function(){
 		var list_job = this.machine.list_job();
 		var list_job_view = new context.views.listJobView({el : '#job_list_container', collection : list_job});
 		$('#job-manager-modal').foundation('reveal', 'open');
@@ -55,6 +55,10 @@ define(function(require) {
 			$("#main").addClass("offcanvas-overlap-left");
 		}
 		resizedoc();
+	}
+
+	jobManager = function() {
+		require('context').launchApp('job-manager');
 	}
 
 	// The dashboard is a singleton which we create here and make available as this module's export.

@@ -116,5 +116,9 @@
 		}
 	}
 
+	ApplicationContext.launchApp = function(id) {
+		Router.launch_app(id);
+	}
+	
 	return new ApplicationContext();
 });
