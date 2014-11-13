@@ -106,19 +106,17 @@
 	};
 
 	ApplicationContext.prototype.bindKeypad = function(ui){
-		if($(".fabmo-keypad").hasClass("hidden")) {
 			ui.forbidKeypad();
-			console.log("forbidKeypad");
-		}
-		else {
-			ui.allowKeypad();
-			console.log("allowKeypad");
-		}
-	}
+	};
+
+	ApplicationContext.prototype.statusKeypad = function(ui){
+		console.log("KeyPad Status : "+ui.statusKeypad());
+		ui.statusKeypad();
+	};
 
 	ApplicationContext.launchApp = function(id) {
 		Router.launch_app(id);
-	}
+	};
 	
 	return new ApplicationContext();
 });

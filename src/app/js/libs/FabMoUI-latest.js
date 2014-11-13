@@ -388,6 +388,10 @@ FabMoUI.prototype.forbidKeypad = function(){
 	this.keypad_allow = false;
 };
 
+FabMoUI.prototype.statusKeypad = function(){
+	return this.keypad_allow;
+}
+
 FabMoUI.prototype.FileControl = function(){
 	var that = this;
 	$(that.pause_button_selector).click(function(e) {
