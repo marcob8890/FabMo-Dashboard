@@ -14,9 +14,31 @@ var schema =
 	    message: "Enter the application name",
 	    name: "app_name",
 	    validate: function( answer ) {
+	    	var done = this.async(); //this validate is asynchronous
 	      if ( answer.length < 2 ) {
-	        return "You must enter a name of more than two characters";
-	      } return true;
+	         done("You must enter a name of more than two characters");
+	         return;
+	      }
+	      else{
+	      	fs.stat('../apps/'+answer,function(err,stat){
+	      		if(!err){//file exist
+	      			done("there is already an app with the same name.");
+	      			return;
+	      		}
+	      		fs.stat('../apps/'+answer+'.fma',function(err,stat){
+			      		if(!err){//file exist
+			      			done("there is already a bundled app with the same name.");
+			      			return;
+			      		}
+			      		done(true);
+			      		return;
+			    });
+	      	});
+	      }
+
+
+
+	      return true;
 
 	    }
 	},
