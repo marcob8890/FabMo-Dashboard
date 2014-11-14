@@ -1,6 +1,6 @@
 var fs=require('fs');
 var inquirer = require('inquirer');
-var mustache = require('mustache');
+var Mustache = require('mustache');
 
 var author;
 try{author=require('./author.json');}
@@ -115,23 +115,45 @@ inquirer.prompt(schema, function( answers ) {
 
 	//Create folder structure
 	console.log('creating folder ...');
-	var app_path = '../apps/'+answers.app_name;
+	var app_path = '../apps/'+answers.app_name + '/';
 	fs.mkdir(app_path,function(err){
 		if(err){console.log(err);return;}
 
 		//copy default icon
 		console.log('coping icon ...');
-		copyFile("./default_icon.png",app_path+"/"+"icon.png",function(err){
+		copyFile("./default_icon.png",app_path+"icon.png",function(err){
 			if(err){console.log(err);return;}
 		});
 
+		//TODO : include libs
+
+		//create package.json
+		fs.readFile("package_json.template",'utf8', function(err,template){
+			if(err){console.log(err);return;}
+			var view = {};
+			view.app = {
+					name : answers.app_name,
+					targets : JSON.stringify(answers.target)
+				};
+			view.developer= author;
+
+			var output = Mustache.render(template, view);
+			console.log('creating package.json ...');
+			fs.writeFile(app_path + 'package.json',output,function(err){
+				if(err){console.log(err);return;}
+			});
+			
+
+		//create index.html
+				
+		});
+
+
+
+
 	});
 
-	//TODO : include libs
 
-	//create package.json
-
-	//create index.html
 });
 
 
