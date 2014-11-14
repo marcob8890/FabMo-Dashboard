@@ -115,12 +115,46 @@ inquirer.prompt(schema, function( answers ) {
 
 	//Create folder structure
 	console.log('creating folder ...');
-	fs.mkdir('../apps/'+answers.app_name);
-	//copy default icon
-	//TODO
-	//include libs
+	var app_path = '../apps/'+answers.app_name;
+	fs.mkdir(app_path,function(err){
+		if(err){console.log(err);return;}
+
+		//copy default icon
+		console.log('coping icon ...');
+		copyFile("./default_icon.png",app_path+"/"+"icon.png",function(err){
+			if(err){console.log(err);return;}
+		});
+
+	});
+
+	//TODO : include libs
 
 	//create package.json
 
 	//create index.html
 });
+
+
+function copyFile(source, target, cb) {
+  var cbCalled = false;
+
+  var rd = fs.createReadStream(source);
+  rd.on("error", function(err) {
+    done(err);
+  });
+  var wr = fs.createWriteStream(target);
+  wr.on("error", function(err) {
+    done(err);
+  });
+  wr.on("close", function(ex) {
+    done();
+  });
+  rd.pipe(wr);
+
+  function done(err) {
+    if (!cbCalled) {
+      cb(err);
+      cbCalled = true;
+    }
+  }
+}
