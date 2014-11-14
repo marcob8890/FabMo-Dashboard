@@ -661,6 +661,8 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 	margin-bottom: 0;
 }
 
+.app-icon[display=none] {display:none;}
+
 .app-title { margin-top: 4px;}
 
 .app-title a {

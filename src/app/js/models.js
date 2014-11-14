@@ -8,6 +8,7 @@ define(function(require) {
 			name : null,
 			icon_path : null,
 			icon_background_color : null,
+			icon_display:null,
 			app_path : null,
 			app_url : null,
 			id : null

@@ -22,6 +22,11 @@ define(function(require) {
 	views.AppIconView = Backbone.View.extend({
 		tagName : 'li',
 		className : 'app-icon',
+		attributes : function () {
+			return {
+				display : this.model.get('icon_display')
+			};
+		},
 		template : _.template(require('text!templates/app-icon.html')),
 		initialize : function() {
 			_.bindAll(this, 'render');
