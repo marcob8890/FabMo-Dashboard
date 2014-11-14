@@ -94,7 +94,6 @@ $(document).ready( function() {
 	});
 	resizedoc();
 	
-	$(".right-small .right-off-canvas-toggle").click( function() {resizedocclick();});
 	$(window).resize( function() {resizedoc();});
 	$("#icon_colapse").click(function() { colapseMenu(); });
 	$("#widget-tools-network div").click( function() {widgetToolsNetwork(); });

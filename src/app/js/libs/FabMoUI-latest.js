@@ -65,6 +65,7 @@ function FabMoUI(tool, options){
 FabMoUI.prototype.Keypad = function(){
 	var that = this;
 	this.keypad_allow=false;
+	this.menu_open=false;
 	that.lock_right = false;
 	that.lock_left = false;
 	that.lock_up = false;
@@ -74,7 +75,7 @@ FabMoUI.prototype.Keypad = function(){
 
 
 	$(document).keydown(function(e) {
-		if (that.keypad_allow){
+		if (that.keypad_allow && that.menu_open){
 			if (e.which === 37 && !that.lock_left && !that.lock_right) //left
 			{
 				that.lock_left=true;
@@ -241,6 +242,13 @@ FabMoUI.prototype.Keypad = function(){
 	});
 };
 
+FabMoUI.prototype.setMenuOpen = function(){
+	this.menu_open = true;
+};
+
+FabMoUI.prototype.setMenuClosed = function(){
+	this.menu_open = false;
+};
 
 FabMoUI.prototype.allowKeypad = function(){
 	this.keypad_allow = true;
@@ -365,6 +373,7 @@ FabMoUI.prototype.updateStatus = function(){
 			}
 		}
 		else if(err == that.tool.default_error.no_device){
+			that.forbidKeypad();
 			$(that.posX_selector).html('X.XXX');
 			$(that.posY_selector).html('X.XXX');
 			$(that.posZ_selector).html('X.XXX');
@@ -381,6 +390,7 @@ FabMoUI.prototype.updateStatus = function(){
 
 		}
 		else{
+			that.forbidKeypad();
 			$(that.posX_selector).html('X.XXX');
 			$(that.posY_selector).html('X.XXX');
 			$(that.posZ_selector).html('X.XXX');
