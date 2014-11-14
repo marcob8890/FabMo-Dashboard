@@ -183,27 +183,24 @@
             </div>
 
             <!-- ************ File Control Widget ************ -->
-            <div id="job-info" class="widget fabmo-file-control">
-              <ul>
-                <li>Current Job</li>
-                <li class="alert-box default state"></li>
-                <div  class="hide file-info">
-                  <li><a><strong>File: </strong><span class="filename"></span> </a></li>
-                  <li><div class="progress"></div></li>
-                </div>    
+            <div id="job-info" class="widget">
+              <ul class="off-canvas-list fabmo-file-control">
+                <li class="hide file-info"><label><span class="filename"></span></label></li>
+                <li class="hide file-info"><span class="progress"></span></li>    
                 <li>
                   <div class="row">
-                    <div class="small-4 columns">
+                    <div class="small-6 columns control">
                       <span class="fabmo-pause-button hide"><a class="small button warning ">P</a></span>
                     </div>
-                    <div class="small-4 columns">
-                      <span class="fabmo-resume-button hide"><a class="small button success ">R</a></span>
-                    </div>
-                    <div class="small-4 columns">
+                    <div class="small-6 columns control">
                       <span class="fabmo-stop-button hide"><a class="small button alert ">S</a></span>
+                    </div>
+                    <div class="small-12 columns control">
+                      <span class="fabmo-resume-button hide"><a class="small button success ">R</a></span>
                     </div>
                   </div>
                 </li>
+                <li class="alert-box default state"></li>
               </ul>
             </div>
 
