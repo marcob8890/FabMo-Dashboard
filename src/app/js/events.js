@@ -6,29 +6,34 @@ resizedoc = function(){
 
 	if($("body").width()/parseFloat($("body").css("font-size"))>40.063) {
 		$("#main").addClass("offcanvas-overlap-right");
+		l=parseInt($("#left-menu").css("width"))+1;
 	}
 	else {
 		$("#main").removeClass("offcanvas-overlap-right");
 		$("#main").removeClass("offcanvas-overlap-left");
 		$("#widget-links-general").removeClass("colapsed");
 		$("#left-menu").removeClass("colapsed");
+		l=0;
 	}
-
-	if($("#left-menu").css("position")=="relative") { l=parseInt($("#left-menu").css("width"))+1; }
-	else {l=0;}
 
 	if( ($("#main").hasClass("offcanvas-overlap-left")) && ($("body").width()/parseFloat($("body").css("font-size")))>60.063) {
 		r=parseInt($("#right-menu").css("width")+1);
 	} else {r=0;}
 
 	r=r+l;
+	if(l>1) l=l-1;
+	
 	$(".main-section").css("width",$("body").width()-r+"px");
+	$(".main-section").css("margin-left",l+"px");
+	$(".main-section").css("height",$("#left-menu").height()+"px");
 };
 
 resizedocclick = function(){
 	var l=0; var r=0;
 
-	if($("#left-menu").css("position")=="relative") { l=parseInt($("#left-menu").css("width"))+1; }
+	if($("body").width()/parseFloat($("body").css("font-size"))>40.063) {
+		l=parseInt($("#left-menu").css("width"))+1;
+	}	
 	else {l=0;}
 
 	if( !($("#main").hasClass("offcanvas-overlap-left")) && ($("body").width()/parseFloat($("body").css("font-size")))>60.063) {

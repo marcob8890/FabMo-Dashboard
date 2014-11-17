@@ -129,6 +129,9 @@ body,html{
 .right-off-canvas-menu, .left-off-canvas-menu { 
 	box-shadow: 0 0 20px rgba(0,0,0,0.2);
 	color: white;
+	top: 2.8125rem;
+	bottom: 0px;
+	height: auto;
 }
 
 .left-off-canvas-menu {
@@ -150,18 +153,11 @@ body,html{
 /* Change #left-menu & #right-menu config */
 @media only screen and (min-width: 64.063em) {
 	.right-off-canvas-menu	{float:right;}
-	.offcanvas-overlap-left .right-off-canvas-menu {position:relative !important;}
 }
 
 @media only screen and (min-width: 40.063em) {
 	.left-off-canvas-menu	{float:left;}
 	#close_menu.exit-off-canvas	{display:none !important;}
-	.offcanvas-overlap-right .left-off-canvas-menu {position:relative !important;}
-	.right-off-canvas-menu, .left-off-canvas-menu {height: 100%;}
-}
-
-@media only screen and (min-width: 40.063em) and (max-width: 64.063em) {
-	.right-off-canvas-menu	{margin-top:2.8125rem;}
 }
 
 @media only screen and (max-width: 40.063em) {
