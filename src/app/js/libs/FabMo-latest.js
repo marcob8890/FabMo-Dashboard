@@ -5,6 +5,7 @@ function FabMo(ip,port) //ip and port of the tool
 	this.port = port || '8080';
 	this.url = {};
 	this.tool_moving = undefined;//for the moving thing
+	this.interval_moving = 250;//Default was 250
 	this.url.base = 'http://'+this.ip+':'+this.port;
 	this.url.file=this.url.base+"/file";
 	this.url.status=this.url.base+'/status';
@@ -358,7 +359,7 @@ FabMo.prototype.start_move =  function(dir,callback)
 		data :{"move" : dir},
 		success: function( data ) {
 			if(!that.tool_moving){
-				that.tool_moving=setInterval(that.start_move.bind(that,dir,function(){}),250);
+				that.tool_moving=setInterval(that.start_move.bind(that,dir,function(){}),that.interval_moving);
 				callback(undefined);
 			}
 		},

@@ -5,7 +5,7 @@ function FabMoUI(tool, options){
 	this.prefix = '';
 	// useful if several tools in the same app.
 
-	this.refresh = 100;
+	this.refresh = 50;
 	// define the status refresh time.
 
 	this.keypad = true;
@@ -324,6 +324,7 @@ FabMoUI.prototype.updateStatus = function(){
 				}
 			}
 			else if(status.state === 'manual') {
+				that.allowKeypad();
 				$(that.status_div_selector).removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle fabmo-status-passthrough');
 				$(that.status_div_selector).removeClass('fabmo-status-running');
 				$(that.state_selector).html('' + status.state);
@@ -369,7 +370,7 @@ FabMoUI.prototype.updateStatus = function(){
 			}
 			else {
 				that.forbidkeypad();
-				console.log('unknown status');
+				console.log('Unknown status');
 			}
 		}
 		else if(err == that.tool.default_error.no_device){
