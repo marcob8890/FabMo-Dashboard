@@ -5,6 +5,7 @@ function FabMo(ip,port) //ip and port of the tool
 	this.port = port || '8080';
 	this.url = {};
 	this.tool_moving = undefined;//for the moving thing
+	that.old_lock_status = null;
 	this.interval_moving = 250;//Default was 250
 	this.url.base = 'http://'+this.ip+':'+this.port;
 	this.url.file=this.url.base+"/file";
@@ -347,28 +348,44 @@ FabMo.prototype.sbp = function(sbp_line,callback)
 };
 
 
-FabMo.prototype.start_move =  function(dir,callback)
+FabMo.prototype.start_move =  function(dir,lock,callback)
 {
 	if (!callback)
 		throw "this function need a callback to work !";
+
 	var that=this;
-	$.ajax({
-		url: this.url.move,
-		type: "POST",
-		dataType : 'json', 
-		data :{"move" : dir},
-		success: function( data ) {
-			if(!that.tool_moving){
-				that.tool_moving=setInterval(that.start_move.bind(that,dir,function(){}),that.interval_moving);
-				callback(undefined);
+
+	console.log(lock);
+	console.log(that.old_lock_status);
+	
+	if (that.old_lock_status==null) {
+		that.old_lock_status = lock;
+	}
+
+	if(that.old_lock_status != lock) {
+		console.log("Stop Move already");
+		that.stop_move(function(){});
+	}
+
+	else {
+		$.ajax({
+			url: this.url.move,
+			type: "POST",
+			dataType : 'json', 
+			data :{"move" : dir},
+			success: function( data ) {
+				if(!that.tool_moving){
+					that.tool_moving=setInterval(that.start_move.bind(that,dir,lock,function(){}),that.interval_moving);
+					callback(undefined);
+				}
+			},
+			error: function(data,err) {
+		    		var error = that.default_error.no_device;
+				error.sys_err = err;
+			 	callback(error);
 			}
-		},
-		error: function(data,err) {
-	    		var error = that.default_error.no_device;
-			error.sys_err = err;
-		 	callback(error);
-		}
-	});
+		});
+	}
 };
 
 FabMo.prototype.stop_move =  function(callback)
@@ -376,6 +393,7 @@ FabMo.prototype.stop_move =  function(callback)
 	if (!callback)
 		throw "this function need a callback to work !";
 	var that=this;
+	that.old_lock_status=null;
 	clearInterval(that.tool_moving);
 	that.tool_moving = undefined;
 	$.ajax({

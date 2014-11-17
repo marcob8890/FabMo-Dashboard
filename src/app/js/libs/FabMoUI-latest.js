@@ -5,7 +5,7 @@ function FabMoUI(tool, options){
 	this.prefix = '';
 	// useful if several tools in the same app.
 
-	this.refresh = 50;
+	this.refresh = 100;
 	// define the status refresh time.
 
 	this.keypad = true;
@@ -62,49 +62,51 @@ function FabMoUI(tool, options){
 
 }
 
+FabMoUI.prototype.lock = function(){
+	this.right = false;
+	this.left = false;
+	this.up = false;
+	this.down = false;
+	this.page_up = false;
+	this.page_down = false;
+};
+
 FabMoUI.prototype.Keypad = function(){
 	var that = this;
+	that.locks=new that.lock();
 	this.keypad_allow=false;
 	this.menu_open=false;
-	that.lock_right = false;
-	that.lock_left = false;
-	that.lock_up = false;
-	that.lock_down = false;
-	that.lock_page_up = false;
-	that.lock_page_down = false;
-
 
 	$(document).keydown(function(e) {
 		if (that.keypad_allow && that.menu_open){
-			if (e.which === 37 && !that.lock_left && !that.lock_right) //left
+			if (e.which === 37 && !that.locks.left && !that.locks.right) //left
 			{
-				that.lock_left=true;
-				that.tool.start_move("-x",function(){});
+				that.locks.left=true;
+				that.tool.start_move("-x",that.locks,function(){});
 			}
-			if (e.which === 38 && !that.lock_up && !that.lock_down) //up
+			if (e.which === 38 && !that.locks.up && !that.locks.down) //up
 			{
-				that.lock_up=true;
-				that.tool.start_move("y",function(){});
+				that.locks.up=true;
+				that.tool.start_move("y",that.locks,function(){});
 			}
-			if (e.which === 39 && !that.lock_right && !that.lock_left) //right
+			if (e.which === 39 && !that.locks.right && !that.locks.left) //right
 			{
-				that.lock_right=true;
-				that.tool.start_move("x",function(){});
+				that.locks.right=true;
+				that.tool.start_move("x",that.locks,function(){});			}
+			if (e.which === 40 && !that.locks.up && !that.locks.down) //down
+			{
+				that.locks.down=true;
+				that.tool.start_move("-y",that.locks,function(){});
 			}
-			if (e.which === 40 && !that.lock_up && !that.lock_down) //down
+			if (e.which === 33 && !that.locks.page_up && !that.locks.page_down) //page_up
 			{
-				that.lock_down=true;
-				that.tool.start_move("-y",function(){});
+				that.locks.page_up=true;
+				that.tool.start_move("z",that.locks,function(){});
 			}
-			if (e.which === 33 && !that.lock_page_up && !that.lock_page_down) //page_up
+			if (e.which === 34 && !that.locks.page_up && !that.locks.page_down) //page_down
 			{
-				that.lock_page_up=true;
-				that.tool.start_move("z",function(){});
-			}
-			if (e.which === 34 && !that.lock_page_up && !that.lock_page_down) //page_down
-			{
-				that.lock_page_down=true;
-				that.tool.start_move("-z",function(){});
+				that.locks.page_down=true;
+				that.tool.start_move("-z",that.locks,function(){});
 			}
 		}
 	});
@@ -112,32 +114,32 @@ FabMoUI.prototype.Keypad = function(){
 		if (that.keypad_allow){
 			if (e.which === 37 ) //left
 			{
-				that.lock_left=false;
+				that.locks.left=false;
 				that.tool.stop_move(function(){});
 			}
 			if (e.which === 38 ) //up
 			{
-				that.lock_up=false;
+				that.locks.up=false;
 				that.tool.stop_move(function(){});
 			}
 			if (e.which === 39 ) //right
 			{
-				that.lock_right=false;
+				that.locks.right=false;
 				that.tool.stop_move(function(){});
 			}
 			if (e.which === 40 ) //down
 			{
-				that.lock_down=false;
+				that.locks.down=false;
 				that.tool.stop_move(function(){});
 			}
 			if (e.which === 33 ) //page_up
 			{
-				that.lock_page_up=false;
+				that.locks.page_up=false;
 				that.tool.stop_move(function(){});
 			}
 			if (e.which === 34 ) //page_down
 			{
-				that.lock_page_down=false;
+				that.locks.page_down=false;
 				that.tool.stop_move(function(){});
 			}
 		}
@@ -281,7 +283,8 @@ FabMoUI.prototype.updateStatus = function(){
 	var that=this;
 	that.tool.get_status(function(err, status){
 		if(!err){
-			
+			that.tool.state=status.state;
+
 			var x = status.posx.toFixed(3);
 			var y = status.posy.toFixed(3);
 			var z = status.posz.toFixed(3);
@@ -413,13 +416,13 @@ FabMoUI.prototype.updateStatus = function(){
 FabMoUI.prototype.FileControl = function(){
 	var that = this;
 	$(that.pause_button_selector).click(function(e) {
-		that.tool.pause(function(){});
+		that.tool.pause(that.locks,function(){});
 	});
 	$(that.resume_button_selector).click(function(e) {
-		that.tool.resume(function(){});
+		that.tool.resume(that.locks,function(){});
 	});
 	$(that.stop_button_selector).click(function(e) {
-		that.tool.quit(function(){});
+		that.tool.quit(that.locks,function(){});
 	});
 
  };
