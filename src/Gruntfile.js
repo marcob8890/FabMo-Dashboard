@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                     tasks: ['availabletasks', 'default']
                 }
             }
-        },
+        }
 	});
 	grunt.loadNpmTasks('grunt-groc');
 	grunt.loadNpmTasks('grunt-gh-pages');
@@ -37,5 +37,13 @@ module.exports = function(grunt) {
     grunt.registerTask('doc', 'Generate engine documentation in HTML format.', ['groc']);
 	grunt.registerTask('doc-dist', 'Generate documentation and publish to github-pages.', ['groc', 'gh-pages']);
 	grunt.registerTask('doc-view', 'Generate documentation and view locally in web browser.', ['groc', 'open']);
+	grunt.registerTask('author_information', 'Enter the information about the develloper', function(){
+		var done = this.async();
+		require('./app generator/author_information')(done);
+	});
+	grunt.registerTask('app_generator', 'Generate an empty app ready to be develloped.', function(){
+		var done = this.async();
+		require('./app generator/app_generator')(done);
+	});
     grunt.registerTask('default', 'availabletasks');
 };
