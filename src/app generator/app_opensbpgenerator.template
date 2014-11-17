@@ -6,15 +6,15 @@
 	{{/libraries.css}}
 	</head>
 	<body>
-		<div class="header">{{app.name}}</div>
-		<div class="description">{{app.desc}}</div>
+		<div class="header"><h1>{{app.name}}</h1></div>
+		<div class="description"><h2>{{app.desc}}</h2></div>
 		
 		<form>
 			<p>GOTO : X<input type="text" id="input-x" value="0">  Y<input type="text" id="input-y" value="0"></p>
 		</form>
 		<button id="run-button" onclick="goto()">GO !</button>
 	<footer>
-		<p> App created by {{app.author}} | <a href="mailto:{{app.email}}">contact</a> | <a href="{{app.website}}">{{app.website}}</a>
+		<p> App created by {{dev.name}} | <a href="mailto:{{dev.email}}">contact</a> | <a href="{{dev.website}}">{{dev.website}}</a>
 	</footer>
 	</body>
 	

@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>{{app.name}}</title>
+		{{#libraries.css}}
+		<script src="./css/{{.}}"></script>
+	{{/libraries.css}}
+	</head>
+	<body>
+		<div class="header"><h1>{{app.name}}</h1></div>
+		<div class="description"><h2>{{app.desc}}</h2></div>
+		
+	<footer>
+		<p> App created by {{dev.name}} | <a href="mailto:{{dev.email}}">contact</a> | <a href="{{dev.website}}">{{dev.website}}</a>
+	</footer>
+	</body>
+	
+	{{#libraries.js}}
+		<script src="./js/{{.}}"></script>
+	{{/libraries.js}}
+
+	<script type="text/javascript">
+	var list_dev_glob;
+	var list_fabmo_device = [];
+	$(document).ready(function(){		
+		DetectToolsOnTheNetworks(function(err,list_dev){
+			if(err){console.log(err);return;}
+			list_dev_glob=list_dev;
+			list_dev.forEach(function(dev,key){
+				ChooseBestWayToConnect(list_dev_glob[key],function(ip_address){
+					list_fabmo_device[key] = new FabMo(ip_address);
+					if(key===list_dev.length-1)
+						main(list_fabmo_device);
+				});
+			});
+		});
+	}); 
+
+	function main(list_fabmo_devices){
+		// put code here
+	}
+	</script>
+</html>

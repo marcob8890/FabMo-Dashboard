@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>{{app.name}}</title>
+		{{#libraries.css}}
+		<script src="./css/{{.}}"></script>
+	{{/libraries.css}}
+	</head>
+	<body>
+		<div class="header"><h1>{{app.name}}</h1></div>
+		<div class="description"><h2>{{app.desc}}</h2></div>
+		
+	<footer>
+		<p> App created by {{dev.name}} | <a href="mailto:{{dev.email}}">contact</a> | <a href="{{dev.website}}">{{dev.website}}</a>
+	</footer>
+	</body>
+	
+	{{#libraries.js}}
+		<script src="./js/{{.}}"></script>
+	{{/libraries.js}}
+
+	<script type="text/javascript">
+	if(dashboard.machine) {
+		//do code there
+	}
+	</script>
+</html>

@@ -4,7 +4,7 @@
 	"icon":"icon.png",
 	"version":"0.1.0",
 	"author":"{{developer.name}}",
-	"target":{{app.targets}},
+	"target":{{&app.targets}},
 	"website":"{{developer.website}}",
 	"email":"{{developer.email}}"
 }

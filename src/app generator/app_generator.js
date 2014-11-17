@@ -43,19 +43,30 @@ var schema =
 	    }
 	},
 	{
+	    type: "input",
+	    message: "Enter the application description",
+	    name: "desc",
+	    validate: function( answer ) {
+	      if ( answer.length < 5 ) 
+	         return "You must enter a description of more than five characters";
+	      return true;
+	    }
+	},
+	{
 	    type: "checkbox",
 	    message: "Select the target(s) :",
 	    name: "target",
 	    choices: [
 	      {
-	        name: "3dprinter"
+	        name: '3dprinter'
 	      },
 	      {
-	        name: "lasercutter"
+	        name: 'lasercutter'
 	      },
 	      {
-	        name: "router",
+	        name: 'router',
 	        checked: true
+
 	      }
 	    ],
 	    validate: function( answer ) {
@@ -128,8 +139,9 @@ inquirer.prompt(schema, function( answers ) {
 		//TODO : include libs
 
 		//create package.json
-		fs.readFile("package_json.template",'utf8', function(err,template){
+		fs.readFile("package_json.template",'utf-8', function(err,template){
 			if(err){console.log(err);return;}
+
 			var view = {};
 			view.app = {
 					name : answers.app_name,
@@ -139,17 +151,51 @@ inquirer.prompt(schema, function( answers ) {
 
 			var output = Mustache.render(template, view);
 			console.log('creating package.json ...');
-			fs.writeFile(app_path + 'package.json',output,function(err){
+			fs.writeFile(app_path + 'package.json',output,'utf-8',function(err){
 				if(err){console.log(err);return;}
 			});
-			
-
-		//create index.html
-				
 		});
 
+		//create index.html
+		var file_type="";
 
+		switch(answers.type){
 
+			case "gcode-generator" :
+				file_type="app_gcodegenerator.template";
+				break;
+			case "opensbp-generator" :
+				file_type="app_opensbpgenerator.template";
+				break;
+			case "multimachine" :
+				file_type="app_multimachines.template";
+				break;
+			case "tool" :
+				file_type="app_tool.template";
+				break;
+		}
+
+		fs.readFile(file_type,'utf-8', function(err,template){
+			if(err){console.log(err);return;}
+
+			var view = {};
+			view.app = {
+					name : answers.app_name,
+					desc : answers.desc,
+					targets : JSON.stringify(answers.target)
+				};
+			view.dev= author;
+			view.librairies = {
+					css : [],
+					js : []
+			};
+
+			var output = Mustache.render(template, view);
+			console.log('creating index.html ...');
+			fs.writeFile(app_path + 'index.html',output,'utf-8',function(err){
+				if(err){console.log(err);return;}
+			});
+		});
 
 	});
 
