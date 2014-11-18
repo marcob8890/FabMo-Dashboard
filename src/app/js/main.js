@@ -12,10 +12,13 @@ define(function(require) {
 	// The webkit module deals with node-specific functionality (detection service, etc)
 	var webkit = require('node-webkit/webkit');
 
+	// Allow to click more than 1 time on a link, to reload a page for example
+	allowSameRoute();
+
 	// Load the apps from disk, and update the apps collection model
 	webkit.app_manager.load_apps(webkit.package.apps_dir || './apps', function(err, apps) {
-		context.apps = new context.models.Apps(apps);
-		context.appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
+	context.apps = new context.models.Apps(apps);
+	context.appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
 
 // Read the package.json and behave differently if we're in a debug environment
 	switch(webkit.package.debug) {
@@ -100,6 +103,12 @@ function addJob(job,callback){
 		if(err){console.log(err);callback(err);return;}
 		if(callback && typeof(callback) === "function")callback(undefined);
 	});
+}
+
+function allowSameRoute(){
+	//Fix the bug that doesn't allow the user to click more than 1 time on a link
+	//Intercept the event "click" of a backbone link, then set the route to "/"
+	$('a[href^="#"]').click(function(e) { router.navigate('/'); });
 }
 
 // Handlers for the home/probe buttons
