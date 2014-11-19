@@ -2,69 +2,98 @@
 <html> 
 <head>
 	<meta charset="utf-8">
-	<title>Shopbot Example App</title>
-	<!-- From bootstrap -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<title>Job Manager</title>
+
+	<!-- CSS standardisation & inclusion -->
+	<link rel="stylesheet" href="./css/foundation.min.css">
 	<link rel="stylesheet" href="./css/normalize.css">
 	<link rel="stylesheet" href="./css/style.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-	<div class="container">
-		<div class="panel panel-default current-job-item panel-success" style="display:none;">
-			<div class="panel-heading">Current Job</div>
-			<div class="panel-body">There is a job</div>
-		</div>
+	<header class="grey"> <!-- Class can be "blue", "red", "grey", "orange" -->
+		<section>
+			<div class="app-title-container">
+				<h2>Job Manager</h2>
+			</div>
+		</section>
+	</header>
 
-		<div class="panel panel-default">
-			<div class="panel-heading app-heading">
-				Pending Jobs
-				<div class="btn-group pull-right">
-					<a class="btn btn-default btn-xs run-next">Run Next Job</a>
-					<a class="btn btn-default btn-xs clear-jobs">Clear Job Queue</a>
+	<section class="current-job-container">
+		<div class="row">
+			<div class="small-12 columns title">
+				<h3>Current Job</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-12 columns current-job-item">
+			</div>
+		</div>
+	</section>
+
+	<section class="pending-jobs-container">
+		<div class="row title">
+			<div class="small-5 large-8 columns">
+				<h3>Pending Jobs</h3>
+			</div>
+			<div class="small-7 large-4 columns">
+				<div class="button-bar right">
+					<ul class="button-group">
+					    <li><a class="[tiny small large] button run-next">Run Next</a></li>
+					    <li><a class="[tiny small large] button clear-jobs">Clear Queue</a></li>
+					</ul>
 				</div>
 			</div>
-			<div class="panel-body">
-				<div class="list-group no-jobs" style="display: none;">
-					<a class="list-group-item list-group-item-info no-jobs-item" style="cursor: pointer;">
-						<h4 class="list-group-item-heading">No Jobs Pending</h4>
-						<p class="list-group-item-text">There are no jobs in the queue.  Click here to submit a job.</p>
-					</a>
-				</div>
+		</div>
 
-				<div class="list-group jobs-listing">
-				<!-- JOB LISTING -->
+		<div class="row no-jobs" style="display:none;">
+			<div class="small-12 columns no-jobs-item">
+				<div data-alert class="alert-box secondary">
+				  No jobs in the queue, click here to submit a job
+				  <!--<a href="#" class="close">&times;</a>-->
 				</div>
+			</div>
+		</div>
 
+		<div class="row jobs-listing">
+			<!-- JOB LISTING -->
+		</div>
+
+		<div class="row submit-job">
+			<div class="small-12 columns">
 				<form id="submit_job" action="/job" method="post" enctype="multipart/form-data">
-					<div class="pull-left">
-						<input id='job_selector' type="file" name="file" data-filename-placement="inside" title="Browse...">
-					</div>
-					<div class="pull-right">
-						<button type="submit" class="btn btn-default btn-primary">
-							<span class="glyphicon glyphicon-upload"></span>Upload
-						</button>
+					<div class="row collapse postfix-round">
+						<div class="small-9 columns">
+						  	<input id='job_selector' type="file" name="file" data-filename-placement="inside" placeholder="Browse...">
+						</div>
+						<div class="small-3 columns">
+						  	<button type"submit" class="button postfix">Upload</button>
+						</div>
 					</div>
 				</form>
 			</div>
 		</div>
-	</div>
 
+	</section>
+
+
+
+  <!-- Javascript inclusions -->
   <script src="./js/libs/jquery-1.10.2.js"></script>
-  <script src="./js/bootstrap.min.js"></script>
-  <script src="./js/libs/bootstrap.file-input.js"></script>
+  <script src="./js/libs/foundation.min.js"></script>
   <script src="./js/FabMo-latest.js"></script>
   <script src="./js/FabMoUI-latest.js"></script>
 
-  
-  <script type="text/javascript">
+  <script src="./js/app.js"></script>
 
+  <script type="text/javascript">
     var tool = dashboard.machine;
 	var ui = new FabMoUI(tool);
 
 	$(document).ready(function(){
-		// Style the file input so it looks nice
-		$('input[type=file]').bootstrapFileInput();
+		//Foundation Init
+		$(document).foundation();
+		dashboard.notification("success","App correctly loaded");
 
 		// Load the list of files available on the tool
 		refresh_jobs_list();
@@ -87,14 +116,17 @@
 			$.each( jobs, function( key, val ) {
 				console.log(val);
 				html = [
-				'<a class="list-group-item job-item">',
-					'<h4 class="list-group-item-heading">',
+				'<div class="small-12 columns"><div class=row>',
+					'<div class="small-2 columns name">',
 						val.name,
-					'</h4>',
-					'<p class="list-group-item-text">',
-					val.description || 'No description.' + ' ' + new Date(val.created_at).toLocaleString(),
-					'</p>',
-				'</a>'
+					'</div>',
+					'<div class="small-8 large-9 columns description">',
+						val.description || 'No description.' + ' ' + new Date(val.created_at).toLocaleString(),
+					'</div>',
+					'<div class="small-2 large-1 columns option">',
+						'Delete',
+					'</div>',
+				'</div></div>'
 				].join('');
 				$(".jobs-listing").append(html);
 			});
@@ -129,12 +161,11 @@
 
 	ui.on('status', function(status) {
 		if(status.job) {
-			$(".current-job-item").show(500);
+			$(".current-job-container").show(500);
 		} else {
-			$(".current-job-item").hide(500);
+			$(".current-job-container").hide(500);
 		}
 	});
-
 </script>
 
 </body>
