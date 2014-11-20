@@ -11,6 +11,9 @@ function FabMoUI(tool, options){
 	this.keypad = true;
 	// able or disable the keypad.
 
+	this.move_step = '0.5';
+	//1 step of keypad, in inches
+
 	this.file_control= true;
 
 	if (options){
@@ -77,7 +80,58 @@ FabMoUI.prototype.Keypad = function(){
 	this.keypad_allow=false;
 	this.menu_open=false;
 
+	$("#trackpad-zone").click(function(e){
+		var posX = e.pageX  - ($("body").width() - $("#right-menu").width());
+        var posY = e.pageY - $("#trackpad-zone").position().top - 44.5;
+
+        posX = posX/$("#trackpad-zone").width();
+        posY = posY/$("#trackpad-zone").height();
+
+        if(posX <= 0.333) {
+        	if(posY <=0.333)		{ 
+        		console.log("Left Top");
+        		that.tool.gcode2('G91 G01 X-'+that.move_step+' Y'+that.move_step); 
+        	}
+        	else if (posY <= 0.666)	{ 
+        		console.log("Left Middle");
+        		that.tool.gcode2('G91 G01 X-'+that.move_step); 
+        	}
+        	else 					{ 
+        		console.log("Left Bottom");
+        		that.tool.gcode2('G91 G01 X-'+that.move_step+' Y-'+that.move_step); 
+        	}
+        }
+        else if (posX <= 0.666){
+        	if(posY <=0.333)		{ 
+        		console.log("Middle Top");
+        		that.tool.gcode2('G91 G01 Y'+that.move_step); 
+        	}
+        	else if (posY <= 0.666)	{ 
+        		console.log("Center : do nothing");
+        	}
+        	else 					{ 
+        		console.log("Middle Bottom");
+        		that.tool.gcode2('G91 G01 Y-'+that.move_step); 
+        	}
+        }
+    	else {
+        	if(posY <=0.333)		{ 
+        		console.log("Right Top");
+        		that.tool.gcode2('G91 G01 X'+that.move_step+' Y'+that.move_step); 
+        	}
+        	else if (posY <= 0.666)	{ 
+        		console.log("Right Middle");
+        		that.tool.gcode2('G91 G01 X'+that.move_step); 
+        	}
+        	else 					{ 
+        		console.log("Right Bottom");
+        		that.tool.gcode2('G91 G01 X'+that.move_step+' Y-'+that.move_step); 
+        	}
+        }
+	});
+
 	$(document).keydown(function(e) {
+		that.updateStatus.bind(that);
 		if (that.keypad_allow && that.menu_open){
 			if (e.which === 37 && !that.locks.left && !that.locks.right) //left
 			{
@@ -110,7 +164,9 @@ FabMoUI.prototype.Keypad = function(){
 			}
 		}
 	});
+
 	$(document).keyup(function(e) {
+		that.updateStatus.bind(that);
 		if (that.keypad_allow){
 			if (e.which === 37 ) //left
 			{
@@ -416,13 +472,13 @@ FabMoUI.prototype.updateStatus = function(){
 FabMoUI.prototype.FileControl = function(){
 	var that = this;
 	$(that.pause_button_selector).click(function(e) {
-		that.tool.pause(that.locks,function(){});
+		that.tool.pause(function(){});
 	});
 	$(that.resume_button_selector).click(function(e) {
-		that.tool.resume(that.locks,function(){});
+		that.tool.resume(function(){});
 	});
 	$(that.stop_button_selector).click(function(e) {
-		that.tool.quit(that.locks,function(){});
+		that.tool.quit(function(){});
 	});
 
  };
