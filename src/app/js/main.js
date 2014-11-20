@@ -20,7 +20,7 @@ define(function(require) {
 	context.apps = new context.models.Apps(apps);
 	context.appMenuView = new context.views.AppMenuView({collection : context.apps, el : '#app_menu_container'});
 
-// Read the package.json and behave differently if we're in a debug environment
+	// Read the package.json and behave differently if we're in a debug environment
 	switch(webkit.package.debug) {
 		// NORMAL MODE
 		case false:
@@ -88,15 +88,16 @@ define(function(require) {
 
 
 // Functions for dispatching g-code to the tool
+
 function gcode(string) {
-		dashboard.machine.gcode(string,function(err,data){
-			if(!err) {
-				console.log('Success: ' + string);
-			} else {
-				console.log('Failure: ' + string);
-			}
-		});
-	}
+	dashboard.machine.gcode(string,function(err,data){
+		if(!err) {
+			console.log('Success: ' + string);
+		} else {
+			console.log('Failure: ' + string);
+		}
+	});
+}
 
 function addJob(job,callback){
 	dashboard.machine.send_job(job,function(err){
@@ -107,7 +108,7 @@ function addJob(job,callback){
 
 function allowSameRoute(){
 	//Fix the bug that doesn't allow the user to click more than 1 time on a link
-	//Intercept the event "click" of a backbone link, then set the route to "/"
+	//Intercept the event "click" of a backbone link, then temporary set the route to "/"
 	$('a[href^="#"]').click(function(e) { router.navigate('/'); });
 }
 
