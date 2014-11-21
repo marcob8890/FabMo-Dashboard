@@ -36,6 +36,10 @@ define(function(require) {
 				{
 					ChooseBestWayToConnect(context.remoteMachines.models[0].attributes,function(ip,port){
 						// Once connected, update the dashboard with the all of the connection information
+						delete dashboard.machine;
+						dashboard.machine = null;
+						delete dashboard.ui;
+						dashboard.ui = null;
 						dashboard.machine = new FabMo(ip, port);
 						dashboard.ui= new FabMoUI(dashboard.machine);
 						context.bindKeypad(dashboard.ui);
@@ -65,6 +69,10 @@ define(function(require) {
 								port : fabmo.port
 							})
 						]);
+						delete dashboard.machine;
+						dashboard.machine = null;
+						delete dashboard.ui;
+						dashboard.ui = null;
 						dashboard.machine = fabmo;
 						dashboard.ui = new FabMoUI(fabmo);
 						context.bindKeypad(dashboard.ui);
