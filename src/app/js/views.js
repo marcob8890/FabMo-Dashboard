@@ -159,9 +159,10 @@ define(function(require) {
 		render : function() {
 			jQuery('.tools-other').empty();
 			jQuery('.tools-current').html('<li><a href="#">Refresh</a></li>');
-
+			var cpt=0;
 			this.collection.forEach(function(item) {
 				if(item.get("current")=="current") {
+					cpt++; console.log(cpt);
 					jQuery('.tools-current').empty();
 					var singleRemoteMachine = new views.SingleMachineView({ model: item,el:'.tools-current'});
 				}

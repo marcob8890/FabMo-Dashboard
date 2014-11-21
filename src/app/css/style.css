@@ -640,6 +640,16 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 	left: 0.65rem
 }
 
+/*Test Trackpad*/
+#keypad.trackpad #trackpad-zone {
+	background : -webkit-linear-gradient(top, #00DB41 0%, #15D648 100%) !important;
+}
+
+#trackpad-zone {
+	width:100%;
+	height:200px;
+}
+
 #job-info ul li:first-child label {
 	background-color:#aaa;
 	text-align: center;

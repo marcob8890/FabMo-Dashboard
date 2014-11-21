@@ -305,6 +305,18 @@ FabMo.prototype.goto =  function(x,y,z,callback)
 	});
 };
 
+// Functions for dispatching g-code to the tool
+FabMo.prototype.gcode2 = function (string) {
+	var that=this;
+	that.gcode(string,function(err,data){
+		if(!err) {
+			console.log('Success: ' + string);
+		} else {
+			console.log('Failure: ' + string);
+		}
+	});
+}
+
 FabMo.prototype.gcode = function(gcode_line,callback)
 {
 	if (!callback)
@@ -354,9 +366,6 @@ FabMo.prototype.start_move =  function(dir,lock,callback)
 		throw "this function need a callback to work !";
 
 	var that=this;
-
-	console.log(lock);
-	console.log(that.old_lock_status);
 	
 	if (that.old_lock_status==null) {
 		that.old_lock_status = lock;

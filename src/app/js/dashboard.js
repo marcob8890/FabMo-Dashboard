@@ -10,15 +10,29 @@ define(function(require) {
 	/*** Init *///
 	Dashboard = function() {
 		this.machine = null;
+		this.ui = null;
+
 		this.keyCommands();
+
+		//Refresh of the tool status on the dashboard
+		this.refresh = 500; // define the tool connection refresh time (ms)
+		setInterval(this.updateStatus.bind(this),this.refresh);
 	};
 
 	/*** Prototypes ***/
+	Dashboard.prototype.updateStatus = function(){
+		//if (this.ui.tool.status == )
+		if(this.ui) {
+			if(this.ui.tool.state) {
+				console.log(this.ui.tool.state);
+			}
+		}
+	};
 
 	// Brings up the DRO (if separate from the keypad) in the dashboard
 	Dashboard.prototype.DRO = function(callback){
 		if(!callback) {
-			console.log("This function 'DRO' needs a callback to run");
+			return console.log("This function 'DRO' needs a callback to run");
 		}
 		else {
 			that=this;
@@ -26,12 +40,13 @@ define(function(require) {
 			that.openRightMenu(); //Open the menu to let the user control the tool
 
 			//Waiting keydown on "enter" key, before calling callback.
-			$(document).keydown(function(e){
+			var key=$(document).keydown(function(e){
 				if ((e.which == 13)) {
-					if(typeof callback === 'function') callback();
+					if(typeof callback === 'function') callback(key);
 				}
 			});
 		}
+		return;
 	};
 
 	// Bring up the job manager
@@ -82,9 +97,10 @@ define(function(require) {
 
 			//Development only : Run the DRO function with a callback, with "d" shortcode
 			if (e.which == 68) {
-				that.DRO(function(){
+				that.DRO(function(ev){
 					that.closeRightMenu();
 					that.notification("success","DRO Worked");
+					ev=null;
 				});
 			}
 		});

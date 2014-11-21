@@ -434,6 +434,7 @@ FabMoUI.prototype.updateStatus = function(){
 		}
 		else if(err == that.tool.default_error.no_device){
 			that.forbidKeypad();
+			delete this;
 			$(that.posX_selector).html('X.XXX');
 			$(that.posY_selector).html('X.XXX');
 			$(that.posZ_selector).html('X.XXX');
@@ -451,6 +452,7 @@ FabMoUI.prototype.updateStatus = function(){
 		}
 		else{
 			that.forbidKeypad();
+			delete this;
 			$(that.posX_selector).html('X.XXX');
 			$(that.posY_selector).html('X.XXX');
 			$(that.posZ_selector).html('X.XXX');
