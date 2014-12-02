@@ -1,6 +1,6 @@
 /*
  * This is where the application context that we will expose to the "apps" will go
- * This will include the currently selected machine (if any) as well as functions to interact with the dashboard itself.
+ * This will include the currently colored machine (if any) as well as functions to interact with the dashboard itself.
  * This is different than the context provided by context.js, which is the context for the entire dashboard, not just
  * the parts that we want the app to see.
  */
@@ -13,6 +13,7 @@ define(function(require) {
 		this.ui = null;
 
 		this.keyCommands();
+		this.checkDashboardSettings();
 
 		//Refresh of the tool status on the dashboard
 		this.refresh = 500; // define the tool connection refresh time (ms)
@@ -128,6 +129,81 @@ define(function(require) {
 		else if (type=="warning") 	toastr.warning(message);
 		else if (type=="error") 	toastr.error(message);
 		else console.log("Unknown type of notification");
+	};
+
+	Dashboard.prototype.checkDashboardSettings = function() {
+		var that=this;
+		 var s=JSON.parse(localStorage.getItem('dashboardSettings'));
+
+        if (s == null) {
+          console.log("No Settings Defined, Load defaults settings");
+          //Load Default Settings into S variable
+          s={
+			"appName": {
+				"name":"DashBoard Name",
+				"value":"FabMo DashBoard",
+				"type":"text"
+			},
+			"mainColor": {
+				"name":"Main Color (top-bar...)",
+				"value":"#313366",
+				"type":"color",
+				"colors": ["#54ba4c","#313366","#dd8728","#9c210c","#444"]
+			},
+			"secondColor": {
+				"name":"Secondary color (menu...)",
+				"value":"#444",
+				"type":"color",
+				"colors": ["#54ba4c","#313366","#dd8728","#9c210c","#444"]
+			},
+			"positionBackground": {
+				"name":"Main Dashboard Color",
+				"value":"#9c210c",
+				"type":"color",
+				"colors": ["#54ba4c","#313366","#dd8728","#9c210c","#111"]
+			},
+			"positionFront": {
+				"name":"Main Dashboard Color",
+				"value":"#9c210c",
+				"type":"color",
+				"colors": ["#54ba4c","#313366","#dd8728","#9c210c","#111"]
+			},
+			"keypadBackground": {
+				"name":"Main Dashboard Color",
+				"value":"#dd8728",
+				"type":"color",
+				"colors": ["#54ba4c","#313366","#dd8728","#9c210c","#111"]
+			},
+			"keypadFront": {
+				"name":"Main Dashboard Color",
+				"value":"#9c210c",
+				"type":"color",
+				"colors": ["#54ba4c","#313366","#dd8728","#9c210c","#111"]
+			},
+			"leftMenuDefaultColapsed": {
+				"name":"Colapsed Left Menu",
+				"value":true,
+				"type":"checkbox"
+			}
+		};
+        localStorage.setItem('dashboardSettings',JSON.stringify(s));
+      }
+
+      this.updateDashboardSettings();
+	}
+
+	Dashboard.prototype.updateDashboardSettings = function() {
+		var s=JSON.parse(localStorage.getItem('dashboardSettings'));
+
+        if (s != null) {
+        	$("#dashboardName").html(s.appName.value);
+        	$("title").html(s.appName.value);
+        }
+	};
+
+	Dashboard.prototype.resetDashboardSettings = function() {
+		localStorage.setItem('dashboardSettings',null);
+		this.checkDashboardSettings();
 	}
 
 
