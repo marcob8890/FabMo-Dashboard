@@ -1,0 +1,90 @@
+{
+	"appName": {
+		"name":"DashBoard Name",
+		"value":"FabMo DashBoard",
+		"type":"text"
+	},
+	"mainColor": {
+		"name":"Main Color (top-bar...)",
+		"value":"#313366",
+		"type":"select",
+		"colors": {
+			"green" : "#54ba4c",
+			"blue" : "#313366",
+			"orange" : "#dd8728",
+			"red" : "#9c210c",
+			"grey" : "#666",
+			"black" : "#111"
+		}
+	},
+	"secondColor": {
+		"name":"Secondary color (menu...)",
+		"value":"#444",
+		"type":"select",
+		"colors": {
+			"green" : "#54ba4c",
+			"blue" : "#313366",
+			"orange" : "#dd8728",
+			"red" : "#9c210c",
+			"grey" : "#444",
+			"black" : "#111"
+		}
+	},
+	"positionBackground": {
+		"name":"Main Dashboard Color",
+		"value":"#9c210c",
+		"type":"select",
+		"colors": {
+			"green" : "#54ba4c",
+			"blue" : "#313366",
+			"orange" : "#dd8728",
+			"red" : "#9c210c",
+			"grey" : "#666",
+			"black" : "#111"
+		}
+	},
+	"positionFront": {
+		"name":"Main Dashboard Color",
+		"value":"#9c210c",
+		"type":"select",
+		"colors": {
+			"green" : "#54ba4c",
+			"blue" : "#313366",
+			"orange" : "#dd8728",
+			"red" : "#9c210c",
+			"grey" : "#666",
+			"black" : "#111"
+		}
+	},
+	"keypadBackground": {
+		"name":"Main Dashboard Color",
+		"value":"#dd8728",
+		"type":"select",
+		"colors": {
+			"green" : "#54ba4c",
+			"blue" : "#313366",
+			"orange" : "#dd8728",
+			"red" : "#9c210c",
+			"grey" : "#666",
+			"black" : "#111"
+		}
+	},
+	"keypadFront": {
+		"name":"Main Dashboard Color",
+		"value":"#9c210c",
+		"type":"select",
+		"colors": {
+			"green" : "#54ba4c",
+			"blue" : "#313366",
+			"orange" : "#dd8728",
+			"red" : "#9c210c",
+			"grey" : "#666",
+			"black" : "#111"
+		}
+	},
+	"leftMenuDefaultColapsed": {
+		"name":"Colapsed Left Menu",
+		"value":true,
+		"type":"checkbox"
+	}
+}

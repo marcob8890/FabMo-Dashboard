@@ -40,9 +40,7 @@ define(function(require) {
 			console.log("SETTING MACHINE");
 			console.log(machine.attributes);
 			ChooseBestWayToConnect(machine.attributes, function(ip, port) {
-				delete dashboard.machine;
 				dashboard.machine = null;
-				delete dashboard.ui;
 				dashboard.ui = null;
 				dashboard.machine = new FabMo(ip, port);
 				dashboard.ui= new FabMoUI(dashboard.machine);
@@ -62,9 +60,7 @@ define(function(require) {
 				else if(this.context.remoteMachines.models.length >= 1)
 				{
 					ChooseBestWayToConnect(this.context.remoteMachines.models[0].attributes,function(ip,port){
-						delete dashboard.machine;
 						dashboard.machine = null;
-						delete dashboard.ui;
 						dashboard.ui = null;
 						dashboard.machine = new FabMo(ip, port);
 						dashboard.ui= new FabMoUI(dashboard.machine);
