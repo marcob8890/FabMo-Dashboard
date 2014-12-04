@@ -11,7 +11,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-	<header class="grey"> <!-- Class can be "blue", "red", "grey", "orange" -->
+	<!-- Header -->
+	<header class="orange"> <!-- Class can be "blue", "red", "grey", "orange" -->
 		<section>
 			<div class="app-title-container">
 				<h2>Straight Lines</h2>
@@ -19,17 +20,172 @@
 		</section>
 	</header>
 
+	<!-- Main Section (app content) -->
 	<section class="container current-job-container">
-		<div class="row title">
+
+		<!-- First Row = Settings / Tasks selection -->
+		<div class="row">
 			<div class="small-12 columns">
-				<h3>Current Job</h3>
+				<dl class="tabs" data-tab>
+				  <dd class="active"><a href="#project_conf">Settings</a></dd>
+				  <dd><a href="#project_content">Jobs</a></dd>
+				</dl>
 			</div>
 		</div>
-		<div class="row">
-			<table class="small-12"><tbody class="current-job-item"></tbody></table>
+
+		<div class="tabs-content">
+
+		<!-- Second Row = Settings -->
+		<div class="content active" id="project_conf">
+			<div class="row">
+				<div class="small-12 columns">
+					<h3>Settings</h3>
+						<div class="row">
+							<div class="small-12 medium-6 large-4 columns">
+								<div class="row">
+									<div class="small-12 columns">
+										<h4>Project</h4>
+									</div>
+									<div class="small-6 columns">
+										<label>X Size :
+										<input type="text" value="6" id="s_x">
+										</label>
+									</div>
+									<div class="small-6 columns">
+										<label>Y Size :
+										<input type="text" value="8" id="s_y">
+										</label>
+									</div>
+									<div class="small-12 columns">
+										<label>Thickness :
+										<input type="text" value="0.3" id="s_z">
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="small-12 medium-6 large-4 columns">
+								<div class="row">
+									<div class="small-12 columns">
+										<h4>Cut</h4>
+									</div>
+									<div class="small-6 columns">
+										<label>Cut Depth :
+										<input type="text" value="0.1" id="s_dz">
+										</label>
+									</div>
+									<div class="small-6 columns">
+										<label>Bit Diameter :
+										<input type="text" value="0.125" id="s_bit_d">
+										</label>
+									</div>
+									<div class="small-12 columns">
+										<label>Cut Speed (in/min) :
+										<input type="text" value="40" id="s_cut_speed">
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="small-12 large-4 columns">
+								<div class="row">
+									<div class="small-12 columns">
+										<h4>Offset</h4>
+									</div>
+									<div class="small-6 columns">
+										<label>X offset :
+										<input type="text" value="0" id="s_x0">
+										</label>
+									</div>
+									<div class="small-6 columns">
+										<label>Y offset :
+										<input type="text" value="0" id="s_y0">
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="small-12 columns">
+								<div class="small button" id="default-settings">Default</div>
+								<div class="small button" id="save-settings">Save Settings</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Third Row =  -->
+		<div class="content" id="project_content">
+			<div class="row">
+				<div class="small-12 medium-6 large-4 columns">
+					<h3>Add a line</h3>
+					<form>
+						<div class="row">
+							<div class="small-12 columns">
+								<label>Line Name :
+								<input type="text" placeholder="Name" id="name">
+								</label>
+							</div>
+							<div class="small-6 columns">
+								<label>X0 :
+								<input type="text" value="0.000" id="x0">
+								</label>
+							</div>
+							<div class="small-6 columns">
+								<label>Y0 :
+								<input type="text" value="0.000" id="y0">
+								</label>
+							</div>
+							<div class="small-6 columns">
+								<label>X1 :
+								<input type="text" value="2.000" id="x1">
+								</label>
+							</div>
+							<div class="small-6 columns">
+								<label>Y1 :
+								<input type="text" value="1.000" id="y1">
+								</label>
+							</div>
+							<div class="small-6 columns switch">
+								<span>L</span>
+								<input type="checkbox" id="side">
+								<label for="side"></label>
+								<span>R</span>
+							</div>
+							<div class="small-6 columns">
+								<div class="small button" id="add-line">Add</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="small-12 large-4 columns">
+					<h3>Job List</h3>
+					<table class="small-12 columns">
+						<thead>
+							<tr>
+								<th class="small-5">Name</th>
+								<th class="small-5">X0,Y0 - X1,Z1</th>
+								<th class="small-1">E</th>
+								<th class="small-1">X</th>
+							</tr>
+						</thead>
+						<tbody class="list-lines-container"></tbody>
+					</table>
+					<div class="small-12 columns">
+						<button class="right" id="reset">Reset</button>
+					</div>
+				</div>
+				<div class="small-12 medium-6 large-4 columns">
+					<h3>Grid</h3>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="small-12 columns">
+					<button class="right" id="run">Run</button>
+				</div>
+			</div>
+		</div>
+
 		</div>
 	</section>
-	
 
   <!-- Javascript inclusions -->
   <script src="./js/libs/jquery-1.10.2.js"></script>
@@ -37,44 +193,198 @@
   <script src="./js/FabMo-latest.js"></script>
   <script src="./js/FabMoUI-latest.js"></script>
 
-  <script src="./js/app.js"></script>
-
   <script type="text/javascript">
-    var tool = dashboard.machine;
-	var ui = new FabMoUI(tool);
+  	//Global var
+  	var s = null;
+  	var Lines = [] ;
+
+  	/********** Function for "Lines" object = all the tasks **********/
+  	Lines.reset = function(){
+  		this.length = 0;
+  	};
+
+  	Lines.add = function(){
+  		var newLine = new line(
+			parseFloat($("#x0").val()),
+			parseFloat($("#y0").val()),
+			parseFloat($("#x1").val()),
+			parseFloat($("#y1").val()),
+			Lines.length.toString(),
+			$("#name").val()
+		);
+		this.push(newLine);
+  	};
+
+  	Lines.view = function(){
+  		var str="";
+  		$.each(this, function(index,line){
+  			str += line.viewLine();
+  		});
+  		$(".list-lines-container").html(str);
+  		console.log(str);
+  	};
+
+  	//Sort Line by position
+  	Lines.sort = function(){
+  		this.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );
+  	};
+
+
+  	/********** Model and function of a single line **********/
+	line = function(x0,y0,x1,y1,l,name) {
+		this.id="line-" + l;
+		this.pos = l;
+		name ? this.name = name : this.name = this.id;
+		this.current=0;
+		this.x0=x0; //X start position of a line
+		this.y0=y0; //Y start position of a line
+		this.x1=x1; //X end position of a line
+		this.y1=y1; //Y end position of a line
+	};
+
+	line.prototype.update = function(x0,y0,x1,y1,name,pos) {
+		this.x0=x0; //X start position of a line
+		this.y0=y0; //Y start position of a line
+		this.x1=x1; //X end position of a line
+		this.y1=y1; //Y end position of a line
+		
+		if(name) this.name=name;
+		//else name = "Line" + pos;
+	};
+
+	line.prototype.viewLine = function() {
+		var str = "";
+		str += "<tr id=" + this.id + " pos=" + this.pos + ">";
+		str += "<td>" + this.name + "</td>";
+		str += "<td>(" + this.x0.toString() + "," + this.y0.toString() + ") - (" + this.x1.toString() + "," + this.y1.toString() + ")</td>";
+		str += "<td class='edit'>E</td>";
+		str += "<td class='delete'>D</td>";
+		str += "</tr>";
+		return str;
+	};
+
+	line.prototype.setCurrent = function() { this.current=1 };
+	line.prototype.resetCurrent = function() { this.current=0 };
+
+
+	/********** Model and function related to tool & project settings **********/
+	settings = function(){
+		var dashSettings = dashboard.getAppSetting("straight-lines","s") ? dashboard.getAppSetting("straight-lines","s") : false;
+
+		this.x= dashSettings ? dashSettings.x : 3; //x Size of project
+		this.y= dashSettings ? dashSettings.y : 2; //y Size of project
+		this.z= dashSettings ? dashSettings.z : 0.3; //Max thickness of project
+		this.dz= dashSettings ? dashSettings.dz : 0.1; //Depth of each z pass
+		this.x0= dashSettings ? dashSettings.x0 : 0; //x Translation from X0
+		this.y0= dashSettings ? dashSettings.y0 :0; //t Translation from Y0
+		this.z0= dashSettings ? dashSettings.z0 : 0.5; //Delta z for air movements
+		this.cut_speed= dashSettings ? dashSettings.cut_speed : 20; //1 to 600
+		this.air_speed= dashSettings ? dashSettings.air_speed : 600; //1 to 600
+		this.bit_d= dashSettings ? dashSettings.bit_d : 0.125; //Bit Diameter
+	};
+
+	settings.prototype.update = function(){
+		this.x=parseFloat($("#s_x").val());
+		this.y=parseFloat($("#s_y").val());
+		this.z=parseFloat($("#s_z").val());
+		this.dz=parseFloat($("#s_dz").val());
+		this.x0=parseFloat($("#s_x0").val());
+		this.y0=parseFloat($("#s_y0").val());
+		this.cut_speed=parseFloat($("#s_cut_speed").val());
+		this.bit_d=parseFloat($("#s_bit_d").val());
+	};
+
+	settings.prototype.synch = function(){
+		$("#s_x").val(this.x.toString());
+		$("#s_y").val(this.y.toString());
+		$("#s_z").val(this.z.toString());
+		$("#s_dz").val(this.dz.toString());
+		$("#s_x0").val(this.x0.toString());
+		$("#s_y0").val(this.y0.toString());
+		$("#s_cut_speed").val(this.cut_speed.toString());
+		$("#s_bit_d").val(this.bit_d.toString());
+	}
+
+	setGCode = function(s,lines) {
+		var code = ''; //Init gCode file
+
+		//Go to Z other the project
+		code += 'G1Z' + s.z0.toString() + 'F' + s.air_speed + '\n';
+
+		//Go to X0 Y0
+		code += 'G1X' + s.x0.toString() + 'Y' + s.y0.toString() + 'F' + s.air_speed + '\n';
+
+		//Do each line in more than 1 pass
+		$.each(lines, function(index,l){
+			var curHeight=s.z;
+			while(curHeight > 0) {
+				curHeight -= s.dz; //Lower the new z
+
+				//Go to beginning of the line
+				code +='G1X' + l.x0.toString() + 'Y' + l.y0.toString()  + 'F' + s.air_speed + '\n';
+
+				//Go to the new depth
+				code +='G1Z-' + (s.z-curHeight).toString() + 'F' + s.cut_speed + '\n';
+
+				//Go to the end of the line
+				code +='G1X' + l.x1.toString() + 'Y' + l.y1.toString()  + 'F' + s.cut_speed + '\n';
+
+				//Go to z over the project
+				code +='G1Z' + s.z0.toString() + 'F' + s.air_speed + '\n';
+			}
+		});
+		code += 'G1Z' + s.z0.toString() + 'F' + s.air_speed + '\n'; //Z for security
+		code += 'G1X6Y8F' + s.air_speed + '\n'; //Go back to X0 Y0
+		console.log(code);
+		return code;
+	};
+
+	/********** User Interface Actions **********/
+
+	//Changes tool & project settings
+	$("#save-settings").click(function(){
+		s.update();
+		dashboard.setAppSetting("straight-lines","s",s);
+		dashboard.notification("success","Settings Saved");
+	});
+
+	//Changes tool & project settings
+	$("#default-settings").click(function(){
+		dashboard.delAppSetting("straight-lines","s");
+		s = new settings();
+		s.synch();
+		dashboard.notification("success","Settings Reseted");
+	});
+
+	//Add a task
+	$("#add-line").click(function(){
+		Lines.add();
+		Lines.view();
+	});
+
+	//Delete all the tasks
+	$("#reset").click(function() {
+		Lines.reset();
+		Lines.view();
+	});
+
+	//Run all the tasks
+	$("#run").click(function(){
+		var tool = dashboard.machine;
+		tool.run_local_file(setGCode(s,Lines),'gc',function(message){console.log(message);});
+	});
 
 	$(document).ready(function(){
 		//Foundation Init
 		$(document).foundation();
 
-	});
+		//Dashboard Elements
+		var tool = dashboard.machine;
+		var ui = new FabMoUI(tool);
 
-
-
-	$('#submit_job').submit(function(e){
-		e.preventDefault();
-		tool.add_job($(this),function(err,file){
-			if(err){console.log(err);return;}
-			$('#job_selector').replaceWith($('#job_selector').clone(true)); //reset file field
-			$('#job_selector').prev().html('Browse for a file to upload...');
-				//refresh_files_list();
-				refresh_jobs_list();
-		});
-	});
-
-	$('.no-jobs-item').click(function(e) {
-		$('#job_selector').click();
-	});
-
-	$('.run-next').click(function(e) { 
-		tool.job_run(function(err, result) {
-			refresh_jobs_list();
-		});
-	});
-
-	$('.clear-jobs').click(function(e) { tool.clear_job_queue(function(err, result) {
-			refresh_jobs_list();
-		});
+		//Get settings or set default settings
+		s = new settings();
+		s.synch(); //Also synch view
 	});
 </script>
 
