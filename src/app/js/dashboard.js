@@ -206,6 +206,36 @@ define(function(require) {
 		this.checkDashboardSettings();
 	}
 
+	/* App Settings */
+	Dashboard.prototype.setAppSetting = function(app,setting,val) {
+		if (localStorage.getItem('app-' + app)) {
+			var s = JSON.parse(localStorage.getItem('app-' + app));
+		}
+		else {
+			var s= {};
+		}
+		s[setting] = val;
+		localStorage.setItem('app-' + app,JSON.stringify(s));
+	};
+
+	Dashboard.prototype.getAppSetting = function(app,setting) {
+		if(localStorage.getItem('app-' + app)) {
+			if(JSON.parse(localStorage.getItem('app-' + app))[setting])
+				return JSON.parse(localStorage.getItem('app-' + app))[setting];
+			else return false;
+		}
+		else {
+			return false;
+		}
+	};
+
+	Dashboard.prototype.delAppSetting = function(app,setting) {
+		if (localStorage.getItem('app-' + app)) {
+			var s = JSON.parse(localStorage.getItem('app-' + app));
+			delete s[setting];
+			localStorage.setItem('app-' + app,JSON.stringify(s));
+		}
+	};
 
 	/*** Functions ***/
 	jobManager = function() {
