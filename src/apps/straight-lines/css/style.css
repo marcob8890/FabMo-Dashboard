@@ -251,6 +251,26 @@ td[type="color"] div.add {
   background-size: 16px;
 }
 
+
+/*
+*** Tasks Lists ***
+*/
+
+td.delete:hover, td.edit:hover {
+  cursor:pointer;
+}
+
+td.delete {
+  background-color:#9c210c;
+  color:#fff;
+}
+
+td.edit {
+  background-color: #666;
+  color:#fff;
+}
+
+
 /* Special Custom Style : rotations et animations */
 .spinner {
   -webkit-animation: rotator 1.4s linear infinite;

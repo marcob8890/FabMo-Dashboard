@@ -38,75 +38,70 @@
 		<!-- Second Row = Settings -->
 		<div class="content active" id="project_conf">
 			<div class="row">
-				<div class="small-12 columns">
-					<h3>Settings</h3>
-						<div class="row">
-							<div class="small-12 medium-6 large-4 columns">
-								<div class="row">
-									<div class="small-12 columns">
-										<h4>Project</h4>
-									</div>
-									<div class="small-6 columns">
-										<label>X Size :
-										<input type="text" value="6" id="s_x">
-										</label>
-									</div>
-									<div class="small-6 columns">
-										<label>Y Size :
-										<input type="text" value="8" id="s_y">
-										</label>
-									</div>
-									<div class="small-12 columns">
-										<label>Thickness :
-										<input type="text" value="0.3" id="s_z">
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="small-12 medium-6 large-4 columns">
-								<div class="row">
-									<div class="small-12 columns">
-										<h4>Cut</h4>
-									</div>
-									<div class="small-6 columns">
-										<label>Cut Depth :
-										<input type="text" value="0.1" id="s_dz">
-										</label>
-									</div>
-									<div class="small-6 columns">
-										<label>Bit Diameter :
-										<input type="text" value="0.125" id="s_bit_d">
-										</label>
-									</div>
-									<div class="small-12 columns">
-										<label>Cut Speed (in/min) :
-										<input type="text" value="40" id="s_cut_speed">
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="small-12 large-4 columns">
-								<div class="row">
-									<div class="small-12 columns">
-										<h4>Offset</h4>
-									</div>
-									<div class="small-6 columns">
-										<label>X offset :
-										<input type="text" value="0" id="s_x0">
-										</label>
-									</div>
-									<div class="small-6 columns">
-										<label>Y offset :
-										<input type="text" value="0" id="s_y0">
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="small-12 columns">
-								<div class="small button" id="default-settings">Default</div>
-								<div class="small button" id="save-settings">Save Settings</div>
-							</div>
+				<div class="small-12 medium-6 large-4 columns">
+					<div class="row">
+						<div class="small-12 columns">
+							<h4>Project</h4>
 						</div>
+						<div class="small-6 columns">
+							<label>X Size :
+							<input type="text" value="6" id="s_x">
+							</label>
+						</div>
+						<div class="small-6 columns">
+							<label>Y Size :
+							<input type="text" value="8" id="s_y">
+							</label>
+						</div>
+						<div class="small-12 columns">
+							<label>Thickness :
+							<input type="text" value="0.3" id="s_z">
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="small-12 medium-6 large-4 columns">
+					<div class="row">
+						<div class="small-12 columns">
+							<h4>Cut</h4>
+						</div>
+						<div class="small-6 columns">
+							<label>Cut Depth :
+							<input type="text" value="0.1" id="s_dz">
+							</label>
+						</div>
+						<div class="small-6 columns">
+							<label>Bit Diameter :
+							<input type="text" value="0.125" id="s_bit_d">
+							</label>
+						</div>
+						<div class="small-12 columns">
+							<label>Cut Speed (in/min) :
+							<input type="text" value="40" id="s_cut_speed">
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="small-12 large-4 columns">
+					<div class="row">
+						<div class="small-12 columns">
+							<h4>Offset</h4>
+						</div>
+						<div class="small-6 columns">
+							<label>X offset :
+							<input type="text" value="0" id="s_x0">
+							</label>
+						</div>
+						<div class="small-6 columns">
+							<label>Y offset :
+							<input type="text" value="0" id="s_y0">
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="small-12 columns">
+					<div class="small button" id="default-settings">Default</div>
+					<div class="small button" id="save-settings">Save Settings</div>
 				</div>
 			</div>
 		</div>
@@ -115,7 +110,15 @@
 		<div class="content" id="project_content">
 			<div class="row">
 				<div class="small-12 medium-6 large-4 columns">
-					<h3>Add a line</h3>
+					<div class="row">
+						<div class="small-7 columns">
+							<h3>Add a line</h3>
+
+						</div>
+						<div class="small-5 columns">
+							<div class="small button right" id="add-line">Add</div>
+						</div>
+					</div>
 					<form>
 						<div class="row">
 							<div class="small-12 columns">
@@ -149,14 +152,18 @@
 								<label for="side"></label>
 								<span>R</span>
 							</div>
-							<div class="small-6 columns">
-								<div class="small button" id="add-line">Add</div>
-							</div>
 						</div>
 					</form>
 				</div>
-				<div class="small-12 large-4 columns">
-					<h3>Job List</h3>
+				<div class="small-12 medium-6 large-4 columns">
+					<div class="row">
+						<div class="small-7 columns">
+							<h3>Jobs List</h3>
+						</div>
+						<div class="small-5 columns">
+							<div class="small button right" id="reset">Reset</div>
+						</div>
+					</div>
 					<table class="small-12 columns">
 						<thead>
 							<tr>
@@ -168,18 +175,15 @@
 						</thead>
 						<tbody class="list-lines-container"></tbody>
 					</table>
-					<div class="small-12 columns">
-						<button class="right" id="reset">Reset</button>
-					</div>
 				</div>
-				<div class="small-12 medium-6 large-4 columns">
+				<div class="small-12 medium-12 large-4 columns">
 					<h3>Grid</h3>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="small-12 columns">
-					<button class="right" id="run">Run</button>
+					<button class="right" id="run">Run List</button>
 				</div>
 			</div>
 		</div>
@@ -215,13 +219,29 @@
 		this.push(newLine);
   	};
 
+  	Lines.remove = function(id){
+  		Lines.splice(Lines.pos(id), 1);
+  	};
+
   	Lines.view = function(){
   		var str="";
   		$.each(this, function(index,line){
   			str += line.viewLine();
   		});
   		$(".list-lines-container").html(str);
-  		console.log(str);
+
+  		//Synch the click listener on this view
+  		listenClickTasks();
+  	};
+
+  	Lines.pos = function(id) {
+  		var pos = false;
+  		$.each(this, function(index,line) {
+  			if(line.id == id) {
+  				pos = index;
+  			}
+  		});
+  		return pos;
   	};
 
   	//Sort Line by position
@@ -319,6 +339,7 @@
 			var curHeight=s.z;
 			while(curHeight > 0) {
 				curHeight -= s.dz; //Lower the new z
+				if (Math.abs(curHeight) > s.z) {curHeight = -s.dz;} //Set -z limit
 
 				//Go to beginning of the line
 				code +='G1X' + l.x0.toString() + 'Y' + l.y0.toString()  + 'F' + s.air_speed + '\n';
@@ -359,6 +380,7 @@
 	//Add a task
 	$("#add-line").click(function(){
 		Lines.add();
+		dashboard.setAppSetting("straight-lines","Lines",Lines);
 		Lines.view();
 	});
 
@@ -368,6 +390,14 @@
 		Lines.view();
 	});
 
+	function listenClickTasks(){
+		//Remove a task
+		$(".list-lines-container .delete").click(function() {
+			Lines.remove($(this).parent().attr("id"));
+			Lines.view();
+		});
+	}
+		
 	//Run all the tasks
 	$("#run").click(function(){
 		var tool = dashboard.machine;
@@ -380,11 +410,15 @@
 
 		//Dashboard Elements
 		var tool = dashboard.machine;
-		var ui = new FabMoUI(tool);
+		var ui = dashboard.ui;
 
 		//Get settings or set default settings
 		s = new settings();
 		s.synch(); //Also synch view
+
+		//Get Lines from storage (if stored)
+		//L = dashboard.getAppSetting("straight-lines","Lines") ? dashboard.getAppSetting("straight-lines","Lines") : [];
+		console.log(Lines);
 	});
 </script>
 
