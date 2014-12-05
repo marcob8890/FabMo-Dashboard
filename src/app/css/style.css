@@ -94,6 +94,7 @@ body,html{
 
 #tools-container .tools-current > li a.err 	{background-image: url('../img/icon_status_red.png');}
 #tools-container .tools-current > li a.disc 	{background-image: url('../img/icon_status_grey.png');}
+#tools-container .tools-current > li a.paus 	{background-image: url('../img/icon_status_yellow.png');}
 
 #tools-container .tools-other > li { border-bottom: 1px solid #eee; }
 
