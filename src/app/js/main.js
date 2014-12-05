@@ -72,7 +72,7 @@ define(function(require) {
 							})
 						]);
 						dashboard.machine = new FabMo(ip, port);
-						if (!dashboard.machine) {
+						if (!dashboard.ui) {
 							dashboard.ui= new FabMoUI(dashboard.machine);
 						}
 						else {
