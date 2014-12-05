@@ -760,6 +760,8 @@ ul.off-canvas-list li a, ul.off-canvas-list li.no-link {
 #app_menu_container {
 	list-style: none;
 	height :auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 /* ********** Page (#modal_container) container ********** */
