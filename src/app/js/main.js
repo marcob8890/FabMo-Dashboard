@@ -36,10 +36,14 @@ define(function(require) {
 				{
 					ChooseBestWayToConnect(context.remoteMachines.models[0].attributes,function(ip,port){
 						// Once connected, update the dashboard with the all of the connection information
-						dashboard.machine = null;
-						dashboard.ui = null;
 						dashboard.machine = new FabMo(ip, port);
-						dashboard.ui= new FabMoUI(dashboard.machine);
+						if (!dashboard.ui) {
+							dashboard.ui= new FabMoUI(dashboard.machine);
+						}
+						else {
+							dashboard.ui.tool = dashboard.machine;
+						}
+						
 						context.bindKeypad(dashboard.ui);
 						context.remoteMachines.forEach(function(item) {
 							item.set("current","");
@@ -67,10 +71,13 @@ define(function(require) {
 								port : fabmo.port
 							})
 						]);
-						dashboard.machine = null;
-						dashboard.ui = null;
-						dashboard.machine = fabmo;
-						dashboard.ui = new FabMoUI(fabmo);
+						dashboard.machine = new FabMo(ip, port);
+						if (!dashboard.machine) {
+							dashboard.ui= new FabMoUI(dashboard.machine);
+						}
+						else {
+							dashboard.ui.tool = dashboard.machine;
+						}
 						context.bindKeypad(dashboard.ui);
 					});
 				}

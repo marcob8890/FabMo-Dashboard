@@ -1,4 +1,5 @@
 function FabMoUI(tool, options){
+
 	this.tool = tool;
 	// the tool we need to check for
 
