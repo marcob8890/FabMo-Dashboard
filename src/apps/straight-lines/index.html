@@ -99,6 +99,8 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="row">
 				<div class="small-12 columns">
 					<div class="small button" id="default-settings">Default</div>
 					<div class="small button" id="save-settings">Save Settings</div>
@@ -197,6 +199,7 @@
   <script src="./js/FabMo-latest.js"></script>
   <script src="./js/FabMoUI-latest.js"></script>
 
+  <!-- Main App's Javascript -->
   <script type="text/javascript">
   	//Global var
   	var s = null;
@@ -204,10 +207,12 @@
 
   	/********** Function for "Lines" object = all the tasks **********/
   	Lines.reset = function(){
+  		//Set the number of lines to 0
   		this.length = 0;
   	};
 
   	Lines.add = function(){
+  		//Create a new line (task)
   		var newLine = new line(
 			parseFloat($("#x0").val()),
 			parseFloat($("#y0").val()),
@@ -216,19 +221,61 @@
 			Lines.length.toString(),
 			$("#name").val()
 		);
+
+		//Add this to the list of lines
 		this.push(newLine);
+
+		//Reset the value of "name" input & unique id "cid"
+		$("#name").val("");
+		$("#name").data("cid","");
   	};
 
   	Lines.remove = function(id){
+  		//Search the position of the line to remove. Then remove
   		Lines.splice(Lines.pos(id), 1);
   	};
 
+  	Lines.edit = function(id){
+  		//Search the position of the line to edit & get this line
+  		var l = Lines[Lines.pos(id)];
+
+  		//Update it status to current
+  		l.setCurrent()
+
+  		//Load Form with properties
+		$("#name").val(l.name);
+		$("#name").data("cid",l.id)
+		$("#x0").val(l.x0.toString());
+		$("#y0").val(l.y0.toString());
+		$("#x1").val(l.x1.toString());
+		$("#y1").val(l.x1.toString());
+  	};
+
+  	Lines.save = function(id){
+  		//Search for the line
+  		var l = Lines[Lines.pos(id)];
+
+  		//Add attributes
+  		l.x0 = parseFloat($("#x0").val());
+		l.y0 = parseFloat($("#y0").val());
+		l.x1 = parseFloat($("#x1").val());
+		l.y1 = parseFloat($("#y1").val());
+		l.name = $("#name").val();
+
+  		//Remove current
+  		l.resetCurrent();
+
+  		//Reset the value of "name" input & unique id "cid"
+		$("#name").val("");
+		$("#name").data("cid","");
+  	}
+
   	Lines.view = function(){
-  		var str="";
+  		var str=""; //Str will be the HTML content
   		$.each(this, function(index,line){
-  			str += line.viewLine();
+  			str += line.viewLine(); //For each Line, we add the HTML content
   		});
-  		$(".list-lines-container").html(str);
+  		$(".list-lines-container").html(str); //Set this into the HTML table
 
   		//Synch the click listener on this view
   		listenClickTasks();
@@ -274,7 +321,7 @@
 
 	line.prototype.viewLine = function() {
 		var str = "";
-		str += "<tr id=" + this.id + " pos=" + this.pos + ">";
+		str += "<tr class='" + (this.current ? 'current' : '') + "' id='" + this.id + "'>";
 		str += "<td>" + this.name + "</td>";
 		str += "<td>(" + this.x0.toString() + "," + this.y0.toString() + ") - (" + this.x1.toString() + "," + this.y1.toString() + ")</td>";
 		str += "<td class='edit'>E</td>";
@@ -339,7 +386,7 @@
 			var curHeight=s.z;
 			while(curHeight > 0) {
 				curHeight -= s.dz; //Lower the new z
-				if (Math.abs(curHeight) > s.z) {curHeight = -s.dz;} //Set -z limit
+				if (curHeight < 0) {curHeight = 0;} //Set -z limit
 
 				//Go to beginning of the line
 				code +='G1X' + l.x0.toString() + 'Y' + l.y0.toString()  + 'F' + s.air_speed + '\n';
@@ -379,7 +426,14 @@
 
 	//Add a task
 	$("#add-line").click(function(){
-		Lines.add();
+		console.log($("#name").data("cid"));
+		if($("#name").data("cid")) {
+			Lines.save($("#name").data("cid"));
+		}
+		else {
+			Lines.add();
+		}
+
 		dashboard.setAppSetting("straight-lines","Lines",Lines);
 		Lines.view();
 	});
@@ -394,6 +448,12 @@
 		//Remove a task
 		$(".list-lines-container .delete").click(function() {
 			Lines.remove($(this).parent().attr("id"));
+			Lines.view();
+		});
+
+		//Edit a task
+		$(".list-lines-container .edit").click(function(){
+			Lines.edit($(this).parent().attr("id"));
 			Lines.view();
 		});
 	}
