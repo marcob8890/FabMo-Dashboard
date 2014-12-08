@@ -6,7 +6,7 @@ function FabMoUI(tool, options){
 	this.prefix = '';
 	// useful if several tools in the same app.
 
-	this.refresh = 100;
+	this.refresh = 50;
 	// define the status refresh time.
 
 	this.keypad = true;
@@ -398,8 +398,7 @@ FabMoUI.prototype.updateStatus = function(){
 					$(that.pause_button_selector).addClass('hide');
 				}
 			}
-			else if(status.state == 'paused') {
-				that.forbidkeypad();
+			else if(status.state === 'paused') {
 				$(".tools-current > li a").removeClass('paus disc err').addClass('paus');
 				$(that.status_div_selector).removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle fabmo-status-passthrough');
 				$(that.status_div_selector).removeClass('fabmo-status-paused');
@@ -411,15 +410,15 @@ FabMoUI.prototype.updateStatus = function(){
 					$(that.resume_button_selector).removeClass('hide');
 				}
 			} 
-			else if(status.state == 'passthrough') {
+			else if(status.state === 'passthrough') {
 				that.forbidkeypad();
 				$(that.status_div_selector).removeClass('fabmo-status-running fabmo-status-paused fabmo-status-error fabmo-status-disconnected fabmo-status-idle fabmo-status-passthrough');
 				$(that.status_div_selector).addClass('fabmo-status-passthrough');
 				$(".tools-current > li a").removeClass('paus disc err').addClass('paus');
 				$(that.state_selector).html('passthrough');
+				$(that.stop_button_selector).addClass('hide');
 				$(that.pause_button_selector).addClass('hide');
-				$(that.pause_button_selector).addClass('hide');
-				$(that.pause_button_selector).addClass('hide');
+				$(that.resume_button_selector).addClass('hide');
 			}
 			else if(status.state == 'limit') {
 				that.forbidkeypad();
