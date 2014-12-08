@@ -50,6 +50,29 @@ define(function(require) {
 		return;
 	};
 
+	Dashboard.prototype.addJob = function(gcode, settings){
+		console.log("AddJob Function");
+		that=this;
+		//that.DRO(function(err){
+			/*
+			if(err){
+				that.notification("error",err);
+			}
+			*/
+			//else {
+				var job = that.parseGCode(gcode,settings);
+				that.machine.run_local_file(gcode,'gc',function(message){
+					console.log(message);
+				});
+			//}
+		//});
+		return;
+	}
+
+	Dashboard.prototype.parseGCode = function(g,s){
+		return g;
+	};
+
 	// Bring up the job manager
 	Dashboard.prototype.jobManager = function(){
 		var list_job = this.machine.list_job();
@@ -205,37 +228,6 @@ define(function(require) {
 		localStorage.setItem('dashboardSettings',null);
 		this.checkDashboardSettings();
 	}
-
-	/* App Settings */
-	Dashboard.prototype.setAppSetting = function(app,setting,val) {
-		if (localStorage.getItem('app-' + app)) {
-			var s = JSON.parse(localStorage.getItem('app-' + app));
-		}
-		else {
-			var s= {};
-		}
-		s[setting] = val;
-		localStorage.setItem('app-' + app,JSON.stringify(s));
-	};
-
-	Dashboard.prototype.getAppSetting = function(app,setting) {
-		if(localStorage.getItem('app-' + app)) {
-			if(JSON.parse(localStorage.getItem('app-' + app))[setting])
-				return JSON.parse(localStorage.getItem('app-' + app))[setting];
-			else return false;
-		}
-		else {
-			return false;
-		}
-	};
-
-	Dashboard.prototype.delAppSetting = function(app,setting) {
-		if (localStorage.getItem('app-' + app)) {
-			var s = JSON.parse(localStorage.getItem('app-' + app));
-			delete s[setting];
-			localStorage.setItem('app-' + app,JSON.stringify(s));
-		}
-	};
 
 	/*** Functions ***/
 	jobManager = function() {

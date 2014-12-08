@@ -196,181 +196,12 @@
   <!-- Javascript inclusions -->
   <script src="./js/libs/jquery-1.10.2.js"></script>
   <script src="./js/libs/foundation.min.js"></script>
-  <script src="./js/FabMo-latest.js"></script>
-  <script src="./js/FabMoUI-latest.js"></script>
+
+  <script type="text/javascript" src="./js/app.js"></script>
+  <script type="text/javascript" src="./js/custom.js"></script>
 
   <!-- Main App's Javascript -->
   <script type="text/javascript">
-  	//Global var
-  	var s = null;
-  	var Lines = [] ;
-
-  	/********** Function for "Lines" object = all the tasks **********/
-  	Lines.reset = function(){
-  		//Set the number of lines to 0
-  		this.length = 0;
-  	};
-
-  	Lines.add = function(){
-  		//Create a new line (task)
-  		var newLine = new line(
-			parseFloat($("#x0").val()),
-			parseFloat($("#y0").val()),
-			parseFloat($("#x1").val()),
-			parseFloat($("#y1").val()),
-			Lines.length.toString(),
-			$("#name").val()
-		);
-
-		//Add this to the list of lines
-		this.push(newLine);
-
-		//Reset the value of "name" input & unique id "cid"
-		$("#name").val("");
-		$("#name").data("cid","");
-  	};
-
-  	Lines.remove = function(id){
-  		//Search the position of the line to remove. Then remove
-  		Lines.splice(Lines.pos(id), 1);
-  	};
-
-  	Lines.edit = function(id){
-  		//Search the position of the line to edit & get this line
-  		var l = Lines[Lines.pos(id)];
-
-  		//Update it status to current
-  		l.setCurrent()
-
-  		//Load Form with properties
-		$("#name").val(l.name);
-		$("#name").data("cid",l.id)
-		$("#x0").val(l.x0.toString());
-		$("#y0").val(l.y0.toString());
-		$("#x1").val(l.x1.toString());
-		$("#y1").val(l.x1.toString());
-  	};
-
-  	Lines.save = function(id){
-  		//Search for the line
-  		var l = Lines[Lines.pos(id)];
-
-  		//Add attributes
-  		l.x0 = parseFloat($("#x0").val());
-		l.y0 = parseFloat($("#y0").val());
-		l.x1 = parseFloat($("#x1").val());
-		l.y1 = parseFloat($("#y1").val());
-		l.name = $("#name").val();
-
-  		//Remove current
-  		l.resetCurrent();
-
-  		//Reset the value of "name" input & unique id "cid"
-		$("#name").val("");
-		$("#name").data("cid","");
-  	}
-
-  	Lines.view = function(){
-  		var str=""; //Str will be the HTML content
-  		$.each(this, function(index,line){
-  			str += line.viewLine(); //For each Line, we add the HTML content
-  		});
-  		$(".list-lines-container").html(str); //Set this into the HTML table
-
-  		//Synch the click listener on this view
-  		listenClickTasks();
-  	};
-
-  	Lines.pos = function(id) {
-  		var pos = false;
-  		$.each(this, function(index,line) {
-  			if(line.id == id) {
-  				pos = index;
-  			}
-  		});
-  		return pos;
-  	};
-
-  	//Sort Line by position
-  	Lines.sort = function(){
-  		this.sort(function(a,b) {return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);} );
-  	};
-
-
-  	/********** Model and function of a single line **********/
-	line = function(x0,y0,x1,y1,l,name) {
-		this.id="line-" + l;
-		this.pos = l;
-		name ? this.name = name : this.name = this.id;
-		this.current=0;
-		this.x0=x0; //X start position of a line
-		this.y0=y0; //Y start position of a line
-		this.x1=x1; //X end position of a line
-		this.y1=y1; //Y end position of a line
-	};
-
-	line.prototype.update = function(x0,y0,x1,y1,name,pos) {
-		this.x0=x0; //X start position of a line
-		this.y0=y0; //Y start position of a line
-		this.x1=x1; //X end position of a line
-		this.y1=y1; //Y end position of a line
-		
-		if(name) this.name=name;
-		//else name = "Line" + pos;
-	};
-
-	line.prototype.viewLine = function() {
-		var str = "";
-		str += "<tr class='" + (this.current ? 'current' : '') + "' id='" + this.id + "'>";
-		str += "<td>" + this.name + "</td>";
-		str += "<td>(" + this.x0.toString() + "," + this.y0.toString() + ") - (" + this.x1.toString() + "," + this.y1.toString() + ")</td>";
-		str += "<td class='edit'>E</td>";
-		str += "<td class='delete'>D</td>";
-		str += "</tr>";
-		return str;
-	};
-
-	line.prototype.setCurrent = function() { this.current=1 };
-	line.prototype.resetCurrent = function() { this.current=0 };
-
-
-	/********** Model and function related to tool & project settings **********/
-	settings = function(){
-		var dashSettings = dashboard.getAppSetting("straight-lines","s") ? dashboard.getAppSetting("straight-lines","s") : false;
-
-		this.x= dashSettings ? dashSettings.x : 3; //x Size of project
-		this.y= dashSettings ? dashSettings.y : 2; //y Size of project
-		this.z= dashSettings ? dashSettings.z : 0.3; //Max thickness of project
-		this.dz= dashSettings ? dashSettings.dz : 0.1; //Depth of each z pass
-		this.x0= dashSettings ? dashSettings.x0 : 0; //x Translation from X0
-		this.y0= dashSettings ? dashSettings.y0 :0; //t Translation from Y0
-		this.z0= dashSettings ? dashSettings.z0 : 0.5; //Delta z for air movements
-		this.cut_speed= dashSettings ? dashSettings.cut_speed : 20; //1 to 600
-		this.air_speed= dashSettings ? dashSettings.air_speed : 600; //1 to 600
-		this.bit_d= dashSettings ? dashSettings.bit_d : 0.125; //Bit Diameter
-	};
-
-	settings.prototype.update = function(){
-		this.x=parseFloat($("#s_x").val());
-		this.y=parseFloat($("#s_y").val());
-		this.z=parseFloat($("#s_z").val());
-		this.dz=parseFloat($("#s_dz").val());
-		this.x0=parseFloat($("#s_x0").val());
-		this.y0=parseFloat($("#s_y0").val());
-		this.cut_speed=parseFloat($("#s_cut_speed").val());
-		this.bit_d=parseFloat($("#s_bit_d").val());
-	};
-
-	settings.prototype.synch = function(){
-		$("#s_x").val(this.x.toString());
-		$("#s_y").val(this.y.toString());
-		$("#s_z").val(this.z.toString());
-		$("#s_dz").val(this.dz.toString());
-		$("#s_x0").val(this.x0.toString());
-		$("#s_y0").val(this.y0.toString());
-		$("#s_cut_speed").val(this.cut_speed.toString());
-		$("#s_bit_d").val(this.bit_d.toString());
-	}
 
 	setGCode = function(s,lines) {
 		var code = ''; //Init gCode file
@@ -412,13 +243,13 @@
 	//Changes tool & project settings
 	$("#save-settings").click(function(){
 		s.update();
-		dashboard.setAppSetting("straight-lines","s",s);
+		setAppSetting("straight-lines","s",s);
 		dashboard.notification("success","Settings Saved");
 	});
 
 	//Changes tool & project settings
 	$("#default-settings").click(function(){
-		dashboard.delAppSetting("straight-lines","s");
+		delAppSetting("straight-lines","s");
 		s = new settings();
 		s.synch();
 		dashboard.notification("success","Settings Reseted");
@@ -434,7 +265,7 @@
 			Lines.add();
 		}
 
-		dashboard.setAppSetting("straight-lines","Lines",Lines);
+		setAppSetting("straight-lines","Lines",Lines);
 		Lines.view();
 	});
 
@@ -460,8 +291,7 @@
 		
 	//Run all the tasks
 	$("#run").click(function(){
-		var tool = dashboard.machine;
-		tool.run_local_file(setGCode(s,Lines),'gc',function(message){console.log(message);});
+		dashboard.addJob(setGCode(s,Lines),s);
 	});
 
 	$(document).ready(function(){
