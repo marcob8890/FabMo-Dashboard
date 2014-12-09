@@ -125,34 +125,55 @@
 						<div class="row">
 							<div class="small-12 columns">
 								<label>Line Name :
-								<input type="text" placeholder="Name" id="name">
+								<input type="text" placeholder="Name" id="line_name">
 								</label>
 							</div>
 							<div class="small-6 columns">
 								<label>X0 :
-								<input type="text" value="0.000" id="x0">
+								<input type="text" value="0.000" id="line_x0">
 								</label>
 							</div>
 							<div class="small-6 columns">
 								<label>Y0 :
-								<input type="text" value="0.000" id="y0">
+								<input type="text" value="0.000" id="line_y0">
 								</label>
 							</div>
 							<div class="small-6 columns">
 								<label>X1 :
-								<input type="text" value="2.000" id="x1">
+								<input type="text" value="2.000" id="line_x1">
 								</label>
 							</div>
 							<div class="small-6 columns">
 								<label>Y1 :
-								<input type="text" value="1.000" id="y1">
+								<input type="text" value="1.000" id="line_y1">
 								</label>
 							</div>
-							<div class="small-6 columns switch">
-								<span>L</span>
-								<input type="checkbox" id="side">
-								<label for="side"></label>
-								<span>R</span>
+							<div class="small-12 columns center">
+								<Label>Bit Position</Label>
+							</div>
+							<div class="small-4 columns center">
+								<Label>Left
+								<div class="switch small">
+									<input id="line_left" type="radio" checked name="line_side" value="1">
+									<label for="line_left"></label>
+								</div>
+								</Label>
+							</div>
+							<div class="small-4 columns center">
+								<Label>Center
+								<div class="switch small">
+									<input id="line_center" type="radio" name="line_side" value="3">
+									<label for="line_center"></label>
+								</div>
+								</Label>
+							</div>
+							<div class="small-4 columns center">
+								<Label>Right
+								<div class="switch small">
+									<input id="line_right" type="radio" name="line_side" value="2">
+									<label for="line_right"></label>
+								</div>
+								</Label>
 							</div>
 						</div>
 					</form>
@@ -178,10 +199,17 @@
 						<tbody class="list-lines-container"></tbody>
 					</table>
 				</div>
+
 				<div class="small-12 medium-12 large-4 columns">
-					<h3>Grid</h3>
+					<div class="row">
+						<div class="small-12 columns">
+							<h3>Grid</h3>
+						</div>
+					</div>
+					<div class="row">
+						
+					</div>
 				</div>
-			</div>
 
 			<div class="row">
 				<div class="small-12 columns">
@@ -203,112 +231,60 @@
   <!-- Main App's Javascript -->
   <script type="text/javascript">
 
-	setGCode = function(s,lines) {
-		var code = ''; //Init gCode file
-
-		//Go to Z other the project
-		code += 'G1Z' + s.z0.toString() + 'F' + s.air_speed + '\n';
-
-		//Go to X0 Y0
-		code += 'G1X' + s.x0.toString() + 'Y' + s.y0.toString() + 'F' + s.air_speed + '\n';
+	setGCode = function(s,tasks) {
+		var code = new gcode();
 
 		//Do each line in more than 1 pass
-		$.each(lines, function(index,l){
-			var curHeight=s.z;
-			while(curHeight > 0) {
-				curHeight -= s.dz; //Lower the new z
-				if (curHeight < 0) {curHeight = 0;} //Set -z limit
-
-				//Go to beginning of the line
-				code +='G1X' + l.x0.toString() + 'Y' + l.y0.toString()  + 'F' + s.air_speed + '\n';
-
-				//Go to the new depth
-				code +='G1Z-' + (s.z-curHeight).toString() + 'F' + s.cut_speed + '\n';
-
-				//Go to the end of the line
-				code +='G1X' + l.x1.toString() + 'Y' + l.y1.toString()  + 'F' + s.cut_speed + '\n';
-
-				//Go to z over the project
-				code +='G1Z' + s.z0.toString() + 'F' + s.air_speed + '\n';
-			}
+		$.each(tasks, function(index,l){
+			code.line(l.t_x0,l.t_y0,s.z0,l.t_x1,l.t_y1,-s.z);
 		});
-		code += 'G1Z' + s.z0.toString() + 'F' + s.air_speed + '\n'; //Z for security
-		code += 'G1X6Y8F' + s.air_speed + '\n'; //Go back to X0 Y0
-		console.log(code);
-		return code;
+		
+		return code.getGc();
 	};
 
 	/********** User Interface Actions **********/
 
-	//Changes tool & project settings
-	$("#save-settings").click(function(){
-		s.update();
-		setAppSetting("straight-lines","s",s);
-		dashboard.notification("success","Settings Saved");
-	});
-
-	//Changes tool & project settings
-	$("#default-settings").click(function(){
-		delAppSetting("straight-lines","s");
-		s = new settings();
-		s.synch();
-		dashboard.notification("success","Settings Reseted");
-	});
-
 	//Add a task
 	$("#add-line").click(function(){
-		console.log($("#name").data("cid"));
-		if($("#name").data("cid")) {
-			Lines.save($("#name").data("cid"));
+		if($("#line_name").data("cid")) {
+			Tasks.save($("#line_name").data("cid"));
 		}
 		else {
-			Lines.add();
+			Tasks.addLine();
 		}
-
-		setAppSetting("straight-lines","Lines",Lines);
-		Lines.view();
 	});
 
 	//Delete all the tasks
 	$("#reset").click(function() {
-		Lines.reset();
-		Lines.view();
+		Tasks.reset();
 	});
 
 	function listenClickTasks(){
 		//Remove a task
 		$(".list-lines-container .delete").click(function() {
-			Lines.remove($(this).parent().attr("id"));
-			Lines.view();
+			Tasks.remove($(this).parent().attr("id"));
 		});
 
 		//Edit a task
 		$(".list-lines-container .edit").click(function(){
-			Lines.edit($(this).parent().attr("id"));
-			Lines.view();
+			Tasks.edit($(this).parent().attr("id"));
 		});
 	}
 		
 	//Run all the tasks
 	$("#run").click(function(){
-		dashboard.addJob(setGCode(s,Lines),s);
+		var c = setGCode(s,Tasks);
+		dashboard.addJob(c,s);
 	});
 
+	//OnLoad Init
 	$(document).ready(function(){
 		//Foundation Init
 		$(document).foundation();
 
-		//Dashboard Elements
-		var tool = dashboard.machine;
-		var ui = dashboard.ui;
-
-		//Get settings or set default settings
-		s = new settings();
-		s.synch(); //Also synch view
-
-		//Get Lines from storage (if stored)
-		//L = dashboard.getAppSetting("straight-lines","Lines") ? dashboard.getAppSetting("straight-lines","Lines") : [];
-		console.log(Lines);
+		//Get Tasks from storage (if stored)
+		//L = dashboard.getAppSetting("straight-lines","Tasks") ? dashboard.getAppSetting("straight-lines","Tasks") : [];
+		console.log(Tasks);
 	});
 </script>
 

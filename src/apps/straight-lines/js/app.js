@@ -9,11 +9,24 @@
 *** - Function to parse simple gcode to create a toolpath (add general offset, bit offset to cut outside / inside a line)
 */
 
+//Global var
+var pi = 3.14159265358979323846264338327950288419716939937510582;
+var s = null;
+var Tasks = [] ;
+
+
+//On Load Init
+$(document).ready(function(){
+	//Get settings or set default settings
+	s = new settings();
+	s.synchForm(); //Also synch view
+});
+
 
 
 
 /*
-*** Custom App Settings ***
+*** Save / Restore Data ***
 */
 
 
@@ -51,7 +64,6 @@ delAppSetting = function(app,setting) {
 
 
 
-
 /*
 *** Project Settings ***
 */
@@ -73,29 +85,27 @@ settings = function(){
 	this.bit_d= dashSettings ? dashSettings.bit_d : 0.125; //Bit Diameter
 };
 
+//Update each setting by the content of the corresponding input (by id)
 settings.prototype.update = function(){
-	this.x=parseFloat($("#s_x").val());
-	this.y=parseFloat($("#s_y").val());
-	this.z=parseFloat($("#s_z").val());
-	this.dz=parseFloat($("#s_dz").val());
-	this.x0=parseFloat($("#s_x0").val());
-	this.y0=parseFloat($("#s_y0").val());
-	this.cut_speed=parseFloat($("#s_cut_speed").val());
-	this.bit_d=parseFloat($("#s_bit_d").val());
+	//Input should have the following ID attribute : s_propertie
+	for(var setting in this){
+		if ($("#s_" + setting).length){
+			this[setting]=parseFloat($("#s_" + setting).val());
+		}
+    }
 };
 
-settings.prototype.synch = function(){
-	$("#s_x").val(this.x.toString());
-	$("#s_y").val(this.y.toString());
-	$("#s_z").val(this.z.toString());
-	$("#s_dz").val(this.dz.toString());
-	$("#s_x0").val(this.x0.toString());
-	$("#s_y0").val(this.y0.toString());
-	$("#s_cut_speed").val(this.cut_speed.toString());
-	$("#s_bit_d").val(this.bit_d.toString());
-}
+//Fill each setting input, if existing in the app
+settings.prototype.synchForm = function(){
+	for(var setting in this){
+		if ($("#s_" + setting).length){
+			$("#s_" + setting).val(this[setting].toString());
+		}
+    }
+};
 
-setting.prototype.set = function(setting,value){
+//Set a specific setting attribute, can be called by the app
+settings.prototype.set = function(setting,value){
 	if(this[setting]){
 		this[setting]=value;
 		return true;
@@ -103,8 +113,9 @@ setting.prototype.set = function(setting,value){
 	else {
 		return false;
 	}
-}
+};
 
+//Get a specific project attribute, can be called by the app
 settings.prototype.get = function(setting){
 	if(this[setting]){
 		return this[setting]
@@ -112,4 +123,95 @@ settings.prototype.get = function(setting){
 	else {
 		return null;
 	}
+};
+
+/********** User Interface Actions **********/
+
+//Changes tool & project settings
+$("#save-settings").click(function(){
+	s.update();
+	setAppSetting("straight-lines","s",s);
+	dashboard.notification("success","Settings Saved");
+	Tasks.toolpath();
+});
+
+//Changes tool & project settings
+$("#default-settings").click(function(){
+	delAppSetting("straight-lines","s");
+	s = new settings();
+	s.synchForm();
+	dashboard.notification("success","Settings Reseted");
+	Tasks.toolpath();
+});
+
+
+
+
+/*
+*** Play with gCode ***
+*/
+
+gcode = function(){
+	this.body="";
+	this.init();
+};
+
+/********** Initial functions **********/
+gcode.prototype.init = function(){
+	//Header : initial commands
+	this.header = "";
+
+	//Go to Z security position
+	this.header += 'G1Z' + s.z0.toString() + 'F' + s.air_speed + '\n';
+
+	//Go to X0 Y0, compensated with offset
+	this.header += 'G1X' + s.x0.toString() + 'Y' + s.y0.toString() + 'F' + s.air_speed + '\n';
+
+
+	//Footer : end of job cillabd
+	this.footer = "";
+
+	//Go to Z security position
+	this.footer += 'G1Z' + s.z0 + 'F' + s.air_speed + '\n';
+
+	//Go to end position
+	this.footer += 'G1X6Y8F' + s.air_speed + '\n';
+};
+
+gcode.prototype.getGc = function(){
+	return ("" + this.header + this.body + this.footer);
 }
+
+gcode.prototype.G1 = function(x,y,z,s){
+	//Not working yet
+	console.log('G1' + (x ? 'X' + (x + s.x0).toString() : '') + (y ? 'Y' + (y + s.y0).toString() : '') + (z ? 'Z' + z.toString() : '') + 'F' + s + '\n');
+	return ('G1' + (x ? 'X' + (x + s.x0) : '') + (y ? 'Y' + (y + s.y0) : '') + (z ? 'Z' + z : '') + 'F' + s + '\n');
+}
+
+/********** GCode Shapes **********/
+gcode.prototype.line = function(x0,y0,z0,x1,y1,z1){
+	//x0 & y0 : start point
+	//x1 & y1 : end point
+	//z0 : start depth
+	//z1 : end depth
+
+	this.body += ""
+
+	var curHeight = 0;
+	while(curHeight > z1) {
+		curHeight -= s.dz; //Lower the new z
+		if (curHeight < z1) {curHeight = z1;} //Set -z limit
+
+		//Go to beginning of the line
+		this.body +='G1X' + (x0 + s.x0) + 'Y' + (y0 + s.y0) + 'F' + s.air_speed + '\n';
+
+		//Go to the new depth
+		this.body +='G1Z' + curHeight + 'F' + s.cut_speed + '\n';
+
+		//Go to the end of the line
+		this.body +='G1X' + (x1 + s.x0) + 'Y' + (y1 + s.y0) + 'F' + s.cut_speed + '\n';
+
+		//Go to z over the project
+		this.body +='G1Z' + s.z0 + 'F' + s.air_speed + '\n';
+	}
+};
